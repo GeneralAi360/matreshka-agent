@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Implement this bounded feature and add a regression test first.",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix this approved bug through focused RED and GREEN without committing.",
+    "should_trigger": true
+  },
+  {
+    "query": "Complete Task 3 using only its allowlist and test gate.",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this scoped diff and list security findings.",
+    "should_trigger": false
+  },
+  {
+    "query": "Diagnose why this test is flaky, but do not change any files.",
+    "should_trigger": false
+  },
+  {
+    "query": "Prove the existing implementation works without making a fix.",
+    "should_trigger": false
+  },
+  {
+    "query": "Prepare a safe branch handoff after verification.",
+    "should_trigger": false
+  }
+]

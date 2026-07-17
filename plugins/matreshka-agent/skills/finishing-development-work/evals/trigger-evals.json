@@ -1,0 +1,34 @@
+[
+  {
+    "query": "The work is verified; prepare a safe local handoff.",
+    "should_trigger": true
+  },
+  {
+    "query": "Create the permitted commit for this reviewed change unit.",
+    "should_trigger": true
+  },
+  {
+    "query": "Push this verified commit and open the already authorized pull request.",
+    "should_trigger": true
+  },
+  {
+    "query": "Prepare the verified migration for the remote operator without applying it.",
+    "should_trigger": true
+  },
+  {
+    "query": "Implement this feature through RED and GREEN.",
+    "should_trigger": false
+  },
+  {
+    "query": "Find the root cause of the failing integration test.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review the scoped diff for security findings.",
+    "should_trigger": false
+  },
+  {
+    "query": "Run fresh verification before we decide how to finish.",
+    "should_trigger": false
+  }
+]

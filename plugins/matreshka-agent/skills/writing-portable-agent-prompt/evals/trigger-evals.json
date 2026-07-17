@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Напиши prompt, который я вставлю в Codex для реализации этой задачи.",
+    "should_trigger": true
+  },
+  {
+    "query": "Улучши мой prompt для Claude Code и не запускай его.",
+    "should_trigger": true
+  },
+  {
+    "query": "Подготовь read-only investigation prompt для Cursor.",
+    "should_trigger": true
+  },
+  {
+    "query": "Сделай переносимый review prompt для coding agents.",
+    "should_trigger": true
+  },
+  {
+    "query": "Выполни эту задачу прямо сейчас в текущем репозитории.",
+    "should_trigger": false
+  },
+  {
+    "query": "Проведи только брейншторм архитектуры и подготовь design doc.",
+    "should_trigger": false
+  },
+  {
+    "query": "Проверь этот готовый diff и выдай findings.",
+    "should_trigger": false
+  }
+]

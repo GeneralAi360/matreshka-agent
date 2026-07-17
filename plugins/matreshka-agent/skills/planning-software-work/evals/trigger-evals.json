@@ -1,0 +1,26 @@
+[
+  {
+    "query": "У нас есть утверждённый design doc; преврати его в точный coding plan.",
+    "should_trigger": true
+  },
+  {
+    "query": "Разбей спецификацию на маленькие задачи для implementer и reviewer, но не запускай их.",
+    "should_trigger": true
+  },
+  {
+    "query": "Составь coverage matrix и последовательность RED/GREEN задач.",
+    "should_trigger": true
+  },
+  {
+    "query": "Идея пока сырая — помоги выбрать архитектуру и провести брейншторм.",
+    "should_trigger": false
+  },
+  {
+    "query": "План уже готов; выполни Task 3 через субагента.",
+    "should_trigger": false
+  },
+  {
+    "query": "Проверь готовый diff на security и correctness.",
+    "should_trigger": false
+  }
+]

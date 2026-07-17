@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Find the root cause of this failing test before changing code.",
+    "should_trigger": true
+  },
+  {
+    "query": "Why is this endpoint intermittently timing out? Diagnose it only.",
+    "should_trigger": true
+  },
+  {
+    "query": "Determine whether this failure is pre-existing or introduced by my branch.",
+    "should_trigger": true
+  },
+  {
+    "query": "Implement the already-approved fix with a regression test.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this completed diff for security and spec compliance.",
+    "should_trigger": false
+  },
+  {
+    "query": "Run the final verification matrix and prove the task is complete.",
+    "should_trigger": false
+  },
+  {
+    "query": "Commit and prepare a handoff for the verified change.",
+    "should_trigger": false
+  }
+]

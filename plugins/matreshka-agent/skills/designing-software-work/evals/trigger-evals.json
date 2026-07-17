@@ -1,0 +1,26 @@
+[
+  {
+    "query": "Помоги провести брейншторм новой системы подписок и подготовить дизайн без реализации.",
+    "should_trigger": true
+  },
+  {
+    "query": "Сравни архитектурные варианты хранения событий и порекомендуй один.",
+    "should_trigger": true
+  },
+  {
+    "query": "Перед изменением auth спроектируй trust boundaries, rollout и rollback.",
+    "should_trigger": true
+  },
+  {
+    "query": "Дизайн уже утверждён; преврати его в подробный implementation plan.",
+    "should_trigger": false
+  },
+  {
+    "query": "Исправь этот воспроизводимый падающий тест и реализуй минимальный fix.",
+    "should_trigger": false
+  },
+  {
+    "query": "Напиши prompt для Cursor, но ничего не выполняй.",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "plugin": "matreshka-agent",
+  "version": "0.1.1",
+  "cases": [
+    {
+      "id": "valid-package",
+      "check": "valid-package",
+      "expected": "pass"
+    },
+    {
+      "id": "required-skills",
+      "check": "required-skills",
+      "expected": "pass"
+    },
+    {
+      "id": "manifest-consistency",
+      "check": "manifest-consistency",
+      "expected": "pass"
+    },
+    {
+      "id": "forbidden-components",
+      "check": "forbidden-components",
+      "expected": "pass"
+    },
+    {
+      "id": "forbidden-references",
+      "check": "forbidden-references",
+      "expected": "pass"
+    },
+    {
+      "id": "eval-schemas",
+      "check": "eval-schemas",
+      "expected": "pass"
+    },
+    {
+      "id": "internal-links",
+      "check": "internal-links",
+      "expected": "pass"
+    },
+    {
+      "id": "symlink-containment",
+      "check": "symlink-containment",
+      "expected": "pass"
+    },
+    {
+      "id": "secret-files",
+      "check": "secret-files",
+      "expected": "pass"
+    },
+    {
+      "id": "executable-policy",
+      "check": "executable-policy",
+      "expected": "pass"
+    },
+    {
+      "id": "offline-runtime",
+      "check": "offline-runtime",
+      "expected": "pass"
+    },
+    {
+      "id": "codex-slash-prompts",
+      "check": "codex-slash-prompts",
+      "expected": "pass"
+    }
+  ]
+}

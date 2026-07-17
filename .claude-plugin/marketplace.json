@@ -1,0 +1,25 @@
+{
+  "name": "matreshka-agent",
+  "owner": {
+    "name": "Matreshka Agent contributors"
+  },
+  "metadata": {
+    "description": "Portable coding-agent workflow skills",
+    "version": "0.1.1"
+  },
+  "plugins": [
+    {
+      "name": "matreshka-agent",
+      "source": "./plugins/matreshka-agent",
+      "description": "Orchestrates coding-agent work from design and planning through tested implementation, review, verification, and handoff.",
+      "version": "0.1.1",
+      "license": "MIT",
+      "category": "Developer Tools",
+      "keywords": [
+        "coding-agents",
+        "orchestration",
+        "software-development"
+      ]
+    }
+  ]
+}

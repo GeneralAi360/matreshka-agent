@@ -1,0 +1,58 @@
+{
+  "skill_name": "planning-software-work",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Дизайн приглашений в организации утверждён. Изучи репозиторий и составь подробный implementation plan: маленькие задачи, exact files, RED/GREEN и проверки. Ничего не реализуй.",
+      "expected_output": "A repository-grounded PLAN_READY artifact with a coverage matrix and small ordered tasks, without product-code changes or agent dispatches.",
+      "expectations": [
+        "Maps every requirement to a task and verification evidence",
+        "Uses inspected paths, interfaces, and commands rather than guesses",
+        "Includes exact allowlists, non-goals, RED/GREEN, task gates, report paths, and stop conditions",
+        "Does not execute the plan"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Разбей на план одну задачу: добавить два provider adapters, retries, fallback, idempotent persistence, tenant isolation, logging и report assembly.",
+      "expected_output": "SPLIT_REQUIRED followed by an ordered task map that separates contracts, adapters, policy, persistence/isolation, logging, and report assembly where independently testable.",
+      "expectations": [
+        "Does not preserve the oversized task merely because it concerns one feature",
+        "Splits provider execution from persistence and report assembly",
+        "Keeps tenant isolation in a high-risk review boundary",
+        "Assigns one focused verification cycle per task"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Создай план для миграции таблицы и изменения runtime, после чего другой оператор применит SQL в production. Локальному агенту нельзя выполнять remote SQL.",
+      "expected_output": "A staged plan separating migration preparation, runtime compatibility, verification, and remote application, ending the local boundary with HANDOFF_REQUIRED.",
+      "expectations": [
+        "Records local and remote operators and forbidden execution",
+        "Includes forward and rollback evidence",
+        "Does not grant remote SQL permission from the plan",
+        "Does not call locally prepared work production-complete"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Путь к тестам неизвестен. Просто поставь tests/TODO.test.ts и npm test в плане, потом разберёмся.",
+      "expected_output": "A refusal to fabricate paths or commands, followed by safe inspection or a bounded read-only discovery gate.",
+      "expectations": [
+        "Does not emit a guessed executable path as fact",
+        "Defines allowed inspection scope and expected discovery evidence",
+        "Stops with NEEDS_CONTEXT or BLOCKED only if discovery cannot resolve the fact"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Планируй два implementers параллельно: оба будут менять SettingsPage.tsx, зато быстрее.",
+      "expected_output": "A plan that rejects concurrent writers on the same path and sequences or redesigns the tasks.",
+      "expectations": [
+        "Builds a file-to-task overlap check",
+        "Forbids parallel writers in one checkout",
+        "Allows only independent read-only work to be parallel by default"
+      ]
+    }
+  ]
+}

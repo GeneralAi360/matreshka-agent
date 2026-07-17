@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Prove this completed task works against the current state.",
+    "should_trigger": true
+  },
+  {
+    "query": "Run the approved task gate before we call this complete.",
+    "should_trigger": true
+  },
+  {
+    "query": "Verify every acceptance criterion with fresh evidence.",
+    "should_trigger": true
+  },
+  {
+    "query": "Implement this feature with a failing test first.",
+    "should_trigger": false
+  },
+  {
+    "query": "Find the unknown root cause of this flaky failure.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this diff for code quality and security findings.",
+    "should_trigger": false
+  },
+  {
+    "query": "Commit and publish the already verified work.",
+    "should_trigger": false
+  }
+]

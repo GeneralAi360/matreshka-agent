@@ -1,0 +1,48 @@
+{
+  "skill_name": "designing-software-work",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "У нас SaaS с организациями. Нужно добавить приглашения сотрудников, но пока непонятно, кто может приглашать, как долго живёт ссылка и что делать с повторным приглашением. Сначала продумай решение без кода.",
+      "expected_output": "A repository-grounded design workflow that asks one material product/authority question at a time, compares two or three approaches, recommends one, and does not implement code.",
+      "expectations": [
+        "Inspects existing authorization and organization patterns before proposing exact interfaces",
+        "Separates confirmed facts from assumptions",
+        "Covers authorization, expiry, replay/idempotency, failure behavior, and tests",
+        "Requires confirmation or recorded delegated authority before planning"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Спроектируй переход с одного поля status на новую state machine для уже существующих записей в production. Я хочу понимать варианты, rollout и rollback.",
+      "expected_output": "A high-risk design with materially different migration approaches, a recommendation, compatibility strategy, staged rollout, rollback triggers, and evidence requirements.",
+      "expectations": [
+        "Does not treat a small code diff as low risk",
+        "Includes migration and backout behavior",
+        "Identifies data consistency and version compatibility risks",
+        "Does not start implementation"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Придумай архитектуру: OAuth, новый экран входа, миграция всех аккаунтов, биллинг, provider fallback и аналитический отчёт — всё одной задачей.",
+      "expected_output": "SPLIT_REQUIRED with coherent design boundaries before detailed design proceeds.",
+      "expectations": [
+        "Identifies independent auth, UI, migration, billing, provider, and reporting outcomes",
+        "Does not hide the boundaries inside one oversized design",
+        "Proposes a safe order for separate design decisions"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Я не программист. Подбери для системы уведомлений лучший вариант между очередью, cron и прямой отправкой. Задавай только действительно важные вопросы.",
+      "expected_output": "A plain-language comparison of two or three viable approaches with one recommended option and single-question clarification behavior.",
+      "expectations": [
+        "Explains consequences without assuming programming knowledge",
+        "Does not ask for repository facts that can be inspected",
+        "Avoids a multi-question questionnaire",
+        "States operational and failure tradeoffs"
+      ]
+    }
+  ]
+}

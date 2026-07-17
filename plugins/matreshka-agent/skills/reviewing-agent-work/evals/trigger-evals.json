@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Independently review this agent's scoped diff and evidence.",
+    "should_trigger": true
+  },
+  {
+    "query": "Do a combined code and security review for the completed task.",
+    "should_trigger": true
+  },
+  {
+    "query": "Re-review only the confirmed findings after the one fix wave.",
+    "should_trigger": true
+  },
+  {
+    "query": "Implement these confirmed review findings.",
+    "should_trigger": false
+  },
+  {
+    "query": "Diagnose the root cause of this failing test.",
+    "should_trigger": false
+  },
+  {
+    "query": "Run fresh final verification for all acceptance criteria.",
+    "should_trigger": false
+  },
+  {
+    "query": "Push this verified branch and open a pull request.",
+    "should_trigger": false
+  }
+]

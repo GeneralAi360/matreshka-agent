@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design Software Work"
+  short_description: "Explore options and produce a decision-ready design"
+  default_prompt: "Use $designing-software-work to explore this coding idea and produce a decision-ready design without implementation."
+policy:
+  allow_implicit_invocation: true

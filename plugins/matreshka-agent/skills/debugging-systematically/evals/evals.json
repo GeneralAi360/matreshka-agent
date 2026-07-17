@@ -1,0 +1,41 @@
+{
+  "skill_name": "debugging-systematically",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Diagnose why tests/order-total.test.ts started returning zero after the current branch changes. Do not modify files or delegate investigation to another agent. The worktree already contains unrelated edits owned by me.",
+      "expected_output": "The agent preserves the dirty worktree, reproduces the smallest failure, compares or qualifies the baseline, traces the first incorrect value, tests competing hypotheses, and reports a proved cause or bounded leading hypothesis without editing files.",
+      "expectations": [
+        "The diagnosis remains read-only",
+        "User-owned dirty files are identified and preserved",
+        "The current failure is not attributed to the branch without baseline or equivalent evidence",
+        "The report separates trigger, defect, propagation, and symptom",
+        "A concrete next discriminating test or fix handoff is provided",
+        "No child agent is launched"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our CI timeout fails about one run in ten. Find the root cause. You may run the focused test locally, but do not add retries, sleeps, commits, or dependencies.",
+      "expected_output": "The agent sets a bounded repetition budget, records frequency and conditions, controls variables one at a time, investigates timing or shared-state hypotheses, and does not hide the symptom with retries or sleeps.",
+      "expectations": [
+        "Repeated runs are bounded before execution",
+        "Run counts, failure frequency, and relevant conditions are recorded",
+        "Hypotheses are tested one variable at a time",
+        "No retry, delay, dependency, or code change is introduced",
+        "Unresolved causality is reported with calibrated confidence"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "A migration integration test fails on this task, but an old report says it failed last week too. Determine whether our change caused it. Do not reset the checkout or access the remote database.",
+      "expected_output": "The agent treats the old report as supporting data rather than proof, seeks a safe baseline reproduction or equivalent comparison, avoids reset and remote access, and marks attribution unresolved if the evidence cannot establish ownership.",
+      "expectations": [
+        "The historical report is not treated as definitive attribution",
+        "No reset, clean, remote SQL, or remote database action occurs",
+        "A safe baseline comparison is attempted only when available",
+        "The final ownership claim matches the strength of the evidence"
+      ]
+    }
+  ]
+}

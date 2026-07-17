@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Keep eval definitions, but not machine-specific run artifacts.
+evals/results/
+evals/workspaces/
+plugins/matreshka-agent/evals/results/
+plugins/matreshka-agent/evals/workspaces/

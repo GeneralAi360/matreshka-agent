@@ -1,0 +1,32 @@
+{
+  "name": "matreshka-agent",
+  "version": "0.1.1",
+  "description": "Orchestrates coding-agent work from design and planning through tested implementation, review, verification, and handoff.",
+  "author": {
+    "name": "Matreshka Agent contributors"
+  },
+  "license": "MIT",
+  "keywords": [
+    "coding-agents",
+    "orchestration",
+    "software-development"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Matreshka Agent",
+    "shortDescription": "Plan, implement, review, and verify coding work.",
+    "longDescription": "A permission-aware controller and nine portable skills for coding-agent workflows from discovery through verified handoff.",
+    "developerName": "Matreshka Agent contributors",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "brandColor": "#6D5BD0",
+    "defaultPrompt": [
+      "Help me design and plan this coding task before implementation.",
+      "Run this coding task with the balanced profile and verify the result.",
+      "Audit this change and report evidence without modifying files."
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "skill_name": "verifying-development-work",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The implementer says the serializer task is complete and pasted passing output from earlier today. Verify the task against the current uncommitted state. You may run the focused suite, two nearby regressions, targeted typecheck, and diff check. Do not fix or delegate anything.",
+      "expected_output": "The agent maps acceptance claims to checks, runs fresh commands against the exact current state, records exit codes and real counts, confirms state integrity, and returns VERIFIED only if every required claim is proved.",
+      "expectations": [
+        "Old implementer output is not accepted as current proof",
+        "Fresh permitted commands are run against an identified current state",
+        "Evidence includes exact commands, exit codes, and actual counts or an explicit unavailable marker",
+        "The verifier does not change or fix code",
+        "The verdict follows the complete acceptance matrix",
+        "No child agent is launched"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Verify a prepared migration task. All local schema and integration checks pass, but applying the migration to staging is required for the final acceptance criterion and remote database access is not permitted to this operator.",
+      "expected_output": "The agent proves the local criteria, does not access staging, and returns PARTIALLY_VERIFIED or HANDOFF_REQUIRED with a precise external operator procedure rather than claiming full completion.",
+      "expectations": [
+        "No remote database action is performed",
+        "Locally proved and externally pending criteria are separated",
+        "The status is not VERIFIED",
+        "The handoff names the target, operator, action, expected result, and stop or rollback policy"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The final task gate has one failing regression. A prior report calls it pre-existing, but there is no baseline command result. Verify the work without resetting the dirty checkout.",
+      "expected_output": "The agent attempts only a safe baseline comparison, preserves the checkout, and reports unresolved attribution or failure when pre-existing ownership cannot be proved. It does not waive the regression.",
+      "expectations": [
+        "The active checkout is not reset, cleaned, or overwritten",
+        "The prior label is not accepted without comparable evidence",
+        "The failing criterion is not reported as passed",
+        "The verdict is FAILED, BLOCKED, or PARTIALLY_VERIFIED according to the evidence"
+      ]
+    }
+  ]
+}

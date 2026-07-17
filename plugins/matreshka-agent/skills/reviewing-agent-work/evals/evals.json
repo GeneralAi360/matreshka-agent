@@ -1,0 +1,41 @@
+{
+  "skill_name": "reviewing-agent-work",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review the scoped auth callback diff in the supplied task package. The new endpoint trusts organization_id from the request body even though the brief says organization authority comes from the verified session. Do not modify files.",
+      "expected_output": "The reviewer stays read-only, inspects the authoritative identity boundary, raises a concrete blocking security/isolation finding with evidence and impact, and returns CHANGES_REQUIRED without implementing a fix.",
+      "expectations": [
+        "No product, test, Git, or remote state is changed",
+        "The organization authority defect is identified at the exact boundary",
+        "The finding includes severity, evidence, impact, violated invariant, and required condition",
+        "The reviewer does not prescribe or apply unrelated changes",
+        "The decision is CHANGES_REQUIRED"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Perform the combined review for a two-file serializer task. The package has a precise diff and fresh focused, regression, typecheck, and diff-check evidence, all passing. Inspect it in one pass without delegating checklist sections; rerun tests only if needed.",
+      "expected_output": "The reviewer checks the scoped diff and evidence, avoids repeating the full suite without a concrete contradiction, and returns APPROVED if no Critical or Important issue is supported.",
+      "expectations": [
+        "Review remains limited to the task diff and necessary interfaces",
+        "Complete consistent evidence is reviewed before any command is rerun",
+        "No full suite is rerun merely for duplication",
+        "Minor-only preferences do not block approval",
+        "The report states the exact reviewed state",
+        "No child reviewer or other agent is launched"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review Task 4 only. While reading necessary context you notice an unrelated medium-risk bug in a legacy exporter outside the allowlist. The task diff itself satisfies its criteria.",
+      "expected_output": "The reviewer records the legacy exporter issue as an adjacent future task, does not expand the current review or demand its repair, and approves the task if no blocking task-owned finding exists.",
+      "expectations": [
+        "The unrelated bug is labeled RECORD_FOR_FUTURE_TASK",
+        "The reviewer does not inspect or modify the adjacent subsystem beyond necessary evidence",
+        "The adjacent issue does not become a blocking current-task finding",
+        "The current task decision is based only on its accepted boundary"
+      ]
+    }
+  ]
+}

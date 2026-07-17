@@ -1,0 +1,26 @@
+[
+  {
+    "query": "Организуй полную разработку этой функции: дизайн, план, субагенты, review и проверка.",
+    "should_trigger": true
+  },
+  {
+    "query": "Восстанови прерванный Matreshka run по ledger и существующим agent IDs.",
+    "should_trigger": true
+  },
+  {
+    "query": "Многоагентная работа стала слишком дорогой; проведи audit dispatches и review loops.",
+    "should_trigger": true
+  },
+  {
+    "query": "Помоги только сравнить архитектуры и подготовить дизайн без реализации.",
+    "should_trigger": false
+  },
+  {
+    "query": "Напиши переносимый prompt для Cursor и ничего не выполняй.",
+    "should_trigger": false
+  },
+  {
+    "query": "Независимо проверь этот готовый scoped diff и evidence.",
+    "should_trigger": false
+  }
+]
