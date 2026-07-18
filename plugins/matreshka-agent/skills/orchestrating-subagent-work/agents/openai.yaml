@@ -1,5 +1,5 @@
 interface:
-  display_name: "Matreshka Agent · Orchestrate Subagent Work"
+  display_name: "Orchestrate Subagent Work · Matreshka Agent"
   short_description: "Matreshka Agent: plan, delegate, review, and verify work"
   default_prompt: "Use $orchestrating-subagent-work to run this coding task end to end with a bounded autonomy mode and execution profile."
 policy:
