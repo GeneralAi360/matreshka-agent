@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "plugin": "matreshka-agent",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "cases": [
     {
       "id": "valid-package",
