@@ -22,7 +22,7 @@ sys.dont_write_bytecode = True
 
 PLUGIN_ID = "matreshka-agent"
 DISPLAY_NAME = "Matreshka Agent"
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 DESCRIPTION = (
     "Orchestrates coding-agent work from design and planning through tested "
     "implementation, review, verification, and handoff."
@@ -982,7 +982,7 @@ def validate_skills(
     for name in missing:
         add(findings, "SKILLS_REQUIRED", f"skills/{name}", "required skill is missing")
     for name in unexpected:
-        add(findings, "SKILLS_UNEXPECTED", f"skills/{name}", "unexpected v0.1.3 skill")
+        add(findings, "SKILLS_UNEXPECTED", f"skills/{name}", "unexpected v0.1.4 skill")
     for name in REQUIRED_SKILLS:
         skill_root = skills_root / name
         if not skill_root.is_dir():
@@ -1411,7 +1411,7 @@ def validate_forbidden_components(
                 findings,
                 "FORBIDDEN_COMPONENT",
                 relative_label(entry, marketplace_root),
-                "top-level runtime component is not allowed in v0.1.3",
+                "top-level runtime component is not allowed in v0.1.4",
             )
         elif any(part in FORBIDDEN_ANY_DIRS for part in folded_parts):
             add(
@@ -1769,7 +1769,7 @@ def run_self_tests(plugin_root: Path, marketplace_root: Path) -> tuple[bool, lis
     def version_mismatch(plugin: Path, _: Path) -> None:
         path = plugin / ".cursor-plugin" / "plugin.json"
         payload = json.loads(path.read_text(encoding="utf-8"))
-        payload["version"] = "0.1.4"
+        payload["version"] = "0.1.5"
         write_test_json(path, payload)
 
     def forbidden_component(plugin: Path, _: Path) -> None:
