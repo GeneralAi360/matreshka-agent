@@ -1,6 +1,6 @@
 interface:
-  display_name: "Finish Development Work"
-  short_description: "Prepare a safe branch finish or development handoff"
+  display_name: "Matreshka Agent · Finish Development Work"
+  short_description: "Matreshka Agent: prepare a safe finish or exact handoff"
   default_prompt: "Use $finishing-development-work to prepare a safe finish or exact handoff for this verified coding change."
 policy:
   allow_implicit_invocation: true
