@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "plugin": "matreshka-agent",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "baseline_protocol": {
     "variants": [
       "plain-agent",
@@ -209,6 +209,7 @@
         "No hooks, apps, or MCP configuration is required",
         "All nine skills are discoverable",
         "Optional local custom-prompt wrappers emit an explicit namespaced skill invocation without adding permissions",
+        "A similarly named skill from another package is not used as a bundled-skill substitute",
         "Permission boundaries remain host-enforced"
       ]
     },
