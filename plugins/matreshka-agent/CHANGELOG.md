@@ -2,6 +2,21 @@
 
 All notable changes to Matreshka Agent are recorded here.
 
+## 0.2.0 - 2026-07-18
+
+### Added
+
+- Project-local profiles and a bundled-skill source map, revalidated against the current repository before reuse.
+- A compact quality gate with evidence rows for existing, permitted checks.
+- Optional worktree-isolation guidance that requires exact authority and never performs automatic cleanup.
+- Directed-learning candidates with `OFF`, `PROPOSE`, and `LOCAL_REVIEWED` modes.
+- Adversarial evaluations for unmet quality gates, unauthorized global learning, and worktree authority.
+
+### Security
+
+- Learning candidates are project-local proposals only; they cannot automatically change the plugin, shared instructions, hooks, or environment configuration.
+- Candidates exclude secrets, personal data, private URLs, raw logs, and hidden agent reasoning, and require independent revalidation before reuse.
+
 ## 0.1.4 - 2026-07-18
 
 ### Changed
