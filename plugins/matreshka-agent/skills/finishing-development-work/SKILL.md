@@ -11,7 +11,8 @@ description: Safely finish verified development work by preserving state, select
 2. Require an exact project root and target change unit. Detect nested repositories, submodules, symlinks, and host-managed worktrees before any Git action.
 3. Confirm that required acceptance criteria are verified and no unresolved Critical or Important finding remains.
 4. Reconcile the current state with the verified state. Re-verify affected claims when files changed after verification.
-5. Separate task-owned files, pre-existing dirty files, and generated artifacts.
+5. When the task selected a project profile or quality gate, confirm its source and each required check's current result. Do not silently turn an unmet gate into a warning.
+6. Separate task-owned files, pre-existing dirty files, and generated artifacts.
 
 Do not launch child agents. Do not treat “finish,” “ship it,” an old plan, a branch name, or a commit message as permission for remote or destructive actions. Effective authority remains the intersection of current user consent, repository instructions, organization policy, sandbox controls, and the platform's native approvals.
 
@@ -71,10 +72,13 @@ Use [the finish and handoff template](assets/finish-handoff-template.md). Record
 - completed and uncompleted scope;
 - files and commit identity, or exact uncommitted baseline/current hashes;
 - review and verification evidence summary;
+- selected project profile and quality-gate result, when applicable;
 - Git and remote actions actually performed;
 - preserved dirty or generated files;
 - unresolved Minor and adjacent findings;
 - required permissions or external operator steps;
 - exact next action and rollback/stop notes.
+
+If the controller collected a directed-learning candidate, include its identifier and review state as an optional handoff item. It remains a project-local proposal: this skill must never promote it to shared instructions, alter the plugin, or schedule background learning.
 
 Use `FINISHED_LOCAL`, `FINISHED_COMMITTED`, `FINISHED_REMOTE`, `HANDOFF_REQUIRED`, `PARTIALLY_VERIFIED`, or `BLOCKED` accurately. Never report push, merge, deploy, migration, or cleanup success without direct evidence from the exact target.
