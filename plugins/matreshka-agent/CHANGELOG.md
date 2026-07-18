@@ -2,6 +2,13 @@
 
 All notable changes to Matreshka Agent are recorded here.
 
+## 0.1.3 - 2026-07-18
+
+### Changed
+
+- Every Codex skill card and active-skill label now starts with `Matreshka Agent ·`.
+- Short descriptions also identify Matreshka Agent, making similarly named skills easier to distinguish in menus.
+
 ## 0.1.2 - 2026-07-18
 
 ### Fixed
