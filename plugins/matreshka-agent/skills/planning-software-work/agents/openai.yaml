@@ -1,5 +1,5 @@
 interface:
-  display_name: "Matreshka Agent · Plan Software Work"
+  display_name: "Plan Software Work · Matreshka Agent"
   short_description: "Matreshka Agent: turn designs into executable tasks"
   default_prompt: "Use $planning-software-work to turn this confirmed design into a detailed, reviewable implementation plan."
 policy:
