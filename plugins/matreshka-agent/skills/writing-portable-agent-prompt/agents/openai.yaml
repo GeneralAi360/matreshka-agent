@@ -1,6 +1,6 @@
 interface:
-  display_name: "Write a Portable Agent Prompt"
-  short_description: "Create portable prompts for software coding agents"
+  display_name: "Matreshka Agent · Write a Portable Prompt"
+  short_description: "Matreshka Agent: create portable coding-agent prompts"
   default_prompt: "Use $writing-portable-agent-prompt to create a self-contained prompt for another software coding agent without executing it."
 policy:
   allow_implicit_invocation: true
