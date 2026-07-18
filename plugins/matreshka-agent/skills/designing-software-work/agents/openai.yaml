@@ -1,5 +1,5 @@
 interface:
-  display_name: "Matreshka Agent · Design Software Work"
+  display_name: "Design Software Work · Matreshka Agent"
   short_description: "Matreshka Agent: explore options and design changes"
   default_prompt: "Use $designing-software-work to explore this coding idea and produce a decision-ready design without implementation."
 policy:
