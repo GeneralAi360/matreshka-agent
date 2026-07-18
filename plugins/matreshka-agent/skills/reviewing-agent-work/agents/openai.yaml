@@ -1,5 +1,5 @@
 interface:
-  display_name: "Matreshka Agent · Review Agent Work"
+  display_name: "Review Agent Work · Matreshka Agent"
   short_description: "Matreshka Agent: review scoped work with actionable findings"
   default_prompt: "Use $reviewing-agent-work to perform a read-only review of this scoped change and return consolidated findings."
 policy:
