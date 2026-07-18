@@ -1,6 +1,6 @@
 interface:
-  display_name: "Plan Software Work"
-  short_description: "Turn a confirmed design into executable coding tasks"
+  display_name: "Matreshka Agent · Plan Software Work"
+  short_description: "Matreshka Agent: turn designs into executable tasks"
   default_prompt: "Use $planning-software-work to turn this confirmed design into a detailed, reviewable implementation plan."
 policy:
   allow_implicit_invocation: true
