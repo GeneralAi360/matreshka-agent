@@ -94,7 +94,9 @@ Do not let a reviewer launch a fixer. Do not average an unresolved Critical or I
 
 ## Verify and finish honestly
 
-Apply `implementing-with-tests` for authorized write tasks, `debugging-systematically` only when a failure's cause is unknown, `reviewing-agent-work` according to the selected profile, and `verifying-development-work` for fresh completion evidence. Run broad suites once at the appropriate phase boundary, not after every small correction.
+When a controller step needs another Matreshka skill, resolve it by this plugin's identity, not by an unqualified title or a similar description from another installed package. On hosts that expose a plugin namespace, invoke `matreshka-agent:<skill-name>`; otherwise verify that the selected registered skill belongs to the active Matreshka plugin. If that identity cannot be verified, use the documented inline read-only protocol or return `HANDOFF_REQUIRED`; do not silently substitute a different package.
+
+Apply Matreshka's `implementing-with-tests` for authorized write tasks, Matreshka's `debugging-systematically` only when a failure's cause is unknown, Matreshka's `reviewing-agent-work` according to the selected profile, and Matreshka's `verifying-development-work` for fresh completion evidence. On a namespaced host, the debugging invocation is `matreshka-agent:debugging-systematically`. Run broad suites once at the appropriate phase boundary, not after every small correction.
 
 Claim `COMPLETE` only from fresh evidence containing command, exit code, counts, and a relevant note. Otherwise use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED`.
 
