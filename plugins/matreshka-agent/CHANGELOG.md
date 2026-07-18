@@ -2,6 +2,12 @@
 
 All notable changes to Matreshka Agent are recorded here.
 
+## 0.1.4 - 2026-07-18
+
+### Changed
+
+- Reordered every visible skill label to `Action · Matreshka Agent` so users see the action first and its source second.
+
 ## 0.1.3 - 2026-07-18
 
 ### Changed
