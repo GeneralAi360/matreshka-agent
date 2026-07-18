@@ -40,6 +40,8 @@ Record:
 | Forbidden scope | Paths, data, systems, and actions that remain off-limits |
 | Decision delegation | Profile, approach, design, and plan decisions the controller may make |
 | Matreshka state | Permission to create specs, plans, ledger, reports, and handoffs |
+| Project profile/quality gate | Permission to create or refresh project-local evidence declarations, separately from product changes |
+| Directed learning | `OFF`, `PROPOSE`, or `LOCAL_REVIEWED`; candidate path, promotion prohibition, and expiry |
 | Local writes | Exact product and test scope that may change |
 | Local commands | Tests, lint, typecheck, build, scanners, and dependency commands |
 | Capability budget | Allowed role tiers and turn counts; highest-cost/experimental reasoning requires an explicit role-specific opt-in |
@@ -62,6 +64,8 @@ Require new authority when any material boundary changes: goal, project root, re
 
 Keep commit, push, pull request, deploy, migration application, remote SQL, production changes, data deletion, payment calls, live-provider calls, and secret access disabled unless explicitly enabled for exact targets.
 
+Keep directed learning `OFF` unless the user explicitly chooses it after preflight. A learning candidate never grants permission, command execution, model routing, skill invocation, host configuration, or cross-project reuse. Promotion requires a separate human approval and later independent revalidation.
+
 Keep the highest-cost or experimental reasoning tier disabled unless the user explicitly authorizes the exact role and bounded turn count for the current phase. A maximum-quality profile or high-risk classification does not grant that permission.
 
 ## Path and workspace safety
@@ -82,6 +86,7 @@ When the permission envelope allows Matreshka state files, prefer durable, predi
 
 - approved designs, plans, decisions, and human handoffs under `docs/matreshka/`;
 - transient run state under `.matreshka/runs/<run-id>/`;
+- reviewed learning candidates under `.matreshka/learning/candidates/`, only in `LOCAL_REVIEWED` mode;
 - a local `.matreshka/.gitignore` that ignores `runs/`, without silently editing the repository's root ignore file.
 
 Creating these paths is a local write and must be inside the envelope. If it is not allowed, keep state in an authorized temporary area or inline and report that cross-session recovery is weaker. Never place secrets, environment-file contents, raw private logs, or forbidden-path snapshots in either location.
@@ -91,8 +96,12 @@ Record:
 - identity: contract version, plugin version, run ID, timestamp, project root;
 - baseline: Git refs or `NO_GIT_MODE`, dirty files, hashes, and ownership;
 - capabilities: host, subagents, resume, read-only, isolation, routing, counters, mode status;
+- skill sources: required role, Matreshka skill, host invocation, source evidence, and fallback status;
 - decision: goal, risk, profile, stage gate, and autonomy mode;
 - permissions: current envelope, approval source, scope, and expiry;
+- profile/gate: current profile identity, selected evidence rows, and command sources;
+- worktree: path, branch/ref, task, ownership, and cleanup authority when one exists;
+- learning: selected mode, candidate IDs, evidence, expiry, human approval, and promotion/revalidation status;
 - task map: approved tasks, dependencies, current task, task and phase budgets;
 - dispatches: role, stable thread ID, tier, turn number, paths, and status;
 - review: findings, adjudication, fixer-wave use, and targeted recheck;
