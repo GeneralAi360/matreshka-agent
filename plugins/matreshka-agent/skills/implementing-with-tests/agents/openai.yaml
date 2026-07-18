@@ -1,5 +1,5 @@
 interface:
-  display_name: "Matreshka Agent · Implement With Tests"
+  display_name: "Implement With Tests · Matreshka Agent"
   short_description: "Matreshka Agent: implement changes through focused tests"
   default_prompt: "Use $implementing-with-tests to implement this bounded change through focused RED and GREEN evidence."
 policy:
