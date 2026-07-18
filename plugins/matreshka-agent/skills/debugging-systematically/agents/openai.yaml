@@ -1,6 +1,6 @@
 interface:
-  display_name: "Debug Systematically"
-  short_description: "Diagnose coding failures from evidence and root cause"
+  display_name: "Matreshka Agent · Debug Systematically"
+  short_description: "Matreshka Agent: diagnose coding failures from evidence"
   default_prompt: "Use $debugging-systematically to reproduce this coding failure and prove its root cause before proposing a fix."
 policy:
   allow_implicit_invocation: true
