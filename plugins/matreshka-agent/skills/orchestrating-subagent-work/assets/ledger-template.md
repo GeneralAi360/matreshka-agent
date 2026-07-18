@@ -31,6 +31,12 @@
 - Mode status: `{{FULL_DEGRADED_INLINE_HANDOFF}}`
 - Missing guarantees: {{GAPS_OR_NONE}}
 
+## Skill source map
+
+| Needed role | Matreshka skill | Host-visible invocation | Source evidence | Result |
+| --- | --- | --- | --- | --- |
+| {{ROLE}} | `{{SKILL}}` | {{INVOCATION}} | {{SOURCE}} | {{SELECTED_FALLBACK_HANDOFF}} |
+
 ## Decision
 
 - Goal: {{GOAL}}
@@ -52,6 +58,8 @@
 - Dependencies/network: {{NETWORK_AUTHORITY}}
 - Remote systems/critical production: {{REMOTE_AUTHORITY}}
 - Secret references: {{NAMED_REFERENCE_OR_NONE}}
+- Project profile/quality gate authority: {{PROFILE_GATE_AUTHORITY}}
+- Directed learning mode/candidate authority: {{LEARNING_AUTHORITY}}
 - Expiry: {{EXPIRY}}
 - Approval source/time: {{APPROVAL_RECORD}}
 
@@ -87,6 +95,15 @@
 
 - Pre-existing failures: {{FAILURES_OR_NONE}}
 - Verification status: `{{STATUS}}`
+- Quality-gate rows: {{PASS_FAIL_NOT_RUN_BLOCKED_SUMMARY}}
+
+## Workspace and learning
+
+- Run worktree: {{PATH_BRANCH_TASK_OWNERSHIP_OR_NONE}}
+- Worktree cleanup authority: {{AUTHORITY_OR_NONE}}
+- Learning mode: `{{OFF_PROPOSE_LOCAL_REVIEWED}}`
+- Candidate IDs and evidence: {{CANDIDATES_OR_NONE}}
+- Promotion/revalidation status: {{STATUS_OR_NONE}}
 
 ## Recovery and next action
 
