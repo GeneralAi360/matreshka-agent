@@ -1,7 +1,7 @@
 {
   "name": "matreshka-agent",
   "displayName": "Matreshka Agent",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Orchestrates coding-agent work from design and planning through tested implementation, review, verification, and handoff.",
   "author": {
     "name": "Matreshka Agent contributors"
