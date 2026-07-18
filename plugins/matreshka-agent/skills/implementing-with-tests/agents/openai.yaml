@@ -1,6 +1,6 @@
 interface:
-  display_name: "Implement With Tests"
-  short_description: "Implement scoped changes through focused test cycles"
+  display_name: "Matreshka Agent · Implement With Tests"
+  short_description: "Matreshka Agent: implement changes through focused tests"
   default_prompt: "Use $implementing-with-tests to implement this bounded change through focused RED and GREEN evidence."
 policy:
   allow_implicit_invocation: true
