@@ -9,8 +9,9 @@ description: Verify development claims against current repository state and acce
 
 1. Read the current request, applicable repository instructions, approved design or task brief, acceptance criteria, permission envelope, implementation report, review decision, and current state.
 2. Resolve the project root and baseline/current identity. Record pre-existing dirty files and avoid attributing them to the task.
-3. Translate every completion claim into an observable criterion and a permitted verification method.
-4. Build a compact matrix from claim to command, inspection, or external handoff.
+3. Read [the quality-gate rules](references/quality-gate.md) when the controller supplies a gate or a reusable project profile suggests checks.
+4. Translate every completion claim into an observable criterion and a permitted verification method.
+5. Build a compact matrix from claim to command, inspection, or external handoff. Preserve the source and status of every selected quality-gate row.
 
 Do not launch child agents. Do not edit product code or tests, repair failures, stage, commit, push, open a pull request, deploy, mutate a remote system, install dependencies, or read secrets. Write only an authorized verification report or run-owned evidence artifact. Return fixes, Git publication, dependency changes, and remote actions to the controller. Verification must preserve the state it is judging.
 
@@ -25,6 +26,8 @@ Use the smallest tier that proves the requested status:
 - **Phase/final gate:** run integration checks, build, or a broader suite once when the phase, branch, or release claim requires them.
 
 Run a build only when the changed path, repository policy, or final acceptance contract requires it. Run security, secret, migration, or compatibility checks only when the affected boundary or policy requires them. Do not substitute a large suite for a missing targeted acceptance check.
+
+Use [the quality-gate template](assets/quality-gate-template.md) when a repeated or phase-level verification needs a durable evidence declaration. The template does not grant a command, dependency install, network action, hook, or repair. Mark unavailable required rows `NOT_RUN` or `BLOCKED`; never silently omit them.
 
 ## Produce fresh evidence
 
@@ -73,3 +76,5 @@ Use [the verification report template](assets/verification-report-template.md). 
 - `HANDOFF_REQUIRED` when a named external operator must complete an allowed remote verification.
 
 Do not use `VERIFIED` because code looks correct, an agent said tests passed, one unrelated suite passed, or no failure was observed. List unverified claims explicitly. Return failed implementation to the controller; do not fix it inside verification.
+
+Do not extract or promote learning in this role. The controller may use the final report as evidence for an explicitly enabled, human-reviewed learning proposal.
