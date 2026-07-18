@@ -2,6 +2,18 @@
 
 All notable changes to Matreshka Agent are recorded here.
 
+## 0.1.2 - 2026-07-18
+
+### Fixed
+
+- The controller now resolves chained skills by verified Matreshka package identity rather than a matching title or description.
+- On namespaced hosts, root-cause diagnosis explicitly routes to `matreshka-agent:debugging-systematically`.
+- If a bundled skill cannot be identified, the controller uses only its documented inline read-only fallback or returns `HANDOFF_REQUIRED`; it does not select an external substitute.
+
+### Tested
+
+- Added a controller evaluation for a host that presents two similarly named debugging skills.
+
 ## 0.1.1 - 2026-07-16
 
 ### Added
