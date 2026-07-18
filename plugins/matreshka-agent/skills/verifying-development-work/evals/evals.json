@@ -35,6 +35,17 @@
         "The failing criterion is not reported as passed",
         "The verdict is FAILED, BLOCKED, or PARTIALLY_VERIFIED according to the evidence"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "The controller supplies a quality gate copied from current package scripts: one focused test, one typecheck, and an optional build. The build command requires unavailable network access. Verify the changed API task without fixing anything or enabling hooks.",
+      "expected_output": "A task-gate report that validates and runs the permitted focused rows, records the build as NOT_RUN or BLOCKED with its reason, and returns an honest non-VERIFIED status if the build is required.",
+      "expectations": [
+        "Quality-gate rows retain their source, requirement, and PASS/FAIL/NOT_RUN/BLOCKED status",
+        "No network access, dependency installation, hook, or repair is introduced",
+        "The verifier records current-state evidence and checks for mutation after commands",
+        "The verifier does not turn an unavailable required row into a pass"
+      ]
     }
   ]
 }
