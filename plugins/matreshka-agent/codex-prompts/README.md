@@ -21,7 +21,7 @@ Copy-Item "C:\path\to\matreshka-agent\plugins\matreshka-agent\codex-prompts\*.md
 | Slash command | Starts skill |
 | --- | --- |
 | `/prompts:matreshka-orchestrate` | `orchestrating-subagent-work` |
-| `/prompts:matreshka-design` | `designing-software-work` |
+| `/prompts:matreshka-spec` | `specifying-software-work` |
 | `/prompts:matreshka-plan` | `planning-software-work` |
 | `/prompts:matreshka-prompt` | `writing-portable-agent-prompt` |
 | `/prompts:matreshka-implement` | `implementing-with-tests` |

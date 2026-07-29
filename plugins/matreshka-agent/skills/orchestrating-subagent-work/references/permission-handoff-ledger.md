@@ -21,7 +21,7 @@ Offer these modes after read-only preflight:
 
 | Mode | Allowed behavior |
 | --- | --- |
-| Managed | Pause to confirm design, plan, start of execution, and external workflow steps; do not re-request authority already inside the envelope |
+| Managed | Pause to confirm specification, plan, start of execution, and external workflow steps; do not re-request authority already inside the envelope |
 | Autonomous local | Decide and act inside the approved local project scope; run approved local checks |
 | Extended autonomous | Add only explicitly named Git, network, or remote targets and operations |
 
@@ -34,7 +34,7 @@ Record:
 | Field | Required content |
 | --- | --- |
 | Goal | One measurable outcome |
-| Sources of truth | Current request, scoped instructions, confirmed design, task brief |
+| Sources of truth | Current request, scoped instructions, confirmed specification, task brief |
 | Allowed scope | Resolved project root, directories, files, and interfaces |
 | Inspect-only scope | Readable but immutable paths and systems |
 | Forbidden scope | Paths, data, systems, and actions that remain off-limits |
@@ -58,7 +58,7 @@ Record:
 
 Request one confirmation for the actions needed now. Do not repeatedly ask inside an unchanged, unexpired envelope.
 
-Keep workflow confirmation separate from permission. A managed-mode user may ask to approve the selected design, plan, or moment to begin execution even when the underlying local action is already permitted. Phrase that as a stage decision, not as a second permission request. Ask for new authority only when the next action was not granted, expired, or crosses a material boundary.
+Keep workflow confirmation separate from permission. A managed-mode user may ask to approve the selected specification, plan, or moment to begin execution even when the underlying local action is already permitted. Phrase that as a stage decision, not as a second permission request. Ask for new authority only when the next action was not granted, expired, or crosses a material boundary.
 
 Require new authority when any material boundary changes: goal, project root, repository, task scope, destination branch, remote environment, destructive effect, dependency source, secret reference, or expiry. Obey native approval prompts even when text permission exists.
 

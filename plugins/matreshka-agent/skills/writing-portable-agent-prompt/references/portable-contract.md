@@ -32,7 +32,7 @@ Choose one primary mode. State what the agent must produce and what it must not 
 Examples:
 
 - investigation ends with evidence and a recommended next prompt;
-- design ends with a confirmed design artifact;
+- specification ends with a confirmed `docs/specs/` artifact;
 - plan ends before edits or dispatches;
 - review ends with findings and never applies fixes;
 - local preparation ends with `HANDOFF_REQUIRED` before a remote action.

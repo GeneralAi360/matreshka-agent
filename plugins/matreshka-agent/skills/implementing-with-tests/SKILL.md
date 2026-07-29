@@ -10,10 +10,12 @@ description: Implement a bounded software feature or bug fix through a focused t
 1. Read the current user request, applicable repository instructions, approved task brief, and permission envelope.
 2. Resolve the project root and the real paths of every allowed file before writing. Stop if a symlink, nested repository, submodule, or changed root crosses the approved boundary.
 3. Record the baseline, including pre-existing dirty files. Preserve work not owned by this task.
-4. Confirm one observable goal, exact acceptance criteria, the file allowlist, non-goals, permitted commands, and stop conditions.
+4. Confirm one observable goal, exact acceptance criteria, selected `S-` security requirements, the file allowlist, non-goals, permitted commands, and stop conditions.
 5. Return `SPLIT_REQUIRED` when the task contains independent outcomes or crosses multiple implementation or security boundaries.
 
 Do not launch child agents. Do not stage, commit, push, open a pull request, deploy, access a remote system, install dependencies, or read secrets. Implementation owns only allowlisted product/test writes, approved local checks, and the one designated run-state report/evidence path. Return Git, dependency, secret, network, and remote actions to the controller; route an authorized finish through `finishing-development-work`.
+
+Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the brief selects `S-` requirements or touches a user/API, authorization, file/URL, payment, data, infrastructure, dependency, AI, or external-effect boundary.
 
 ## Select the smallest useful behavior
 
@@ -35,11 +37,25 @@ Use a test-first exception only when the behavior is genuinely non-executable in
 ## Reach GREEN minimally
 
 1. Change only what is necessary to satisfy the focused behavior.
-2. Keep public contracts, error semantics, tenant boundaries, and compatibility constraints from the brief intact.
+2. Keep public contracts, error semantics, tenant boundaries, compatibility constraints, and selected security controls from the brief intact.
 3. Re-run the same focused command until it passes or the bounded attempt budget is exhausted.
 4. Stop to diagnose through `debugging-systematically` when the failure mechanism is unclear. Do not stack speculative fixes.
 
 Record unrelated defects as adjacent findings. Do not fix them in the current task.
+
+## Preserve the secure default
+
+For every changed boundary, enforce the applicable specification controls in the product code itself, not only in a comment or client screen:
+
+- keep credentials and privileged provider calls server-side; never add values from `.env`, secret stores, tokens, cookies, raw prompts, or private payloads to source, tests, logs, client bundles, or reports;
+- validate untrusted input at its server or worker boundary, use the project's safe parameterized/encoded APIs, and preserve safe, minimal error messages;
+- authorize every sensitive object and action on the server with the authoritative user/role/tenant context; do not trust a URL, client flag, or supplied object ID;
+- return and persist only the fields defined in the specification; preserve redaction and retention behavior;
+- make selected external/irreversible effects confirmable and idempotent, including their failure/replay behavior;
+- do not add a dependency, network scanner, secret reader, or tool capability. Return it to the controller for explicit approval and supply-chain review;
+- for AI/RAG/tool changes, keep retrieved/user/tool text as data, preserve the trusted instruction boundary, and enforce authorization at the tool boundary.
+
+Add the task's planned negative security proof. If an `S-` requirement cannot be implemented or tested inside the allowlist, stop with `BLOCKED` or `HANDOFF_REQUIRED`; do not silently weaken it.
 
 ## Run the task gate
 
@@ -50,7 +66,8 @@ After focused GREEN, run only the checks required by the task and repository pol
 - targeted typecheck or lint for touched paths;
 - a diff/whitespace check when available;
 - a build only when the changed path or policy requires it;
-- a targeted security or secret scan only for relevant boundaries.
+- the planned security negative test/review proof for every selected `S-` requirement;
+- a targeted security, secret, or dependency check when the selected boundary or repository policy requires it.
 
 After a reviewer-directed fix, run the covering test and nearest regression rather than the full suite unless the fix changes the planned verification tier.
 
@@ -64,6 +81,7 @@ Use [the implementation report template](assets/implementation-report-template.m
 - changed files and untouched dirty files;
 - valid RED and fresh GREEN evidence;
 - task-gate evidence;
+- selected `S-` requirements and their implemented negative proofs;
 - test-first exceptions or skipped checks;
 - assumptions, adjacent findings, and pre-existing failures;
 - permissions still required;

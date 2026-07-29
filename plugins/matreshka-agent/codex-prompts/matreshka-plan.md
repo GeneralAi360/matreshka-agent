@@ -1,5 +1,5 @@
 ---
-description: Turn a confirmed software design into an executable plan
+description: Turn a confirmed software specification into an executable plan
 argument-hint: [TASK]
 ---
 

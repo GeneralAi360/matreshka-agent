@@ -1,7 +1,7 @@
 ---
 name: orchestrating-subagent-work
 description: >-
-  Orchestrate an end-to-end software-development task with repository inspection, design, planning, bounded subagents, review, verification, recovery, and handoff. Use when starting or resuming substantial coding work, coordinating implementers and reviewers, choosing among speed/balanced/quality execution profiles, or auditing a multi-agent run that is slow, repetitive, interrupted, or expanding in scope. Do not use as the primary skill for design-only, plan-only, prompt-only, implementation-only, review-only, or verification-only requests.
+  Orchestrate an end-to-end software-development task with repository inspection, security-by-design specification, planning, bounded subagents, review, verification, recovery, and handoff. Use when starting or resuming substantial coding work, coordinating implementers and reviewers, choosing among speed/balanced/quality execution profiles, or auditing a multi-agent run that is slow, repetitive, interrupted, or expanding in scope. Do not use as the primary skill for specification-only, plan-only, prompt-only, implementation-only, review-only, or verification-only requests.
 ---
 
 # Orchestrate Subagent Work
@@ -46,21 +46,22 @@ Keep execution rigor separate from autonomy.
 4. Offer directed learning separately: `OFF` by default, `PROPOSE` for handoff-only candidates, or `LOCAL_REVIEWED` for authorized local candidate files. Never call it permission for automatic promotion or global memory.
 5. Translate broad autonomy language into a finite permission envelope. Request one bounded confirmation after preflight for the permissions and delegated decisions the user chooses to grant at the start.
 6. Do not re-ask for an unchanged, unexpired permission. Pause when the project, scope, branch destination, remote target, destructive effect, secret, platform approval, learning mode, or worktree authority changes.
-7. Initialize the versioned ledger immediately after that confirmation and before design or planning. If Matreshka state writes are not permitted, keep the checkpoint inline or in an authorized temporary area and declare the weaker recovery guarantee.
+7. Initialize the versioned ledger immediately after that confirmation and before specification or planning. If Matreshka state writes are not permitted, keep the checkpoint inline or in an authorized temporary area and declare the weaker recovery guarantee.
 
 Default to balanced execution and managed autonomy when the user does not delegate the choice. Never route high-risk work to maximum speed.
 
-## Design and plan before writing
+## Specify and plan before writing
 
-1. Apply `designing-software-work` for a new feature, raw idea, ambiguous architecture, or risky change.
-2. Apply `planning-software-work` after the design is confirmed or explicitly delegated.
-3. Require a coverage matrix, a selected evidence-based quality gate, and independently reviewable task units before the first write dispatch.
-4. Return `SPLIT_REQUIRED` when one task mixes independent acceptance results, subsystems, or security boundaries.
-5. In managed mode, pause to confirm the design, plan, and start of execution. These are workflow decisions, not permission re-approval: ask for new authority only when the next action is outside the current envelope. In an autonomous mode, proceed only when local writes for the exact scope are already inside the envelope.
+1. Apply `specifying-software-work` for a new feature, raw idea, ambiguous architecture, or risky change.
+2. Apply `planning-software-work` after the specification is confirmed or explicitly delegated.
+3. Require a durable specification in `docs/specs/`, a plan in `docs/plans/`, a coverage matrix, a selected evidence-based quality gate, and independently reviewable task units before the first product-code write dispatch. Respect a repository's compatible documentation convention; create only missing documentation directories within the permission envelope.
+4. Require the specification's selected `S-` security requirements to map to explicit plan tasks, negative proof, review ownership, and verification evidence. Do not dispatch code against an unresolved security control.
+5. Return `SPLIT_REQUIRED` when one task mixes independent acceptance results, subsystems, or security boundaries.
+6. In managed mode, pause to confirm the specification, plan, and start of execution. These are workflow decisions, not permission re-approval: ask for new authority only when the next action is outside the current envelope. In an autonomous mode, proceed only when local writes for the exact scope are already inside the envelope.
 
 ## Keep durable state current
 
-The initial ledger must already exist before design. Update it with the confirmed design, approved task map, phase budget, stable agent/thread IDs, verification evidence, and exact next action before each state transition or dispatch.
+The initial ledger must already exist before specification work. Update it with the confirmed specification path, approved task map, selected `S-` requirements, phase budget, stable agent/thread IDs, verification evidence, and exact next action before each state transition or dispatch.
 
 Use `NO_GIT_MODE` when Git is unavailable. Preserve hashes and a narrow baseline without copying secrets, credentials, forbidden paths, or large binaries.
 
@@ -107,7 +108,7 @@ Do not let a reviewer launch a fixer. Do not average an unresolved Critical or I
 
 When a controller step needs another Matreshka skill, resolve it by this plugin's identity, not by an unqualified title or a similar description from another installed package. On hosts that expose a plugin namespace, invoke `matreshka-agent:<skill-name>`; otherwise verify that the selected registered skill belongs to the active Matreshka plugin. If that identity cannot be verified, use the documented inline read-only protocol or return `HANDOFF_REQUIRED`; do not silently substitute a different package.
 
-Apply Matreshka's `implementing-with-tests` for authorized write tasks, Matreshka's `debugging-systematically` only when a failure's cause is unknown, Matreshka's `reviewing-agent-work` according to the selected profile, and Matreshka's `verifying-development-work` for fresh completion evidence. On a namespaced host, the debugging invocation is `matreshka-agent:debugging-systematically`. Give the verifier the selected quality-gate rows and current-state identity. Run broad suites once at the appropriate phase boundary, not after every small correction.
+Apply Matreshka's `implementing-with-tests` for authorized write tasks, Matreshka's `debugging-systematically` only when a failure's cause is unknown, Matreshka's `reviewing-agent-work` according to the selected profile, and Matreshka's `verifying-development-work` for fresh completion evidence. On a namespaced host, the debugging invocation is `matreshka-agent:debugging-systematically`. Give the verifier the selected quality-gate rows, selected `S-` requirements, and current-state identity. Run broad suites once at the appropriate phase boundary, not after every small correction.
 
 Claim `COMPLETE` only from fresh evidence containing command, exit code, counts, and a relevant note. Otherwise use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED`.
 

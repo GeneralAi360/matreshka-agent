@@ -1,6 +1,6 @@
 # Task Decomposition Guide
 
-Use this guide to turn a confirmed design into bounded, independently reviewable work.
+Use this guide to turn a confirmed specification into bounded, independently reviewable work.
 
 ## Planning invariants
 
@@ -64,6 +64,8 @@ Use separate rows for:
 - performance constraints only when explicitly required;
 - local-to-remote handoff.
 
+For every selected specification security requirement, use its stable `S-` ID as a separate row. The row must name one task owner, a negative test or review proof, and the final verification owner. Do not merge authorization, isolation, secret exposure, input validation, or dependency evidence into a vague "security" task.
+
 Reject orphan requirements and tasks without requirement coverage.
 
 ## Task ordering heuristics
@@ -79,7 +81,7 @@ Prefer this dependency order when applicable:
 7. Reporting/observability.
 8. Remote handoff, rollout, and cleanup.
 
-Change the order when the design requires a different safe migration sequence. Explain why.
+Change the order when the specification requires a different safe migration sequence. Explain why.
 
 ## Exactness requirements
 
@@ -151,7 +153,7 @@ Keep a task brief under 2,000 words. Include only:
 - output/report path;
 - stop conditions.
 
-Exclude the whole plan, conversation, unrelated task reports, branch-wide diff, and raw logs. The controller can link to a concise confirmed design section when the exact contract is needed.
+Exclude the whole plan, conversation, unrelated task reports, branch-wide diff, and raw logs. The controller can link to a concise confirmed specification section when the exact contract is needed.
 
 ## Dependency and overlap check
 
@@ -182,7 +184,7 @@ Do not use “ask if unsure” as a substitute for concrete stop conditions.
 
 Confirm:
 
-- the design remains unchanged;
+- the specification remains unchanged;
 - all requirements and negative cases have evidence;
 - tasks are cohesive and ordered;
 - no path, symbol, or command is fabricated;

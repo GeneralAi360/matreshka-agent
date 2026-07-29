@@ -2,11 +2,11 @@
 
 ## Supported version
 
-Security fixes are currently provided for version `0.2.x`.
+Security fixes are currently provided for version `0.3.x`.
 
 ## What the package does not contain
 
-Matreshka Agent ships instruction skills and two local validation utilities. It does not ship hooks, MCP servers, apps, telemetry, background services, network clients, or dependency installers.
+Matreshka Agent ships instruction skills and two local validation utilities. Its Security by Design reference requires traceable security controls and negative proofs, but it does not ship hooks, MCP servers, apps, telemetry, background services, network clients, dependency installers, or automatic security scanners.
 
 Directed-learning candidates are opt-in, project-local proposal files. They are never active instructions and must not contain credentials, personal data, private URLs, raw logs, or hidden agent reasoning. The package does not automatically promote candidates into plugin instructions, host rules, hooks, or global memory.
 

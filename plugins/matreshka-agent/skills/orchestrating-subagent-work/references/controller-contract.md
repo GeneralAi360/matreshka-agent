@@ -39,8 +39,8 @@ Use the smallest applicable state:
 | State | Entry condition | Required exit |
 | --- | --- | --- |
 | `PREFLIGHT` | New or resumed run | Capabilities, baseline, risk, and permission proposal |
-| `DESIGN` | Raw, ambiguous, architectural, or risky work | Confirmed design or explicit delegated decision |
-| `PLAN` | Confirmed design or bounded clear change | Coverage matrix and approved task map |
+| `SPECIFICATION` | Raw, ambiguous, architectural, or risky work | Confirmed specification or explicit delegated decision |
+| `PLAN` | Confirmed specification or bounded clear change | Coverage matrix and approved task map |
 | `IMPLEMENT` | Write gate open for one task | Report plus scoped current state |
 | `REVIEW` | Implementer report is reconcilable | Approval or consolidated findings |
 | `FIX` | Confirmed blocking findings exist and fixer wave unused | Targeted fix evidence |
@@ -51,7 +51,7 @@ Use the smallest applicable state:
 | `RECOVERY` | Thread interruption or context loss | Reconciled exact next action |
 | `STOPPED` | User stop or unsafe continuation | Durable checkpoint and no new dispatch |
 
-Do not use `DESIGN`, `AUDIT`, or `RECOVERY` as execution profiles.
+Do not use `SPECIFICATION`, `AUDIT`, or `RECOVERY` as execution profiles.
 
 ## Task-size gate
 

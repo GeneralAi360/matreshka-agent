@@ -1,6 +1,6 @@
-# Design Quality Guide
+# Specification Quality Guide
 
-Use this guide selectively. Match design depth to uncertainty, blast radius, and reversibility.
+Use this guide selectively. Match specification depth to uncertainty, blast radius, and reversibility.
 
 ## Evidence-first discovery
 
@@ -24,7 +24,7 @@ Summarize discovery as:
 | Assumptions | Plausible but unverified conditions |
 | Constraints | Technical, product, policy, time, compatibility, or cost limits |
 | Decisions | Choices already confirmed or delegated |
-| Open decisions | Questions that materially affect the design |
+| Open decisions | Questions that materially affect the specification |
 | Non-goals | Outcomes explicitly excluded |
 
 ## Question policy
@@ -68,7 +68,7 @@ Name the recommended approach. Explain rejected tradeoffs briefly and honestly.
 
 ### Low risk
 
-Use a short design for local, reversible behavior with no public or security contract. Cover goal, chosen approach, affected component, failure behavior, and tests.
+Use a short specification for local, reversible behavior with no public or security contract. Cover goal, chosen approach, affected component, failure behavior, applicable baseline security controls, and tests.
 
 ### Standard risk
 
@@ -88,7 +88,20 @@ Use for auth, authorization, tenant isolation, migrations, persistence guarantee
 - monitoring, alert, and incident ownership;
 - staged rollout and production stop policy.
 
-Do not lower design depth because the diff appears small.
+Do not lower specification depth because the diff appears small.
+
+## Documentation artifact rules
+
+Use the repository's established compatible convention when one exists. Otherwise use:
+
+```text
+docs/specs/YYYY-MM-DD-<safe-kebab-slug>-spec.md
+docs/plans/YYYY-MM-DD-<safe-kebab-slug>-plan.md
+```
+
+Create only the missing `docs/`, `docs/specs/`, and `docs/plans/` directories when documentation writes are authorized. Preserve existing documents, links, names, and history. Do not create an implementation plan during specification work.
+
+Mark a written specification `DRAFT` until the managed confirmation gate or delegated decision. If local documentation writes are unavailable, return the full inline artifact as `SPEC_READY_TO_SAVE` and its exact intended path.
 
 ## Interface checklist
 
@@ -138,7 +151,7 @@ Prefer explicit failure states over silent fallback when fallback could weaken c
 
 ## Testing strategy
 
-Map design claims to evidence categories:
+Map specification claims and selected `S-` requirements to evidence categories:
 
 - focused unit or contract checks;
 - integration boundaries;
@@ -148,17 +161,20 @@ Map design claims to evidence categories:
 - user-visible experience checks;
 - operational smoke and rollback checks.
 
+For every selected `S-` requirement, include a negative security test or an explicit independent review proof. A generic lint/build pass cannot replace a missing authorization, isolation, injection, secret-exposure, dependency, or prompt-injection proof.
+
 Do not write the task plan here. State what must be proven, leaving exact task decomposition to planning.
 
 ## Final self-review
 
 Verify:
 
-- every acceptance outcome has a design path;
+- every acceptance outcome has a specification path;
 - every component has one owner and bounded responsibility;
 - every interface is consistent with inspected code or clearly proposed;
 - every side effect has permission and failure handling;
 - high-risk paths fail safely;
+- every selected security control has an `S-` ID, owner, and negative proof;
 - migration has rollout and rollback;
 - assumptions are visible;
 - non-goals prevent scope creep;

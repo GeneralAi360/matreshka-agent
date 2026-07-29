@@ -1,0 +1,6 @@
+interface:
+  display_name: "Specify Software Work · Matreshka Agent"
+  short_description: "Matreshka Agent: specify and secure software work"
+  default_prompt: "Use $specifying-software-work to clarify this idea and write a security-by-design specification without implementation."
+policy:
+  allow_implicit_invocation: true

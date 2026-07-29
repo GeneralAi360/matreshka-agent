@@ -2,6 +2,20 @@
 
 All notable changes to Matreshka Agent are recorded here.
 
+## 0.3.0 - 2026-07-29
+
+### Changed
+
+- Renamed `designing-software-work` to `specifying-software-work` so its output is unambiguously a requirements and technical specification, not visual design.
+- Replaced the optional `/prompts:matreshka-design` wrapper with `/prompts:matreshka-spec`.
+- Specification and planning work now use durable `docs/specs/` and `docs/plans/` artifacts by default when local documentation writes are authorized.
+
+### Security
+
+- Added Security by Design as a required specification baseline and high-risk threat-model gate.
+- Added traceable `S-` security requirements with a control owner and negative proof to specifications and implementation plans.
+- Extended implementation, review, and verification so selected security controls cannot be silently omitted or called verified without current evidence.
+
 ## 0.2.0 - 2026-07-18
 
 ### Added

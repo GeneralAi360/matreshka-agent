@@ -1,4 +1,4 @@
-# Design — {{TITLE}}
+# Software Specification — {{TITLE}}
 
 - Status: `{{DRAFT_OR_CONFIRMED}}`
 - Date: `{{DATE}}`
@@ -86,13 +86,24 @@
 | --- | --- | --- |
 | {{FAILURE}} | {{SAFE_BEHAVIOR}} | {{SIGNAL}} |
 
-## Security and privacy
+## Security by Design
 
-- Authority source: {{AUTHORITY_OR_NA}}
-- Trust boundaries: {{BOUNDARIES_OR_NA}}
+### Threat model
+
+| Asset/data class | Actor and authority | Trust boundary | Abuse case | Mitigation |
+| --- | --- | --- | --- | --- |
+| {{ASSET_OR_NA}} | {{ACTOR}} | {{BOUNDARY}} | {{ABUSE_CASE}} | {{CONTROL}} |
+
+### Security requirements
+
+| ID | Requirement/control | Owner | Negative proof |
+| --- | --- | --- | --- |
+| `S-01` | {{SECURITY_REQUIREMENT}} | {{OWNER}} | {{NEGATIVE_TEST_OR_REVIEW}} |
+
 - Secret handling: {{SECRET_POLICY_OR_NA}}
 - Data exposure/redaction: {{EXPOSURE_POLICY_OR_NA}}
-- Abuse and isolation negatives: {{NEGATIVE_CASES_OR_NA}}
+- Dependency/supply-chain evidence: {{DEPENDENCY_EVIDENCE_OR_NA}}
+- AI-input and tool-use boundary: {{AI_BOUNDARY_OR_NA}}
 
 ## Migration, rollout, and rollback
 
@@ -124,5 +135,6 @@
 - [ ] Requirements and interfaces do not contradict each other.
 - [ ] Remote actions and permissions are explicit.
 - [ ] Failure and rollback behavior are defined.
+- [ ] Security requirements have an owner and a negative proof.
 - [ ] Each acceptance outcome has a verification path.
 - [ ] Scope can be decomposed into independently reviewable tasks.

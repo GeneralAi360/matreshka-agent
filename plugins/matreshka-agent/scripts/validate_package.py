@@ -22,15 +22,15 @@ sys.dont_write_bytecode = True
 
 PLUGIN_ID = "matreshka-agent"
 DISPLAY_NAME = "Matreshka Agent"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 DESCRIPTION = (
-    "Orchestrates coding-agent work from design and planning through tested "
+    "Orchestrates coding-agent work from specification and planning through tested "
     "implementation, review, verification, and handoff."
 )
 CONTRIBUTOR_NAME = "Matreshka Agent contributors"
 REQUIRED_SKILLS = (
     "orchestrating-subagent-work",
-    "designing-software-work",
+    "specifying-software-work",
     "planning-software-work",
     "writing-portable-agent-prompt",
     "implementing-with-tests",
@@ -125,7 +125,7 @@ EXECUTABLE_ALLOWLIST = {
 }
 CODEX_PROMPT_WRAPPERS = {
     "matreshka-orchestrate.md": "orchestrating-subagent-work",
-    "matreshka-design.md": "designing-software-work",
+    "matreshka-spec.md": "specifying-software-work",
     "matreshka-plan.md": "planning-software-work",
     "matreshka-prompt.md": "writing-portable-agent-prompt",
     "matreshka-implement.md": "implementing-with-tests",
@@ -982,7 +982,7 @@ def validate_skills(
     for name in missing:
         add(findings, "SKILLS_REQUIRED", f"skills/{name}", "required skill is missing")
     for name in unexpected:
-        add(findings, "SKILLS_UNEXPECTED", f"skills/{name}", "unexpected v0.2.0 skill")
+        add(findings, "SKILLS_UNEXPECTED", f"skills/{name}", "unexpected v0.3.0 skill")
     for name in REQUIRED_SKILLS:
         skill_root = skills_root / name
         if not skill_root.is_dir():
@@ -1411,7 +1411,7 @@ def validate_forbidden_components(
                 findings,
                 "FORBIDDEN_COMPONENT",
                 relative_label(entry, marketplace_root),
-                "top-level runtime component is not allowed in v0.2.0",
+                "top-level runtime component is not allowed in v0.3.0",
             )
         elif any(part in FORBIDDEN_ANY_DIRS for part in folded_parts):
             add(

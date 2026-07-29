@@ -1,10 +1,10 @@
 # Matreshka Agent
 
-Matreshka Agent — переносимый плагин для разработки с coding agents. Он помогает превратить идею или большую задачу в понятный дизайн, подробный план, небольшие задания для субагентов, проверенную реализацию и итоговый отчёт.
+Matreshka Agent — переносимый плагин для разработки с coding agents. Он помогает превратить идею или большую задачу в понятную security-by-design спецификацию, подробный план, небольшие задания для субагентов, проверенную реализацию и итоговый отчёт.
 
 Плагин рассчитан в том числе на людей без опыта программирования. Чтобы начать, не нужно знать структуру проекта, названия файлов или команды тестов: агент сначала исследует репозиторий в безопасном read-only режиме и спрашивает только о решениях, которые нельзя получить из кода.
 
-> Статус: собрана development preview версии `0.2.0`. Архитектура сверена с официальными рекомендациями OpenAI, Anthropic, Cursor, Google Antigravity и Agent Skills на 18 июля 2026 года. Все девять навыков и четыре платформенных манифеста входят в пакет.
+> Статус: собрана development preview версии `0.3.0`. Архитектура сверена с первичной документацией OpenAI, Anthropic, Cursor, Google Antigravity и Agent Skills на 29 июля 2026 года. Все девять навыков и четыре платформенных манифеста входят в пакет.
 
 ## Плагин и навык — простыми словами
 
@@ -23,7 +23,7 @@ Matreshka Agent — переносимый плагин для разработ�
 2. Запустите `orchestrating-subagent-work` способом, который поддерживает ваша платформа.
 3. Опишите результат обычными словами.
 4. Если не знаете, какой профиль выбрать, соглашайтесь со сбалансированным.
-5. Проверьте предложенный дизайн и план.
+5. Проверьте предложенную спецификацию и план.
 6. Разрешайте commit, push, deploy и работу с удалёнными системами только тогда, когда понимаете последствия.
 
 Пример запроса:
@@ -48,7 +48,7 @@ Matreshka Agent — переносимый плагин для разработ�
 
 В Claude Code и Codex имя содержит namespace плагина — `matreshka-agent:`. Это защищает от конфликта с навыками других плагинов. Cursor и Antigravity показывают фактическое имя команды в своей slash-палитре; README не должен обещать непроверенный alias.
 
-Автоматическое срабатывание навыка зависит от конкретного coding agent и качества `description`. В версии `0.2.0` нет скрытого session-start hook, поэтому для предсказуемого end-to-end запуска лучше вызывать главный контроллер явно. Автоактивация будет проверяться отдельными trigger evals, но не считается механизмом безопасности.
+Автоматическое срабатывание навыка зависит от конкретного coding agent и качества `description`. В версии `0.3.0` нет скрытого session-start hook, поэтому для предсказуемого end-to-end запуска лучше вызывать главный контроллер явно. Автоактивация будет проверяться отдельными trigger evals, но не считается механизмом безопасности.
 
 ## Что произойдёт после запуска
 
@@ -59,8 +59,8 @@ Matreshka Agent — переносимый плагин для разработ�
 3. Предлагает формат согласований и фиксирует стартовый permission envelope.
 4. При необходимости проводит брейншторм и предлагает 2–3 подхода.
 5. Оценивает риск и предлагает один из трёх профилей выполнения.
-6. Создаёт design-документ и проходит confirmation gate согласно выбранной автономности.
-7. Создаёт подробный implementation plan и карту маленьких задач.
+6. Создаёт security-by-design спецификацию в `docs/specs/` и проходит confirmation gate согласно выбранной автономности.
+7. Создаёт подробный implementation plan в `docs/plans/` и карту маленьких задач.
 8. Запускает implementer и reviewer с ограниченным контекстом и правами.
 9. Контролирует бюджет агентских ходов, findings, тесты и состояние Git.
 10. При неудачном исправлении останавливается с `STOP_AND_RESCOPE`, а не запускает бесконечный цикл.
@@ -92,15 +92,15 @@ Matreshka Agent — переносимый плагин для разработ�
 
 Для auth, RLS, migrations, secrets, payments и production-действий нельзя молча переходить в degraded-профиль. Контроллер останавливается и объясняет, какой гарантии не хватает.
 
-### DESIGN, AUDIT и RECOVERY — не дополнительные профили
+### SPECIFICATION, AUDIT и RECOVERY — не дополнительные профили
 
 Три пользовательских профиля ниже отвечают на вопрос «насколько тщательно выполнять задачу». Внутренние состояния контроллера отвечают на другой вопрос:
 
-- `DESIGN` — превратить идею в подтверждённый дизайн;
+- `SPECIFICATION` — превратить идею в подтверждённую спецификацию;
 - `AUDIT` — найти источник лишних токенов, dispatches или review-loop;
 - `RECOVERY` — восстановить работу после обрыва или compaction.
 
-Поэтому пользователь всегда выбирает один из трёх профилей, а контроллер при необходимости входит в `DESIGN`, `AUDIT` или `RECOVERY` сам.
+Поэтому пользователь всегда выбирает один из трёх профилей, а контроллер при необходимости входит в `SPECIFICATION`, `AUDIT` или `RECOVERY` сам.
 
 `AUDIT` включается, если задача выходит за оценку времени, приближается к 30–40 минутам без independently reviewable результата, исчерпывает dispatch budget, повторяет full-diff review/tests, меняет несколько subsystems, теряет report или расходует контекст непропорционально diff. Его результат имеет стабильную форму:
 
@@ -204,11 +204,11 @@ Combined reviewer за один проход проверяет соответс
 | `PARTIALLY_VERIFIED` | Работа есть, но часть заявлений не доказана |
 | `COMPLETE` | Acceptance criteria подтверждены свежими evidence |
 
-## Брейншторм и подробная документация
+## Брейншторм, спецификация и подробная документация
 
-Брейншторм — стадия `DESIGN`, а не четвёртый профиль выполнения. Он запускается для новой функции, сырой идеи, неоднозначной архитектуры, нескольких возможных решений или рискованного изменения.
+Брейншторм — стадия `SPECIFICATION`, а не четвёртый профиль выполнения. Он запускается для новой функции, сырой идеи, неоднозначной архитектуры, нескольких возможных решений или рискованного изменения.
 
-Навык `designing-software-work`:
+Навык `specifying-software-work`:
 
 - сначала исследует проект;
 - проверяет, не слишком ли велика задача;
@@ -216,11 +216,13 @@ Combined reviewer за один проход проверяет соответс
 - предлагает 2–3 подхода с компромиссами;
 - рекомендует один вариант;
 - описывает архитектуру, компоненты, interfaces, data flow, ошибки, security и тестирование;
-- не разрешает переход к реализации до подтверждения дизайна пользователем или явно записанного делегирования этого решения controller-у.
+- формирует требования `S-` с control и negative proof для применимых рисков;
+- сохраняет спецификацию в `docs/specs/`, а после её подтверждения план в `docs/plans/`;
+- не разрешает переход к реализации до подтверждения спецификации пользователем или явно записанного делегирования этого решения controller-у.
 
-Для небольшой задачи дизайн может занимать несколько абзацев. Для критичной задачи он включает threat/risk analysis, migration и rollback strategy.
+Для небольшой задачи спецификация может занимать несколько абзацев. Для критичной задачи она включает threat/risk analysis, migration и rollback strategy.
 
-После confirmation gate design-документ проходит self-review: поиск placeholders, противоречий, неоднозначных требований, неявных remote actions и слишком широкого scope. В управляемом режиме пользователь видит итоговый файл до перехода к плану; в автономном режиме controller сохраняет документ, решение и краткое обоснование в ledger. Сохранение файла не означает автоматический commit, если commit не включён в permission envelope.
+После confirmation gate спецификация проходит self-review: поиск placeholders, противоречий, неоднозначных требований, неявных remote actions, security requirements без negative proof и слишком широкого scope. В управляемом режиме пользователь видит итоговый файл до перехода к плану; в автономном режиме controller сохраняет документ, решение и краткое обоснование в ledger. Сохранение файла не означает автоматический commit, если commit не включён в permission envelope.
 
 `planning-software-work` затем создаёт coverage matrix «требование → задача → проверка» и проверяет plan до Task 1. Каждый task brief содержит Goal, Inputs, Produces, exact allowlist, Non-goals, RED/GREEN, task gate и stop conditions. Если точный путь или команда ещё неизвестны, план требует безопасно обнаружить их перед dispatch, а не выдумывает placeholder.
 
@@ -233,7 +235,7 @@ Combined reviewer за один проход проверяет соответс
 | Навык | Когда запускать вручную |
 | --- | --- |
 | `orchestrating-subagent-work` | Начать или восстановить полноценную задачу с планированием, субагентами и проверкой |
-| `designing-software-work` | Провести только брейншторм и подготовить дизайн без реализации |
+| `specifying-software-work` | Провести только брейншторм и подготовить спецификацию без реализации |
 | `planning-software-work` | Превратить уже утверждённый дизайн в implementation plan |
 | `writing-portable-agent-prompt` | Подготовить переносимый prompt для Codex, Cursor, Claude Code или Antigravity, но не выполнять его |
 | `implementing-with-tests` | Реализовать ограниченную задачу через focused RED/GREEN |
@@ -242,13 +244,13 @@ Combined reviewer за один проход проверяет соответс
 | `verifying-development-work` | Доказать, что заявленный результат действительно работает |
 | `finishing-development-work` | Подготовить безопасное завершение ветки или handoff |
 
-## Как собирать версию 0.2.0 без лишней сложности
+## Как собирать версию 0.3.0 без лишней сложности
 
 Все девять навыков — обязательная часть Matreshka Agent. Baseline-first определяет порядок разработки, а не сокращает состав плагина:
 
 1. Сначала фиксируется plain-agent baseline без плагина на небольшом наборе задач.
 2. Создаются schemas, trigger cases и минимальные каркасы всех девяти skills.
-3. Первым доводится end-to-end slice: controller, дизайн, планирование и portable prompt.
+3. Первым доводится end-to-end slice: controller, спецификация, планирование и portable prompt.
 4. Затем реализуются execution, debugging, review, verification и finishing skills.
 5. Каждый навык получает собственные positive/negative trigger evals, behavioral cases и понятный самостоятельный output.
 6. После поведенческой стабильности добавляются четыре platform manifests и install/update/uninstall tests.
@@ -262,7 +264,7 @@ Combined reviewer за один проход проверяет соответс
 
 | Принцип | Где он реализован | Правило Matreshka Agent |
 | --- | --- | --- |
-| Исследование и дизайн до кода | `designing-software-work` | Глубина документации зависит от риска и неоднозначности задачи |
+| Исследование и спецификация до кода | `specifying-software-work` | Глубина документации и Security by Design зависит от риска и неоднозначности задачи |
 | Изоляция рабочей области | preflight + `finishing-development-work` | Controller сначала проверяет существующую среду и permission envelope |
 | Проверяемый implementation plan | `planning-software-work` | Coverage matrix, маленькие task briefs, exact interfaces и task gates |
 | Управляемая работа субагентов | `orchestrating-subagent-work` | Ограниченный context, повторное использование agent threads и одна fixer-wave |
@@ -280,21 +282,21 @@ Combined reviewer за один проход проверяет соответс
 Claude Code:
 
 ```text
-/matreshka-agent:designing-software-work Помоги продумать систему подписок
+/matreshka-agent:specifying-software-work Помоги продумать систему подписок
 /matreshka-agent:writing-portable-agent-prompt Подготовь prompt для Cursor, чтобы исправить форму входа
 ```
 
 Cursor и Antigravity:
 
 ```text
-/designing-software-work Помоги продумать систему подписок
+/specifying-software-work Помоги продумать систему подписок
 /writing-portable-agent-prompt Подготовь prompt для Claude Code, чтобы исправить форму входа
 ```
 
 Codex:
 
 ```text
-$matreshka-agent:designing-software-work Помоги продумать систему подписок
+$matreshka-agent:specifying-software-work Помоги продумать систему подписок
 $matreshka-agent:writing-portable-agent-prompt Подготовь prompt для Cursor, чтобы исправить форму входа
 ```
 
@@ -334,7 +336,7 @@ Matreshka Agent использует least-privilege contract.
 
 | Формат | Как работает |
 | --- | --- |
-| Управляемый | Controller останавливается на design/plan/write и внешних gates; рекомендуется новичку |
+| Управляемый | Controller останавливается на specification/plan/write и внешних gates; рекомендуется новичку |
 | Автономный локальный | Controller самостоятельно исследует, планирует, меняет согласованный local scope и запускает локальные проверки |
 | Расширенный автономный | Пользователь дополнительно разрешает выбранные Git, network и remote actions для точных целей |
 
@@ -342,7 +344,7 @@ Matreshka Agent использует least-privilege contract.
 
 | Категория | Что можно разрешить на старте |
 | --- | --- |
-| Decisions | Самостоятельно выбрать рекомендуемый подход, профиль, дизайн и план в пределах цели |
+| Decisions | Самостоятельно выбрать рекомендуемый подход, профиль, спецификацию и план в пределах цели |
 | Matreshka state | Создавать и обновлять specs, plans, ledger, reports и handoffs |
 | Local code | Менять только согласованный project scope и allowlisted task files |
 | Local commands | Запускать focused tests, regressions, lint, typecheck и build согласно plan |
@@ -387,7 +389,7 @@ Permission envelope получает срок действия: один action,
 | Inspect-only scope | Что можно читать, но нельзя менять |
 | Forbidden scope | Что нельзя читать, менять или вызывать |
 | Local writes | Разрешены ли изменения файлов и каких именно |
-| Decision delegation | Может ли controller самостоятельно подтвердить рекомендуемый profile/design/plan |
+| Decision delegation | Может ли controller самостоятельно подтвердить рекомендуемый profile/specification/plan |
 | Git actions | Отдельно: branch/worktree, stage, commit, push, PR |
 | Remote actions | Отдельно: network, deploy, provider, database, payments |
 | Secrets | По умолчанию не читать; разрешается только named secret reference/injection без раскрытия значения |
@@ -615,7 +617,7 @@ matreshka-agent/
 │       ├── plugin.json            # Antigravity CLI
 │       ├── skills/
 │       │   ├── orchestrating-subagent-work/
-│       │   ├── designing-software-work/
+│       │   ├── specifying-software-work/
 │       │   ├── planning-software-work/
 │       │   ├── writing-portable-agent-prompt/
 │       │   ├── implementing-with-tests/
@@ -641,11 +643,11 @@ matreshka-agent/
 
 Общий `SKILL.md` использует минимально переносимый frontmatter: только `name` и `description`. Platform-specific поля вроде Cursor `readonly` или Claude agent configuration не помещаются в shared skill. Каждый `name` совпадает с каталогом, `description` проверяется trigger evals, основной файл остаётся короче 500 строк, а подробности загружаются из одноуровневых `references/` только при необходимости.
 
-Версия `0.2.0` не зависит от общего каталога custom `agents/`: форматы и permission-поля платформ различаются, а Codex plugin format не обещает распространять agent definitions как компонент. Controller использует доступный host-native механизм субагентов и platform adapter. Отдельные packaged agent definitions можно добавить позже только после cross-platform evals.
+Версия `0.3.0` не зависит от общего каталога custom `agents/`: форматы и permission-поля платформ различаются, а Codex plugin format не обещает распространять agent definitions как компонент. Controller использует доступный host-native механизм субагентов и platform adapter. Отдельные packaged agent definitions можно добавить позже только после cross-platform evals.
 
 ### Рекомендуемая установка для новичка
 
-Основной путь — встроенный marketplace или plugin manager каждой платформы. Это проще обновлять и удалять, а coding agent сам показывает, что именно устанавливается. Собственный `install.py` в версии `0.2.0` не нужен: он добавил бы ещё один исполняемый компонент и зависимость от Python.
+Основной путь — встроенный marketplace или plugin manager каждой платформы. Это проще обновлять и удалять, а coding agent сам показывает, что именно устанавливается. Собственный `install.py` в версии `0.3.0` не нужен: он добавил бы ещё один исполняемый компонент и зависимость от Python.
 
 `plugins/matreshka-agent/scripts/doctor.py` только проверяет установку и печатает понятные подсказки. Он не меняет пользовательские настройки, не создаёт links и не устанавливает hooks. Ручные developer-инструкции ниже нужны для локального тестирования и troubleshooting.
 
@@ -759,7 +761,7 @@ agy plugin list
 
 ## Почему в первой версии нет hooks
 
-Hooks выполняют команды автоматически в определённые моменты жизненного цикла. Ошибка в hook может мешать работе во всех задачах, поэтому версия `0.2.0` не устанавливает их.
+Hooks выполняют команды автоматически в определённые моменты жизненного цикла. Ошибка в hook может мешать работе во всех задачах, поэтому версия `0.3.0` не устанавливает их.
 
 Сначала мы проверим поведение навыков через evals. Hook будет добавлен только для повторяющейся ошибки, которую нельзя надёжно устранить инструкцией или детерминированным helper script.
 
@@ -892,7 +894,7 @@ Pre-existing failure сначала воспроизводится на baseline
 
 ## Quality Gate, project profile и направленное обучение
 
-Version `0.2.0` добавляет не нового «всемогущего» агента, а четыре компактных защитных механизма для уже знакомого controller-а:
+Version `0.3.0` добавляет не нового «всемогущего» агента, а пять компактных защитных механизмов для уже знакомого controller-а:
 
 | Механизм | Что он даёт | Чего он не делает |
 | --- | --- | --- |
@@ -900,6 +902,7 @@ Version `0.2.0` добавляет не нового «всемогущего» 
 | Skill source map | Фиксирует, какой именно bundled skill выбран для каждого этапа | Не выбирает одноимённый внешний skill только по названию |
 | Quality gate | Короткий список существующих проверок с текущими результатами | Не создаёт hook, не устанавливает зависимости и не расширяет permissions |
 | Directed learning | Сохраняет проверяемый урок в виде candidate для одного проекта | Не меняет plugin, global instructions, hooks или конфигурацию автоматически |
+| Security by Design | Превращает выбранные security controls в `S-` требования с negative proof | Не обещает абсолютную безопасность и не запускает scanner/secret access без разрешения |
 
 ### Как это использовать новичку
 
@@ -939,12 +942,12 @@ Controller не включает этот режим сам. Candidate не мо
 
 Перед первым публичным релизом должны быть закрыты все пункты:
 
-- одинаковый `name`, корректные skill paths и версия `0.2.0` во всех манифестах, чья актуальная schema поддерживает поле version;
+- одинаковый `name`, корректные skill paths и версия `0.3.0` во всех манифестах, чья актуальная schema поддерживает поле version;
 - наличие всех девяти обязательных skill-каталогов, их trigger descriptions и `evals/evals.json`;
 - Agent Skills validation каждого `SKILL.md`;
 - native plugin validation для Codex, Claude Code, Cursor и Antigravity;
 - чистая установка, первый запуск, update, disable и uninstall на каждой платформе;
-- отсутствие hooks, MCP servers, telemetry и secret requirements в `0.2.0`;
+- отсутствие hooks, MCP servers, telemetry и secret requirements в `0.3.0`;
 - выбранная владельцем лицензия и publisher/GitHub owner вместо placeholders;
 - повторная проверка доступности display name и ID `matreshka-agent`; отсутствие результатов поиска не заменяет trademark review;
 - marketplace metadata, legal/privacy links и asset sizes, если их требует площадка публикации;

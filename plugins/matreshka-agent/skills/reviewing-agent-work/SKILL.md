@@ -36,9 +36,13 @@ Read [the review checklist and severity guide](references/review-checklist.md). 
 - maintainability and repository conventions;
 - user experience and accessibility only for affected UI behavior.
 
+Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the brief selects `S-` requirements or the diff touches a security boundary. Review each selected `S-` requirement against the actual diff and its stated negative proof; mark it `checked`, `failed`, or `N/A` with evidence. A missing proof is not `N/A`.
+
+At minimum inspect applicable changes for server-side object authorization and tenant propagation, secrets/client exposure/log redaction, input validation and safe data/output APIs, response-field minimization, external-effect idempotency/replay behavior, dependency provenance, insecure configuration defaults, and AI prompt/tool-boundary separation. Treat only relevant categories as in scope, but state why any baseline category is not applicable.
+
 Seek counterevidence before raising a finding. Do not convert style preference or speculative future work into a blocker.
 
-Mark each listed review dimension either checked or `N/A` with a short reason. Do not silently omit security, isolation, leakage, tests, or UX when the task makes them relevant.
+Mark each listed review dimension either checked or `N/A` with a short reason. Do not silently omit selected security requirements, isolation, leakage, tests, or UX when the task makes them relevant.
 
 ## Write actionable findings
 

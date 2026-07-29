@@ -1,6 +1,6 @@
 [
   {
-    "query": "У нас есть утверждённый design doc; преврати его в точный coding plan.",
+    "query": "У нас есть утверждённая спецификация; преврати её в точный coding plan.",
     "should_trigger": true
   },
   {

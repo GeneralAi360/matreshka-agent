@@ -1,7 +1,7 @@
 # Implementation Plan — {{TITLE}}
 
 - Status: `{{DRAFT_OR_READY}}`
-- Confirmed design: `{{DESIGN_PATH_OR_REFERENCE}}`
+- Confirmed specification: `{{SPECIFICATION_PATH_OR_REFERENCE}}`
 - Project root: `{{REAL_PROJECT_ROOT}}`
 - Baseline: `{{GIT_REF_OR_NO_GIT_BASELINE}}`
 - Applicable instructions: {{INSTRUCTION_PATHS}}
@@ -25,6 +25,7 @@
 | Requirement ID | Requirement/source | Task | Verification evidence | Negative/rollback evidence |
 | --- | --- | --- | --- | --- |
 | `R1` | {{REQUIREMENT}} | `T1` | {{CHECK}} | {{NEGATIVE_OR_NA}} |
+| `S-01` | {{SECURITY_REQUIREMENT_OR_NA}} | `T1` | {{SECURITY_EVIDENCE}} | {{NEGATIVE_SECURITY_PROOF}} |
 
 ## Task map
 
@@ -52,6 +53,7 @@
 
 - Result: {{ONE_MEASURABLE_RESULT}}
 - Requirements: `{{REQUIREMENT_IDS}}`
+- Security requirements: `{{SECURITY_REQUIREMENT_IDS_OR_NA}}`
 
 ### Inputs
 
@@ -96,7 +98,9 @@ Inspect-only:
 - Task suite: `{{COMMAND}}`
 - Nearest regression: `{{COMMAND}}`
 - Targeted static/diff check: `{{COMMAND}}`
-- Conditional build/scan: {{COMMAND_OR_NA_WITH_REASON}}
+- Conditional security/dependency check: {{COMMAND_OR_NA_WITH_REASON}}
+- Security negative proof: {{TEST_OR_REVIEW_OR_NA_WITH_REASON}}
+- Conditional build: {{COMMAND_OR_NA_WITH_REASON}}
 - Evidence: command / exit code / counts / relevant note.
 
 ### Execution and review budget

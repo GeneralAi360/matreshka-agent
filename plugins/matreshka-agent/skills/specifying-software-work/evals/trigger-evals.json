@@ -1,6 +1,6 @@
 [
   {
-    "query": "Помоги провести брейншторм новой системы подписок и подготовить дизайн без реализации.",
+    "query": "Помоги провести брейншторм новой системы подписок и подготовить спецификацию без реализации.",
     "should_trigger": true
   },
   {
@@ -8,11 +8,11 @@
     "should_trigger": true
   },
   {
-    "query": "Перед изменением auth спроектируй trust boundaries, rollout и rollback.",
+    "query": "Перед изменением auth подготовь specification trust boundaries, rollout и rollback.",
     "should_trigger": true
   },
   {
-    "query": "Дизайн уже утверждён; преврати его в подробный implementation plan.",
+    "query": "Спецификация уже утверждена; преврати её в подробный implementation plan.",
     "should_trigger": false
   },
   {

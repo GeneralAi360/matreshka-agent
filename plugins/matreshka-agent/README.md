@@ -1,8 +1,8 @@
 # Matreshka Agent
 
-Matreshka Agent — набор из девяти переносимых skills для разработки с coding agents. Главный controller помогает исследовать проект, провести брейншторм, подготовить дизайн и план, ограниченно запустить implementer/reviewer, проверить результат и сохранить точный handoff.
+Matreshka Agent — набор из девяти переносимых skills для разработки с coding agents. Главный controller помогает исследовать проект, провести брейншторм, подготовить security-by-design спецификацию и план, ограниченно запустить implementer/reviewer, проверить результат и сохранить точный handoff.
 
-Статус `0.2.0`: development preview. Пакет проходит локальную структурную и security-валидацию, но ещё не считается публичным релизом без native installation smoke tests, финальных publisher metadata и иконки.
+Статус `0.3.0`: development preview. Пакет проходит локальную структурную и security-валидацию, но ещё не считается публичным релизом без native installation smoke tests, финальных publisher metadata и иконки.
 
 ## Первый запуск
 
@@ -19,7 +19,7 @@ Codex не превращает plugin skills в отдельные `/skill-name
 
 Если в списке есть навыки с похожими названиями, выбирайте `matreshka-agent:<skill-name>` в Codex и Claude Code либо запись, у которой виден источник Matreshka Agent. Название само по себе не доказывает, что это навык из данного плагина.
 
-В интерфейсах Codex карточки и плашки навыков версии `0.2.0` используют формат `Название действия · Matreshka Agent`, поэтому сначала видна задача, а затем источник навыка.
+В интерфейсах Codex карточки и плашки навыков версии `0.3.0` используют формат `Название действия · Matreshka Agent`, поэтому сначала видна задача, а затем источник навыка.
 
 Пример для новичка:
 
@@ -35,7 +35,7 @@ Codex не превращает plugin skills в отдельные `/skill-name
 | Skill | Назначение |
 | --- | --- |
 | `orchestrating-subagent-work` | Полный end-to-end controller |
-| `designing-software-work` | Брейншторм, 2–3 подхода и подробный дизайн |
+| `specifying-software-work` | Брейншторм, 2–3 подхода и подробная security-by-design спецификация |
 | `planning-software-work` | Coverage matrix и маленькие executable tasks |
 | `writing-portable-agent-prompt` | Prompt для другого coding agent без выполнения |
 | `implementing-with-tests` | Ограниченная реализация через focused RED/GREEN |
@@ -54,7 +54,7 @@ Controller предлагает один профиль выполнения:
 
 Отдельно выбирается формат согласований:
 
-- managed — подтверждение переходов между design, plan и execution;
+- managed — подтверждение переходов между specification, plan и execution;
 - autonomous local — самостоятельная работа внутри точного локального scope;
 - extended autonomous — только дополнительно перечисленные Git/network/remote actions.
 
@@ -84,6 +84,16 @@ Controller предлагает один профиль выполнения:
 
 Candidate никогда не изменяет сам Matreshka Agent, глобальные инструкции, hooks или настройки среды автоматически. В него нельзя переносить секреты, персональные данные, private URLs, полный raw log или скрытые рассуждения агента.
 
+## Спецификации, планы и безопасность
+
+После того как Matreshka задала и получила ответы на действительно важные вопросы, она сохраняет спецификацию в `docs/specs/YYYY-MM-DD-<задача>-spec.md`. После утверждения спецификации `planning-software-work` создаёт связанный план в `docs/plans/YYYY-MM-DD-<задача>-plan.md`.
+
+Если в проекте уже есть ясная совместимая структура документации, она сохраняется. Если папок ещё нет, Matreshka создаёт только недостающие `docs/`, `docs/specs/` и `docs/plans/`; она не перемещает и не переписывает существующие документы. При отсутствии разрешения на запись она выдаёт полный документ и точный путь со статусом `SPEC_READY_TO_SAVE` или `PLAN_READY_TO_SAVE`.
+
+Каждая спецификация получает обязательный Security by Design baseline. Для актуальных рисков создаются требования `S-01`, `S-02` и так далее: у каждого есть конкретный control, ответственный этап и negative proof. Это покрывает секреты, server-side authorization и tenant isolation, ввод/вывод, утечки данных, необратимые действия, зависимости и инфраструктуру; для AI/RAG/tool-use отдельно проверяются prompt injection, утечка данных и неразрешённый вызов tools. Высокорисковый scope требует threat model и security/code review.
+
+Эти правила снижают риск, но не являются обещанием абсолютной неуязвимости. Matreshka не устанавливает security-scanner, не читает secrets и не запускает сетевые проверки без разрешения и без уже существующей команды проекта.
+
 ## Локальная проверка пакета
 
 Из корня marketplace-репозитория:
@@ -98,7 +108,7 @@ python3 -B plugins/matreshka-agent/scripts/doctor.py \
 
 `doctor.py` работает read-only и offline. Он ничего не устанавливает, не создаёт hooks и не меняет настройки пользователя.
 
-## Что намеренно не входит в 0.2.0
+## Что намеренно не входит в 0.3.0
 
 - hooks;
 - MCP servers и apps;

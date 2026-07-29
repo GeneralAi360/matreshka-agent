@@ -15,8 +15,8 @@ Read [portable-contract.md](references/portable-contract.md) to build the canoni
 Choose exactly one primary mode:
 
 - `READ_ONLY_INVESTIGATION`: discover repository facts without mutation;
-- `DESIGN`: compare approaches and produce a design;
-- `PLAN`: produce a task plan from a confirmed design;
+- `SPECIFICATION`: compare approaches and produce a security-by-design specification;
+- `PLAN`: produce a task plan from a confirmed specification;
 - `IMPLEMENT`: make a bounded change and test it;
 - `DEBUG`: reproduce and isolate a root cause before fixing;
 - `REVIEW`: inspect an immutable/scoped change and return findings;
