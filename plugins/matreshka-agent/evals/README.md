@@ -20,3 +20,9 @@ Pin the repository snapshot, task prompt, permissions, available tools, model ca
 Record agent turns, wall time, and token usage when the host exposes them. Missing telemetry is recorded as unavailable; the package does not add telemetry or send results anywhere.
 
 Package validation is necessary but does not prove workflow quality. A public release requires successful local installation and representative workflow runs on every claimed platform.
+
+## Matreshka Agent 0.4.0 scenarios
+
+The fifteen `v04-*` cases are declarative workflow and adversarial contracts. The offline package validator proves JSON/schema integrity, unique IDs, required fields, allowed categories, and package consistency. It does **not** prove that Codex, Claude Code, Cursor, or Antigravity selected or executed the skills natively.
+
+Native execution remains a release handoff: run representative positive and negative cases in fresh host contexts, record the exact installed package version and host capability set, and preserve the resulting evidence without secrets or private payloads. Until that is done, report native execution as `NOT_RUN` or `HANDOFF_REQUIRED`, never as a pass inferred from schema validation.

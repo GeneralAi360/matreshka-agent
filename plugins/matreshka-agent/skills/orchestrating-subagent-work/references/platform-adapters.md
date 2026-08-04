@@ -20,7 +20,9 @@ Never infer a capability from platform branding alone. Versions, policies, and h
 
 ## Bundled-skill identity
 
-The controller may chain only the nine skills bundled with the active Matreshka plugin. Before chaining a skill, confirm its package identity; a matching title, trigger description, or output style is not proof of ownership.
+The controller may chain only the ten skills bundled with the active Matreshka plugin, including `building-end-to-end`. Before chaining a skill, confirm its package identity; a matching title, trigger description, or output style is not proof of ownership.
+
+Plain-language turnkey requests enter through `matreshka-agent:building-end-to-end`. Direct orchestration, recovery, and audit remain controller entry cases. After entry, every chained role—specification, planning, implementation, debugging, review, verification, finishing, portable prompting, and controller work—must resolve through the active Matreshka plugin source map.
 
 | Host behavior | Required routing rule |
 | --- | --- |

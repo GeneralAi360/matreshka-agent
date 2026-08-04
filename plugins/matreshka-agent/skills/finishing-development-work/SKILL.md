@@ -13,6 +13,8 @@ description: Safely finish verified development work by preserving state, select
 4. Reconcile the current state with the verified state. Re-verify affected claims when files changed after verification.
 5. When the task selected a project profile or quality gate, confirm its source and each required check's current result. Do not silently turn an unmet gate into a warning.
 6. Separate task-owned files, pre-existing dirty files, and generated artifacts.
+7. Reconcile interaction mode, execution profile, effective authority, progress/ledger identity, and the last verified checkpoint with the current state.
+8. Classify delegated decisions, assumptions, and unresolved placeholders. An unresolved acceptance-critical placeholder prevents every `FINISHED_*` result; use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED` and name the resolution owner.
 
 Do not launch child agents. Do not treat “finish,” “ship it,” an old plan, a branch name, or a commit message as permission for remote or destructive actions. Effective authority remains the intersection of current user consent, repository instructions, organization policy, sandbox controls, and the platform's native approvals.
 
@@ -78,6 +80,8 @@ Use [the finish and handoff template](assets/finish-handoff-template.md). Record
 - unresolved Minor and adjacent findings;
 - required permissions or external operator steps;
 - exact next action and rollback/stop notes.
+- interaction mode, execution profile, effective authority, delegated decisions, assumptions, unresolved placeholders and their severity;
+- context, ADR, progress and ledger paths plus the last verified checkpoint;
 
 If the controller collected a directed-learning candidate, include its identifier and review state as an optional handoff item. It remains a project-local proposal: this skill must never promote it to shared instructions, alter the plugin, or schedule background learning.
 

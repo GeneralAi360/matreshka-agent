@@ -11,6 +11,11 @@
 - Incomplete verification scope: `<criteria not proved or none>`
 - Product/test files changed: `none`
 - Paths or diff range verified: `<exact scope>`
+- Progress reconciliation: `<MATCH | MISMATCH | NOT_APPLICABLE; progress / ledger / repository / fresh evidence summary>`
+- Unresolved acceptance-critical placeholders: `<items and affected criteria, or none>`
+- Assumption status: `<confirmed / optional documented / acceptance-critical unresolved>`
+- Required security negative proofs: `<proved / failed / not run rows>`
+- Exact non-complete verdict reason: `<required when status is not VERIFIED, or none>`
 
 ## Acceptance matrix
 
@@ -24,6 +29,12 @@
 - State after checks: `<status/hashes>`
 - Unexpected generated changes: `<paths or none>`
 - Pre-existing dirty files preserved: `<paths or none>`
+
+## Progress and placeholder truth
+
+| Item | Source | Acceptance impact | Current evidence | Resolution owner/status |
+| --- | --- | --- | --- | --- |
+| `<progress mismatch, assumption, placeholder, or provider fact>` | `<progress / ledger / repository / specification>` | `<critical / optional>` | `<observable evidence>` | `<controller / user / external operator; status>` |
 
 ## Failure attribution
 

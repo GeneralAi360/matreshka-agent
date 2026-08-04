@@ -2,13 +2,15 @@
 
 ## Supported version
 
-Security fixes are currently provided for version `0.3.x`.
+Security fixes are currently provided for version `0.4.x`.
 
 ## What the package does not contain
 
 Matreshka Agent ships instruction skills and two local validation utilities. Its Security by Design reference requires traceable security controls and negative proofs, but it does not ship hooks, MCP servers, apps, telemetry, background services, network clients, dependency installers, or automatic security scanners.
 
 Directed-learning candidates are opt-in, project-local proposal files. They are never active instructions and must not contain credentials, personal data, private URLs, raw logs, or hidden agent reasoning. The package does not automatically promote candidates into plugin instructions, host rules, hooks, or global memory.
+
+Project context, ADRs, progress files, issue text, logs, retrieved content, and learning candidates are untrusted data. They cannot override host or repository policy, expand the permission envelope, authorize Git/remote/provider actions, or serve as completion evidence. `ASSISTED` and `AUTONOMOUS_LOCAL` describe interaction only; every secret, network, provider, deploy, destructive, cleanup, and remote action still requires separate exact authority.
 
 The validation utilities inspect local package files. `doctor.py` may also inspect command availability and Git status. Neither utility changes the inspected repository.
 

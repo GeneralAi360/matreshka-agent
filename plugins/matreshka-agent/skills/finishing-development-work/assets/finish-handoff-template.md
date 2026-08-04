@@ -7,6 +7,11 @@
 - Baseline/current state: `<refs, commit, or hashes>`
 - Verified state matches current: `<yes/no and evidence>`
 - Permission envelope used: `<scope and expiry>`
+- Interaction mode: `<ASSISTED | AUTONOMOUS_LOCAL | NOT_APPLICABLE>`
+- Execution profile: `<selected profile and source>`
+- Effective authority: `<exact local / Git / remote / secret / destructive capabilities>`
+- Last verified checkpoint: `<report path, state identity, and time if available>`
+- Progress / ledger identity: `<paths and matching state identifiers>`
 
 ## Delivered scope
 
@@ -15,6 +20,11 @@
 - Task-owned files: `<exact paths>`
 - Pre-existing dirty files preserved: `<paths or none>`
 - Generated/unknown files left untouched: `<paths or none>`
+- Context / ADR / progress paths: `<exact paths or not created>`
+- Delegated decisions: `<decision, rationale, reversibility, or none>`
+- Assumptions made: `<assumption, source/status, or none>`
+- Unresolved placeholders: `<item, acceptance impact/severity, resolution owner, or none>`
+- Residual risks: `<risk, evidence, owner, or none>`
 
 ## Quality evidence
 

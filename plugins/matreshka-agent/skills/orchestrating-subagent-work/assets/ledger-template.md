@@ -41,10 +41,27 @@
 
 - Goal: {{GOAL}}
 - Risk summary: {{RISK}}
+- Interaction mode: `{{GUIDED_ASSISTED_AUTONOMOUS_LOCAL_NOT_APPLICABLE}}`
+- Pending interaction mode: `{{MODE_AT_NEXT_SAFE_TRANSITION_OR_NONE}}`
 - Execution profile: `{{SPEED_BALANCED_QUALITY}}`
 - Autonomy mode: `{{MANAGED_LOCAL_EXTENDED}}`
+- Effective permissions: {{EFFECTIVE_PERMISSION_SUMMARY}}
 - Current stage gate: `{{GATE}}`
+- Decision-map state: `{{NOT_REQUIRED_REQUIRED_READY_OR_BLOCKED}}`
+- Delegated decisions: {{DELEGATED_DECISIONS_OR_NONE}}
+- Assumption count: {{ASSUMPTION_COUNT}}
+- Unresolved placeholder count: {{PLACEHOLDER_COUNT}}
 - Decision rationale/approval: {{DECISION_RECORD}}
+
+## Durable project artifacts
+
+- Context path: `{{CONTEXT_PATH_OR_NONE}}`
+- Context source and review state: {{CONTEXT_SOURCE_REVIEW_OR_NONE}}
+- ADR IDs: {{ADR_IDS_OR_NONE}}
+- Progress path: `{{PROGRESS_PATH_OR_INLINE}}`
+- Progress projection status: `{{CURRENT_STALE_MISSING_UNAUTHORIZED}}`
+- Last progress update event: {{EVENT_TIME_OR_NONE}}
+- Recorded source conflicts: {{CONFLICTS_OR_NONE}}
 
 ## Permission envelope
 
@@ -107,6 +124,9 @@
 
 ## Recovery and next action
 
+- Loaded contract/plugin version: `{{LOADED_CONTRACT_AND_PLUGIN_VERSION}}`
+- Version difference and in-memory compatibility: {{VERSION_DIFFERENCE_OR_NONE}}
+- Progress/ledger/actual-state mismatch: {{MISMATCH_OR_NONE}}
 - Last safe checkpoint: {{CHECKPOINT}}
 - Active turns: {{ACTIVE_OR_NONE}}
 - Stop reason: {{REASON_OR_NONE}}

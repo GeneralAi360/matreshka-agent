@@ -1,0 +1,54 @@
+[
+  {
+    "query": "Собери этот SaaS под ключ: от требований до проверенного локального результата.",
+    "should_trigger": true
+  },
+  {
+    "query": "Build this integration end to end and ask only questions that materially change the result.",
+    "should_trigger": true
+  },
+  {
+    "query": "Сделай бота от идеи до работающего результата в автономном локальном режиме.",
+    "should_trigger": true
+  },
+  {
+    "query": "Подготовь только спецификацию функции без плана и реализации.",
+    "should_trigger": false
+  },
+  {
+    "query": "Подготовь только пошаговый план реализации по уже подтверждённой спецификации.",
+    "should_trigger": false
+  },
+  {
+    "query": "Реализуй только уже подтверждённую задачу T3 по существующему плану.",
+    "should_trigger": false
+  },
+  {
+    "query": "Найди причину падения этого теста, но ничего не исправляй.",
+    "should_trigger": false
+  },
+  {
+    "query": "Проведи независимый review готового diff.",
+    "should_trigger": false
+  },
+  {
+    "query": "Проверь свежими командами, выполнены ли критерии готовности, но ничего не меняй.",
+    "should_trigger": false
+  },
+  {
+    "query": "Проведи аудит текущего multi-agent запуска и объясни, почему он замедлился.",
+    "should_trigger": false
+  },
+  {
+    "query": "Хочу сделать что-нибудь полезное с технологиями, но пока не знаю какой продукт, для кого или какой результат нужен.",
+    "should_trigger": false
+  },
+  {
+    "query": "Исправь опечатку в одном заголовке.",
+    "should_trigger": false
+  },
+  {
+    "query": "Объясни, как устроен текущий controller Matreshka.",
+    "should_trigger": false
+  }
+]

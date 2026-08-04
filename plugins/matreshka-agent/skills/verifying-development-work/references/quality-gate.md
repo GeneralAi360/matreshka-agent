@@ -8,6 +8,8 @@ Start from current repository instructions, project profile, package scripts, CI
 
 Use [the quality-gate template](../assets/quality-gate-template.md) to record the selected rows. Each row must name one claim, one command or inspection, source, expected signal, required evidence, risk, and whether it is required for the current task.
 
+Represent every selected security requirement as its own positive or negative proof row. A negative proof names the forbidden outcome and the permitted observation that demonstrates it did not occur. Never infer a security pass from an unrelated suite, the absence of an error, or a progress claim.
+
 Never add a command simply because it is common. Do not install dependencies, enable network access, read secrets, call a remote service, mutate files, or run a broad suite unless the envelope and current gate explicitly permit it.
 
 ## Run and interpret
@@ -17,6 +19,7 @@ Never add a command simply because it is common. Do not install dependencies, en
 3. Record `PASS`, `FAIL`, `NOT_RUN`, or `BLOCKED` for every row with command, exit code, counts, state identity, and a decisive note.
 4. Inspect state after mutation-prone checks. Unexpected generated changes invalidate affected evidence until adjudicated.
 5. Do not repair failures in the verifier role and do not convert an unavailable check into a pass.
+6. Reconcile progress, controller ledger, actual repository state, and fresh evidence in that order of increasing authority. Record mismatches; never treat stale progress as proof.
 
 The final verification status remains `VERIFIED`, `PARTIALLY_VERIFIED`, `FAILED`, `BLOCKED`, or `HANDOFF_REQUIRED`. The quality-gate rows explain why.
 

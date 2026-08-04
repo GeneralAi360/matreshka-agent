@@ -18,11 +18,15 @@ Treat each capability separately:
 
 An approval can cover one action, task, phase, or current run. Confirm that it has not expired and that project, target, and scope are unchanged. Do not ask again for an unchanged action already covered by valid autonomous authority.
 
+Interaction mode and execution profile describe collaboration and rigor; they never grant Git, remote, provider, secret, cleanup, or destructive authority. Preserve the effective authority as a separate handoff field.
+
 ## Choose among finish outcomes
 
 ### Handoff only
 
 Use when Git actions are not allowed, Git is unavailable, work remains intentionally uncommitted, or another operator owns publication. Preserve exact paths, hashes/state, evidence, and next steps.
+
+Also use a non-complete handoff when an acceptance-critical business fact, provider choice, or placeholder remains unresolved. Never hide the gap behind `FINISHED_LOCAL`, `FINISHED_COMMITTED`, or `FINISHED_REMOTE`.
 
 ### Local commit
 

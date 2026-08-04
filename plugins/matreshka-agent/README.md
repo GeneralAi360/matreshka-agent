@@ -1,21 +1,21 @@
 # Matreshka Agent
 
-Matreshka Agent — набор из девяти переносимых skills для разработки с coding agents. Главный controller помогает исследовать проект, провести брейншторм, подготовить security-by-design спецификацию и план, ограниченно запустить implementer/reviewer, проверить результат и сохранить точный handoff.
+Matreshka Agent — набор из десяти переносимых skills для разработки с coding agents. Новый `Build End-to-End` принимает обычное описание проекта и безопасно передаёт его главному controller-у, который исследует проект, готовит security-by-design спецификацию и план, ограниченно запускает implementer/reviewer, проверяет результат и сохраняет точный handoff.
 
-Статус `0.3.0`: development preview. Пакет проходит локальную структурную и security-валидацию, но ещё не считается публичным релизом без native installation smoke tests, финальных publisher metadata и иконки.
+Статус `0.4.0`: локально проверенная development preview. Пакет проходит структурную и security-валидацию, но ещё не считается публичным релизом без native installation smoke tests, финальных publisher metadata, security contact и иконки.
 
 ## Первый запуск
 
-Обычно нужен только `orchestrating-subagent-work`.
+Для проекта целиком обычно нужен `building-end-to-end`; для ручного управления этапами — `orchestrating-subagent-work`.
 
 | Платформа | Явный вызов |
 | --- | --- |
-| Claude Code | `/matreshka-agent:orchestrating-subagent-work` |
-| Cursor | `/orchestrating-subagent-work` |
-| Antigravity | Наберите `/` и выберите `orchestrating-subagent-work` |
-| Codex | Откройте `/skills` и выберите навык либо используйте доступный `$` skill picker; optional `/prompts:matreshka-orchestrate` — после установки wrapper |
+| Claude Code | `/matreshka-agent:building-end-to-end` |
+| Cursor | `/building-end-to-end` |
+| Antigravity | Наберите `/` и выберите `building-end-to-end` |
+| Codex | `$matreshka-agent:building-end-to-end`, `/skills`, или optional `/prompts:matreshka-build` |
 
-Codex не превращает plugin skills в отдельные `/skill-name` команды. Для пользователей, которым нужен именно slash-вызов, в [`codex-prompts/`](codex-prompts/README.md) лежат девять необязательных local custom-prompt wrappers. После явного копирования в `~/.codex/prompts/` главный вызов будет `/prompts:matreshka-orchestrate`. Codex помечает custom prompts как устаревающий compatibility mechanism, поэтому обычный `$skill` или `/skills` остаётся предпочтительным путём.
+Codex не превращает plugin skills в отдельные `/skill-name` команды. Для пользователей, которым нужен slash-вызов, в [`codex-prompts/`](codex-prompts/README.md) лежат десять необязательных wrappers. После явного копирования главный end-to-end вызов — `/prompts:matreshka-build`. Обычный `$skill` или `/skills` остаётся предпочтительным путём.
 
 Если в списке есть навыки с похожими названиями, выбирайте `matreshka-agent:<skill-name>` в Codex и Claude Code либо запись, у которой виден источник Matreshka Agent. Название само по себе не доказывает, что это навык из данного плагина.
 
@@ -30,10 +30,11 @@ Codex не превращает plugin skills в отдельные `/skill-name
 Не делай push, deploy и remote migration.
 ```
 
-## Девять skills
+## Десять skills
 
 | Skill | Назначение |
 | --- | --- |
+| `building-end-to-end` | Plain-language Build End-to-End с выбором interaction mode и безопасным handoff в controller |
 | `orchestrating-subagent-work` | Полный end-to-end controller |
 | `specifying-software-work` | Брейншторм, 2–3 подхода и подробная security-by-design спецификация |
 | `planning-software-work` | Coverage matrix и маленькие executable tasks |
@@ -45,6 +46,10 @@ Codex не превращает plugin skills в отдельные `/skill-name
 | `finishing-development-work` | Разрешённый commit/remote action или точный handoff |
 
 ## Профиль и автономность — разные решения
+
+Interaction mode (`GUIDED`, `ASSISTED`, `AUTONOMOUS_LOCAL`) управляет количеством подтверждений. Execution profile управляет глубиной реализации, тестов и review. Permission envelope отдельно определяет файловые, Git, network, secret, provider и remote действия. Ни режим, ни профиль не расширяют полномочия.
+
+Для продолжения между сессиями агент может использовать один `CONTEXT.md` или `docs/context.md`, выборочные ADR в `docs/adr/` и `docs/runs/<run-id>/progress.md`. Они считаются документацией и projection; они не дают authority и не заменяют ledger, текущее состояние репозитория или fresh evidence.
 
 Controller предлагает один профиль выполнения:
 
@@ -108,7 +113,7 @@ python3 -B plugins/matreshka-agent/scripts/doctor.py \
 
 `doctor.py` работает read-only и offline. Он ничего не устанавливает, не создаёт hooks и не меняет настройки пользователя.
 
-## Что намеренно не входит в 0.3.0
+## Что намеренно не входит в 0.4.0
 
 - hooks;
 - MCP servers и apps;

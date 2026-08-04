@@ -2,6 +2,27 @@
 
 All notable changes to Matreshka Agent are recorded here.
 
+## 0.4.0 - 2026-08-04
+
+### Added
+
+- `building-end-to-end`, a tenth plain-language entry that routes complete application requests through the existing permission-aware controller.
+- `GUIDED`, `ASSISTED`, and `AUTONOMOUS_LOCAL` interaction modes, kept independent from execution profiles and effective permissions.
+- Durable project context, selective ADR, and human-readable progress contracts with safe reconciliation against ledger, repository state, and fresh evidence.
+- Fifteen cross-skill workflow and adversarial evaluation scenarios.
+
+### Changed
+
+- Verification blocks completion for stale progress, acceptance-critical placeholders, and missing required security negative proofs.
+- Final handoff records mode, profile, authority, delegated decisions, assumptions, placeholders, state paths, verified checkpoint, residual risks, and exact external action.
+- Package manifests, marketplaces, doctor, validator, eval metadata, and Codex wrappers now agree on version `0.4.0` and ten skills.
+
+### Security
+
+- Context, progress, issue content, retrieved material, and learning candidates remain untrusted data and cannot expand authority.
+- Interaction mode never grants Git, network, secret, provider, deploy, cleanup, or destructive permissions.
+- Native host execution and publication remain separate handoffs; offline validation is not reported as native success.
+
 ## 0.3.0 - 2026-07-29
 
 ### Changed

@@ -18,7 +18,7 @@ from typing import Any
 sys.dont_write_bytecode = True
 
 PLUGIN_ID = "matreshka-agent"
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 HOST_COMMANDS = {
     "Codex": "codex",
     "Claude Code": "claude",

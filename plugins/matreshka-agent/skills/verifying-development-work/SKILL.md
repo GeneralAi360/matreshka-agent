@@ -13,6 +13,19 @@ description: Verify development claims against current repository state and acce
 4. Translate every completion claim and selected `S-` requirement into an observable criterion and a permitted verification method.
 5. Build a compact matrix from claim to command, inspection, or external handoff. Preserve the source and status of every selected quality-gate row.
 
+## Reconcile completion state before judging it
+
+Treat human-readable progress as a projection, never as completion evidence. Before setting a verdict:
+
+1. compare the progress file with the controller ledger;
+2. compare both with the actual repository state;
+3. run or inspect the current evidence required by the acceptance matrix;
+4. record every mismatch and the authoritative observed state.
+
+A `COMPLETE` marker in stale progress cannot advance the run or support `VERIFIED`. Do not repair the ledger, progress file, product, tests, or documentation from the verifier role. Return the mismatch and exact next action to the controller.
+
+Classify every unresolved placeholder or assumption by its effect on acceptance. An optional, non-critical placeholder is reported but does not automatically fail verification. An acceptance-critical placeholder, unknown required business fact, unresolved provider choice, or missing required security proof blocks `VERIFIED`. Use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED` according to what is proved and who can resolve the gap.
+
 Do not launch child agents. Do not edit product code or tests, repair failures, stage, commit, push, open a pull request, deploy, mutate a remote system, install dependencies, or read secrets. Write only an authorized verification report or run-owned evidence artifact. Return fixes, Git publication, dependency changes, and remote actions to the controller. Verification must preserve the state it is judging.
 
 ## Choose the right verification tier
@@ -78,5 +91,7 @@ Use [the verification report template](assets/verification-report-template.md). 
 Do not use `VERIFIED` because code looks correct, an agent said tests passed, one unrelated suite passed, or no failure was observed. List unverified claims explicitly. Return failed implementation to the controller; do not fix it inside verification.
 
 Do not use `VERIFIED` while a selected `S-` requirement lacks current evidence, a blocking security review finding remains, or a dependency/security verification required by the specification is `NOT_RUN`. Use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED` and identify the exact residual risk.
+
+Required negative security proofs are explicit acceptance-matrix rows. Record the prohibited behavior, permitted verification method, current result, and evidence without reading or reproducing secret values. An omitted row is missing evidence, not a pass.
 
 Do not extract or promote learning in this role. The controller may use the final report as evidence for an explicitly enabled, human-reviewed learning proposal.

@@ -20,6 +20,7 @@ Copy-Item "C:\path\to\matreshka-agent\plugins\matreshka-agent\codex-prompts\*.md
 
 | Slash command | Starts skill |
 | --- | --- |
+| `/prompts:matreshka-build` | `building-end-to-end` (Build End-to-End) |
 | `/prompts:matreshka-orchestrate` | `orchestrating-subagent-work` |
 | `/prompts:matreshka-spec` | `specifying-software-work` |
 | `/prompts:matreshka-plan` | `planning-software-work` |
