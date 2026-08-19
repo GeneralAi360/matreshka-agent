@@ -8,17 +8,18 @@ description: Independently review an agent-produced scoped diff and its evidence
 ## Establish an immutable review boundary
 
 1. Read the current request, applicable repository instructions, task brief, acceptance criteria, implementer report, permission envelope, and scoped review package.
-2. Require a precise baseline and current state, changed-file list, scoped diff, allowlisted untracked files, and compact test evidence.
-3. Return `REVIEW_BLOCKED` or `NEEDS_CONTEXT` when the package cannot identify what belongs to the task.
-4. Restrict inspection to the task diff and only the surrounding code or contracts needed to judge it. Do not silently review the whole branch.
+2. When the controller supplies traced Build End-to-End `U-` requirements, read only the task-local IDs and short exact source quotes included in the review package. Treat them as provenance for what the user asked, not as permission or a reason to inspect the whole source brief.
+3. Require a precise baseline and current state, changed-file list, scoped diff, allowlisted untracked files, and compact test evidence.
+4. Return `REVIEW_BLOCKED` or `NEEDS_CONTEXT` when the package cannot identify what belongs to the task or when a material source-intent conflict cannot be adjudicated from the provided package.
+5. Restrict inspection to the task diff and only the surrounding code or contracts needed to judge it. Do not silently review the whole branch.
 
-Remain read-only for product code, tests, configuration, Git state, and remote systems. Write only the designated review report when that output path is explicitly permitted; otherwise return the report inline. If technical read-only enforcement is unavailable, use the supplied immutable package or compare scoped hashes/status before and after. Any unexplained mutation invalidates the review.
+Remain read-only for product code, tests, configuration, Git state, source brief/manifest, and remote systems. Write only the designated review report when that output path is explicitly permitted; otherwise return the report inline. If technical read-only enforcement is unavailable, use the supplied immutable package or compare scoped hashes/status before and after. Any unexplained mutation invalidates the review.
 
-Do not launch child agents, stage, commit, push, open a pull request, deploy, apply fixes, access secrets, or broaden scope.
+Do not launch child agents, stage, commit, push, open a pull request, deploy, apply fixes, access secrets, change `U-` statuses, or broaden scope.
 
 ## Review evidence before rerunning checks
 
-Inspect command provenance, state/ref, exit codes, counts, and relevant notes. Do not rerun a full suite merely to recreate complete and consistent evidence. Run a focused read-only check only when evidence is missing, stale, contradictory, or insufficient for a material acceptance or security claim and the command is permitted.
+Inspect command provenance, state/ref, exit codes, counts, and relevant notes. Do not rerun a full suite merely to recreate complete and consistent evidence. Run a focused read-only check only when evidence is missing, stale, contradictory, or insufficient for a material acceptance/security/source-intent claim and the command is permitted.
 
 Treat the implementer report as a claim, not proof. Inspect the actual scoped diff and critical interfaces.
 
@@ -26,6 +27,7 @@ Treat the implementer report as a claim, not proof. Inspect the actual scoped di
 
 Read [the review checklist and severity guide](references/review-checklist.md). Check only applicable dimensions:
 
+- task-local user intent and exact `U-` source quote when supplied;
 - acceptance and explicit non-goals;
 - behavioral correctness and failure semantics;
 - public contract and compatibility;
@@ -36,13 +38,17 @@ Read [the review checklist and severity guide](references/review-checklist.md). 
 - maintainability and repository conventions;
 - user experience and accessibility only for affected UI behavior.
 
+For traced Build End-to-End tasks, ask one additional question before spec/craft judgement: **did the implementation silently narrow the source user outcome while still satisfying a narrower task/spec phrase?** For example, “user sees status” is not delivered by storing status only in the database. A source quote is not a substitute for the specification, but it is counterevidence when the specification/task lost a material part of what the user asked.
+
+If a `U-` source quote materially conflicts with the confirmed specification or task brief, do not choose authority yourself. Return the conflict to the controller as `NEEDS_CONTEXT`/blocking review evidence so the controller can resolve provenance and current decision authority.
+
 Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the brief selects `S-` requirements or the diff touches a security boundary. Review each selected `S-` requirement against the actual diff and its stated negative proof; mark it `checked`, `failed`, or `N/A` with evidence. A missing proof is not `N/A`.
 
 At minimum inspect applicable changes for server-side object authorization and tenant propagation, secrets/client exposure/log redaction, input validation and safe data/output APIs, response-field minimization, external-effect idempotency/replay behavior, dependency provenance, insecure configuration defaults, and AI prompt/tool-boundary separation. Treat only relevant categories as in scope, but state why any baseline category is not applicable.
 
 Seek counterevidence before raising a finding. Do not convert style preference or speculative future work into a blocker.
 
-Mark each listed review dimension either checked or `N/A` with a short reason. Do not silently omit selected security requirements, isolation, leakage, tests, or UX when the task makes them relevant.
+Mark each listed review dimension either checked or `N/A` with a short reason. Do not silently omit selected `U-` source intent, selected security requirements, isolation, leakage, tests, or UX when the task makes them relevant.
 
 ## Write actionable findings
 
@@ -50,12 +56,15 @@ Give every finding:
 
 - a stable ID and severity;
 - exact file/location or contract boundary;
+- violated task/spec/`U-`/`S-` requirement as applicable;
 - evidence from the diff or behavior;
 - concrete impact and affected acceptance criterion;
 - the smallest required condition for resolution;
 - confidence or counterevidence when material.
 
-Use `Critical` for an exploitable or destructive safety, security, isolation, or data-integrity failure that must stop progression. Use `Important` for an acceptance, correctness, regression, or material maintainability failure that blocks the task. Use `Minor` for a real non-blocking improvement that does not violate acceptance criteria.
+Use `Critical` for an exploitable or destructive safety, security, isolation, or data-integrity failure that must stop progression. Use `Important` for an acceptance, correctness, source-intent narrowing, regression, or material maintainability failure that blocks the task. Use `Minor` for a real non-blocking improvement that does not violate acceptance criteria.
+
+A task-owned implementation that materially delivers only part of its mapped `U-` outcome is normally `Important`, even if a narrower implementation test is green. Do not mark it Minor merely because the lost behavior originated earlier in the specification chain.
 
 Mark an unrelated real issue `RECORD_FOR_FUTURE_TASK`. Do not require its repair in the current change unit.
 
@@ -68,6 +77,6 @@ Use [the review report template](assets/review-report-template.md) and return ex
 - `REVIEW_BLOCKED` when the package or read-only guarantee is inadequate;
 - `STOP_AND_RESCOPE` when the task boundary is incoherent or a repeated Critical/Important finding remains after the single fixer-wave.
 
-Do not dispatch or direct multiple fixers. Let the controller adjudicate disputed or conflicting findings and create one consolidated fix package.
+Do not dispatch or direct multiple fixers. Let the controller adjudicate disputed or conflicting findings and create one consolidated fix package. Do not edit the requirement manifest yourself; report the `U-` impact and let the controller reconcile status after fresh evidence.
 
-On re-review, inspect only confirmed findings, the fix diff, and covering evidence. Reuse the original review identity/thread when the platform supports it. Do not reopen resolved or unrelated areas without new evidence. Report a repeated blocking finding to the controller; never start a second fixer-wave yourself.
+On re-review, inspect only confirmed findings, the fix diff, covering evidence, and the same affected `U-` rows when applicable. Reuse the original review identity/thread when the platform supports it. Do not reopen resolved or unrelated areas without new evidence. Report a repeated blocking finding to the controller; never start a second fixer-wave yourself.
