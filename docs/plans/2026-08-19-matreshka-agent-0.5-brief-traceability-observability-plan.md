@@ -1,6 +1,6 @@
 # Implementation Plan — Matreshka Agent 0.5 Brief Traceability & Observability
 
-- Status: `PHASED_PLAN`
+- Status: `IN_PROGRESS`
 - Specification: `docs/specs/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-spec.md`
 - Baseline: `7249a56e9afb5f5b70e56ddd0dc272e6bdab9ea0`
 - Branch: `dev/0.5-brief-traceability-observability`
@@ -12,18 +12,18 @@ Add a user-intent traceability layer and a safe live run projection on top of th
 
 ## Task map
 
-| Task | Result | Primary files | Gate |
-|---|---|---|---|
-| `T1` | Source-brief, `U-` manifest, G1–G4, observability contracts and templates | new references/assets under `building-end-to-end` | internal-link/package structure check |
-| `T2` | Build End-to-End passes original intent; controller owns materialization, gates, projection and recovery | `building-end-to-end/SKILL.md`, `orchestrating-subagent-work/SKILL.md` | focused scenario review |
-| `T3` | State machine and ledger make traceability/recovery explicit | controller contract, ledger contract/template | recovery + stale-dashboard adversarial cases |
-| `T4` | Planner/reviewer/verifier consume `U-` rows without weakening `S-` evidence | planning, review, verify contracts and evals | G2/G3/G4 negative scenarios |
-| `T5` | Complexity tiers and optional run-local interface map reduce task/context overhead without unsafe parallel writers | planning/controller references | task-sizing evals |
-| `T6` | 0.5 package/version/docs/evals/native smoke | manifests, validator, root evals, changelog, READMEs | full offline self-test + native handoff |
+| Task | Status | Result | Primary files | Gate |
+|---|---|---|---|---|
+| `T1` | `IMPLEMENTED` | Source-brief, `U-` manifest, G1–G4, observability contracts and templates | new references/assets under `building-end-to-end` | static/package validation pending |
+| `T2` | `IMPLEMENTED` | Build End-to-End passes original intent; controller owns materialization, gates, projection and recovery | `building-end-to-end/SKILL.md`, `orchestrating-subagent-work/SKILL.md` | behavior/native execution pending |
+| `T3` | `IMPLEMENTED` | State machine and ledger make traceability/recovery explicit | controller contract, permission/ledger contract/template | recovery/native execution pending |
+| `T4` | `IMPLEMENTED` | Planner/reviewer/verifier consume `U-` rows without weakening `S-` evidence; blind verifier mode is separate | planning, review, verify contracts and evals | behavior/native execution pending |
+| `T5` | `PARTIAL` | Complexity tier implemented; optional run-local interface map intentionally deferred until reinvention evidence justifies it | planning complexity reference + plan skill/evals | task-sizing behavior pending |
+| `T6` | `PENDING` | 0.5 package/version/docs/root evals/CI/native smoke | manifests, validator, root evals, changelog, READMEs, workflow | full offline self-test + native handoff |
 
 ## T1 — Contracts and artifacts
 
-Create:
+Implemented:
 
 - `skills/building-end-to-end/references/brief-traceability.md`
 - `skills/building-end-to-end/references/run-observability.md`
@@ -36,84 +36,110 @@ Rules:
 
 - source brief is redacted, immutable run state, not committed by default;
 - user-intent IDs use `U-` and security IDs remain `S-`;
-- only user authority can `DROPPED` a row;
+- only user authority can set `DROPPED`;
 - dashboard is a projection and has no authority;
 - dashboard does not itself authorize serving/opening/network activity.
 
 ## T2 — Entry/controller integration
 
-`building-end-to-end`:
+Implemented in `building-end-to-end`:
 
 - preserve the original user request and material product decisions for structured controller handoff;
-- do not write source-brief/run files itself;
-- do not widen permissions because a user selected a less interactive mode.
+- pass `SOURCE_BRIEF` without paraphrase loss and `SOURCE_DECISIONS` separately;
+- do not write source-brief/run files from the wrapper;
+- do not widen permissions because a user selected a less interactive mode or requested a dashboard.
 
-`orchestrating-subagent-work`:
+Implemented in `orchestrating-subagent-work`:
 
 - after bounded state-write permission and ledger initialization, materialize the source brief and requirement manifest;
 - run G1 before specification completion;
 - run G2 in a fresh independent context before planning;
 - run G3 before first implementation dispatch;
 - include task-local `U-` rows/quotes in implementation/review packages;
-- keep existing technical/security verification;
+- keep existing technical/security verification mandatory;
 - run G4 only afterward;
 - update dashboard projection only from controller-owned state;
 - block `COMPLETE` on material intent drift.
 
 ## T3 — Durable recovery
 
-Add explicit ledger fields for:
+Implemented:
 
+- explicit `ACCEPTANCE` state after technical `VERIFY` and before `FINISH`;
 - source brief path/hash;
 - requirement manifest path/hash;
 - `U-` status counts;
 - G1/G2/G3/G4 state;
 - blind-acceptance report;
 - dashboard projection path/status;
-- last verified checkpoint and exact next action.
+- last verified checkpoint and exact next action;
+- recovery order that validates actual state/evidence before ledger, source intent, and projections.
 
-Recovery order remains actual state/evidence first. Dashboard and requirement status claims are reconciled; neither is trusted blindly.
+Canonical path ambiguity was removed from the controller permission contract:
+
+```text
+docs/context.md | compatible existing CONTEXT.md
+docs/specs/
+docs/plans/
+docs/adr/
+docs/runs/<run-id>/progress.md
+.matreshka/runs/<run-id>/...
+.matreshka/learning/candidates/
+```
+
+Remaining README/documentation references to the older `docs/matreshka/...` wording are a T6 cleanup item, not controller authority.
 
 ## T4 — Downstream skill integration
 
-Planning:
+Planning now:
 
-- coverage matrix includes `U-` and `S-` rows;
-- no orphan `U-` and no unjustified product task.
+- includes `U-` and `S-` rows in coverage;
+- enforces G3 forward/backward mapping;
+- rejects orphan `U-` and unjustified product tasks.
 
-Review:
+Review now:
 
-- task review receives the exact relevant `U-` quote in addition to spec/task acceptance;
-- source requirement narrowing is Important unless explicit user/deferred authority says otherwise.
+- receives the exact relevant `U-` quote in addition to spec/task acceptance;
+- treats material source-requirement narrowing as Important unless a valid current user/deferred decision says otherwise;
+- never changes requirement status itself.
 
-Verification:
+Verification now:
 
-- existing technical/security verification remains unchanged in strength;
-- define a fresh-context blind-acceptance protocol with intentionally restricted inputs;
-- blind checker reports only observable delivery status and never fixes.
+- keeps normal technical/security verification unchanged in strength;
+- adds a separate fresh-context blind-acceptance mode with intentionally restricted inputs;
+- rejects contaminated blind packages that contain spec/manifest/task/report interpretations;
+- reports only observable delivery status and never fixes.
+
+Focused eval contracts were added for source-brief handoff, later-user-decision history, dashboard authority, blind drift detection, remote-only blind evidence, and blind-context contamination.
 
 ## T5 — Cost/complexity hardening
 
-After traceability is stable, add a complexity tier independent of execution profile:
+Implemented complexity tier independent of execution profile:
 
-- `T0`: no subtask decomposition when one context is safely sufficient;
+- `T0`: one direct reviewable task; no artificial decomposition;
 - `T1`: about 2–3 reviewable tasks;
 - `T2`: about 4–8;
 - `T3`: about 9–16;
-- above the safe ceiling: `SPLIT_REQUIRED`.
+- above the safe ceiling: `SPLIT_REQUIRED` / `DECISION_MAP_REQUIRED`.
 
-The numeric tier is a decomposition budget, not a safety profile. High-risk T0 work may still require maximum quality. Parallel writers remain disabled in one checkout; any future parallel writer support requires separately authorized isolated workspaces and additional evals.
+The numeric tier is a decomposition budget, not a safety profile. High-risk T0 work may still require maximum quality. Parallel writers remain disabled in one checkout.
 
-Add a controller-owned run-local interface map only if evidence shows cross-task reinvention is material.
+A mandatory merge pass removes task boundaries that add cold-start/context cost without independent review, rollback, evidence, security, or ownership value.
+
+Focused eval contracts cover long-spec T0, high-risk T0 + maximum quality, and >16 independent-task split behavior.
+
+Deferred by design: a controller-owned run-local interface map. Add it only if native/baseline runs show cross-task reinvention is a material cost/quality problem; do not create a new state artifact solely because Autopilot has one.
 
 ## T6 — Release hardening
 
 Before a `0.5.0` release claim:
 
-- resolve the existing `docs/...` vs `docs/matreshka/...` path inconsistency;
+- finish README/changelog cleanup for the unified canonical paths;
 - add CI for package validator/self-test/doctor;
+- update versioned manifests/marketplaces/validator only when the 0.5 scope is release-ready;
 - complete publisher/security metadata or explicitly keep development-preview status;
-- add workflow/adversarial cases for G1–G4, secret/private brief handling, stale dashboard, dropped-authority, and blind-check contamination;
+- add root workflow/adversarial cases for G1–G4, private brief handling, stale dashboard, dropped-authority, and blind-check contamination;
+- run package validator/self-test/doctor against the complete branch;
 - run native smoke tests on each claimed host;
 - compare plain-agent / minimal-controller / full-candidate cost and acceptance results.
 
@@ -124,7 +150,10 @@ Before a `0.5.0` release claim:
 - Requirement traceability starts acting as permission or business truth rather than provenance.
 - Dashboard requires new network/process authority that the user did not grant.
 - Adding traceability materially weakens technical/security verification or independent review.
+- Complexity-tier pressure would merge genuinely independent security/data boundaries merely to hit a number.
 
 ## Current execution checkpoint
 
-This development pass starts with `T1` and `T2`. `T3`–`T6` remain explicit subsequent tasks rather than being silently folded into the first change unit.
+`T1`–`T4` are implemented at the instruction/contract/eval-definition layer on the development branch. `T5` complexity tier is implemented; the interface-map half is deliberately evidence-gated. `T6` remains the release-hardening phase.
+
+No merge to `main`, package publication, deploy, or native-host success claim has been performed by this plan.
