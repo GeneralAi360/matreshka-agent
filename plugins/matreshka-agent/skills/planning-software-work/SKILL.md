@@ -8,7 +8,7 @@ description: >-
 
 Produce an executable plan, not implementation. Start only from a confirmed specification, an authoritative requirement, or a small change whose behavior and boundaries are already unambiguous.
 
-Read [task-decomposition.md](references/task-decomposition.md) before splitting work or validating the final task map. Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the specification has `S-` requirements or the task touches a security boundary. When the controller supplies Build End-to-End `U-` requirements, read [the brief traceability contract](../building-end-to-end/references/brief-traceability.md) and preserve those IDs/short source quotes through the plan without treating them as permission. Use [implementation-plan-template.md](assets/implementation-plan-template.md) when producing the plan artifact.
+Read [task-decomposition.md](references/task-decomposition.md) before splitting work or validating the final task map. Read [complexity-tiers.md](references/complexity-tiers.md) before deciding how many task boundaries the plan should contain. Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the specification has `S-` requirements or the task touches a security boundary. When the controller supplies Build End-to-End `U-` requirements, read [the brief traceability contract](../building-end-to-end/references/brief-traceability.md) and preserve those IDs/short source quotes through the plan without treating them as permission. Use [implementation-plan-template.md](assets/implementation-plan-template.md) when producing the plan artifact.
 
 ## Validate the planning input
 
@@ -49,6 +49,20 @@ Include every selected `S-` control, its negative security behavior, migration/r
 
 Stop if the matrix exposes an unresolved design gap, an orphan user requirement, or material product work with no traceable source.
 
+## Select a complexity tier before final task cutting
+
+Choose exactly one decomposition tier from `complexity-tiers.md` based on independently reviewable product/data/security boundaries, not specification length, file count, or desired speed:
+
+- `T0` — one direct reviewable task; do not manufacture decomposition;
+- `T1` — normally 2–3 tasks;
+- `T2` — normally 4–8 tasks;
+- `T3` — normally 9–16 tasks;
+- above the safe `T3` budget — `SPLIT_REQUIRED` / `DECISION_MAP_REQUIRED` before implementation.
+
+Record the tier and one-line reason in the plan. Treat counts as budgets rather than quotas: never invent tasks to fill a tier and never merge independent security/data outcomes merely to stay under it.
+
+Keep complexity tier separate from execution profile and permissions. `T0 + maximum quality` is valid for small high-risk work. Tier never authorizes parallel writers, Git, network, secrets, or remote actions.
+
 ## Decompose into reviewable tasks
 
 Make each task produce one independently reviewable result with:
@@ -66,6 +80,10 @@ For each security-relevant task, add the selected `S-` IDs, exact authorization/
 Treat file counts as risk signals. Prefer one to three production files and one to two test files, but split by independent outcomes and boundaries rather than arbitrary numbers.
 
 Return `SPLIT_REQUIRED` when one task combines migration with runtime, auth with UI, provider execution with persistence, execution with report assembly, separate security and experience designs, or several acceptance results that can pass independently.
+
+After the draft, run the mandatory merge pass from `complexity-tiers.md`: merge avoidable cold-start boundaries that share one result/seam and add no independent review, rollback, evidence, security, or ownership value. Then re-check the selected tier and explain any deliberate deviation.
+
+At T0 there is still one exact task brief, review policy, verification gate, and applicable G4; T0 is not permission to skip engineering discipline or let the controller self-review high-risk work.
 
 ## Order dependencies deliberately
 
@@ -94,6 +112,7 @@ Recommend maximum speed, balanced, or maximum quality from risk, while leaving f
 
 For each task and phase, propose:
 
+- selected complexity tier and task-count budget;
 - maximum unique roles and agent turns;
 - one fixer wave maximum;
 - broad suite/build timing;
@@ -102,7 +121,7 @@ For each task and phase, propose:
 - `AUDIT` threshold;
 - exact `STOP_AND_RESCOPE` condition.
 
-Never use a second fixer wave as planned capacity. Never plan parallel writers in one checkout. Mark independent read-only research or review as the only default parallel candidates.
+Never use a second fixer wave as planned capacity. Never plan parallel writers in one checkout. Mark independent read-only research or review as the only default parallel candidates. A dependency graph or “wave” label by itself never authorizes a second writer.
 
 ## Validate G3 and the complete plan
 
@@ -113,13 +132,14 @@ Before returning the plan:
 3. Check task dependencies for cycles and hidden shared-file conflicts.
 4. Check that every selected `S-` requirement has an explicit task owner, negative proof, and review/verification owner.
 5. For source-qualified Build End-to-End, check G3 in both directions: no live `IN_SPEC` `U-` row lacks a task/proof, and no product task lacks `U-`, `S-`, or named enabling justification.
-6. Check that focused tests fail for the intended reason and task gates do not repeat broad suites unnecessarily.
-7. Check that each task can stop without corrupting the next task.
-8. Remove placeholders that pretend to be facts, duplicated requirements, implementation prose, and optional work disguised as required scope.
+6. Re-run the complexity-tier merge pass and confirm the final task count fits the tier or has an explicit boundary-based reason; more than 16 trustworthy tasks returns `SPLIT_REQUIRED` unless the controller later approves a separately evidenced rescope.
+7. Check that focused tests fail for the intended reason and task gates do not repeat broad suites unnecessarily.
+8. Check that each task can stop without corrupting the next task.
+9. Remove placeholders that pretend to be facts, duplicated requirements, implementation prose, and optional work disguised as required scope.
 
 Return one of:
 
-- `PLAN_READY` with the saved complete plan and coverage matrix;
+- `PLAN_READY` with the saved complete plan, coverage matrix, selected complexity tier, and task budget;
 - `PLAN_READY_TO_SAVE` with the complete inline plan and exact intended path;
 - `NEEDS_CONTEXT` with one exact question;
 - `BLOCKED` with the design/traceability contradiction or missing authority;
