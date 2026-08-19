@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matreshka Run</title>
+<style>
+:root{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:light dark}body{margin:0;background:Canvas;color:CanvasText}.wrap{max-width:1100px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.muted{opacity:.7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0}.card{border:1px solid color-mix(in srgb,CanvasText 18%,transparent);border-radius:14px;padding:16px}.big{font-size:2rem;font-weight:700}.bar{height:9px;border-radius:99px;background:color-mix(in srgb,CanvasText 12%,transparent);overflow:hidden}.fill{height:100%;background:CanvasText;transition:width .2s}.rows{display:grid;gap:8px}.row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid color-mix(in srgb,CanvasText 10%,transparent)}code{font-size:.9em}.pill{border:1px solid color-mix(in srgb,CanvasText 20%,transparent);border-radius:99px;padding:4px 8px;font-size:.78rem;white-space:nowrap}.warn{font-weight:650}h1{margin:.1em 0}.empty{opacity:.6;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="app">Loading Matreshka run state…</div></div>
+<script>
+let lastGood=null;
+function pct(a,b){return b?Math.max(0,Math.min(100,Math.round(a/b*100))):0}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function yes(v){return v?"✓":"—"}
+function render(s){lastGood=s;const r=s.requirements||{},sec=s.security||{};const coverage=pct(r.verified||0,r.total||0);const auth=s.authority||{};const stages=(s.stages||[]).map(x=>`<div class="row"><span>${esc(x.title||x.id)}</span><span class="pill">${esc(x.status)}</span></div>`).join("");const tasks=(s.tasks||[]).map(x=>`<div class="row"><span><code>${esc(x.id)}</code> ${esc(x.title||"")}</span><span class="pill">${esc(x.status)}</span></div>`).join("");document.getElementById("app").innerHTML=`<div class="top"><div><div class="muted">Matreshka Agent · ${esc(s.runId)}</div><h1>${esc(s.title||"Build End-to-End")}</h1><div class="muted">${esc(s.mode)} · ${esc(s.profile)}</div></div><div class="muted">updated ${esc(s.updatedAt||"unknown")}</div></div><div class="grid"><div class="card"><div class="muted">Brief coverage</div><div class="big">${coverage}%</div><div class="bar"><div class="fill" style="width:${coverage}%"></div></div><div class="muted">${r.verified||0} / ${r.total||0} verified</div></div><div class="card"><div class="muted">Security proofs</div><div class="big">${sec.proved||0}/${sec.required||0}</div><div class="muted">blocked: ${sec.blocked||0}</div></div><div class="card"><div class="muted">Technical verification</div><div class="big">${esc(s.verification||"PENDING")}</div><div class="muted">Blind acceptance: ${esc(s.blindAcceptance||"PENDING")}</div></div><div class="card"><div class="muted">Authority</div><div>Local writes ${yes(auth.localWrites)} · Git ${yes(auth.gitHistory)} · Push ${yes(auth.gitRemote)}</div><div>Network ${yes(auth.network)} · Secrets ${yes(auth.secrets)} · Deploy ${yes(auth.deploy)}</div></div></div><div class="grid"><div class="card"><h2>Stages</h2><div class="rows">${stages||'<div class="empty">No stage state yet</div>'}</div></div><div class="card"><h2>Tasks</h2><div class="rows">${tasks||'<div class="empty">No task map yet</div>'}</div></div></div><div class="card"><div class="muted">Last verified checkpoint</div><div>${esc(s.lastVerifiedCheckpoint||"none yet")}</div><hr><div class="muted">Next action</div><div class="warn">${esc(s.nextAction||"not recorded")}</div></div>`}
+function apply(){if(window.MATRESHKA_RUN_STATE)render(window.MATRESHKA_RUN_STATE)}
+function poll(){const old=document.getElementById("state-poll");if(old)old.remove();const sc=document.createElement("script");sc.id="state-poll";sc.src="dashboard-state.js?t="+Date.now();sc.onload=apply;sc.onerror=()=>{if(!lastGood)document.getElementById("app").textContent="Dashboard state is unavailable. The engineering run may still continue; inspect the controller ledger."};document.body.appendChild(sc)}
+poll();setInterval(poll,10000);
+</script>
+</body>
+</html>
