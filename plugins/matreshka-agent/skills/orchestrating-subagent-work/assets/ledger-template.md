@@ -27,6 +27,7 @@
 | Safe isolation/worktree | {{YES_NO}} | {{DETAIL}} |
 | Role capability routing | {{YES_NO}} | {{DETAIL}} |
 | Turn/usage status | {{YES_NO}} | {{DETAIL}} |
+| Local dashboard display | {{YES_NO}} | {{DETAIL_WITHOUT_IMPLIED_AUTHORITY}} |
 
 - Mode status: `{{FULL_DEGRADED_INLINE_HANDOFF}}`
 - Missing guarantees: {{GAPS_OR_NONE}}
@@ -53,6 +54,23 @@
 - Unresolved placeholder count: {{PLACEHOLDER_COUNT}}
 - Decision rationale/approval: {{DECISION_RECORD}}
 
+## Source intent and traceability
+
+- Traceability mode: `{{NOT_APPLICABLE_INLINE_DURABLE}}`
+- Source brief: `{{SOURCE_BRIEF_PATH_OR_INLINE}}`
+- Source brief identity/hash: `{{SOURCE_BRIEF_IDENTITY_OR_NONE}}`
+- Requirement manifest: `{{REQUIREMENT_MANIFEST_PATH_OR_INLINE}}`
+- Requirement manifest identity/hash: `{{REQUIREMENT_MANIFEST_IDENTITY_OR_NONE}}`
+- User-intent counts: {{U_OPEN_IN_SPEC_IN_TASK_IMPLEMENTED_VERIFIED_PLACEHOLDER_DEFERRED_DROPPED}}
+- G1 clarification completeness: `{{PASS_BLOCKED_PENDING_NOT_APPLICABLE}}`
+- G2 brief-to-spec coverage: `{{PASS_BLOCKED_PENDING_NOT_APPLICABLE}}`
+- G2 report/evidence: {{G2_REPORT_OR_NONE}}
+- G3 requirement-task traceability: `{{PASS_BLOCKED_PENDING_NOT_APPLICABLE}}`
+- G3 report/evidence: {{G3_REPORT_OR_NONE}}
+- G4 blind acceptance: `{{PASS_PARTIAL_BLOCKED_PENDING_NOT_APPLICABLE}}`
+- G4 report/evidence: {{G4_REPORT_OR_NONE}}
+- Material source-intent drift: {{DRIFT_OR_NONE}}
+
 ## Durable project artifacts
 
 - Context path: `{{CONTEXT_PATH_OR_NONE}}`
@@ -60,7 +78,10 @@
 - ADR IDs: {{ADR_IDS_OR_NONE}}
 - Progress path: `{{PROGRESS_PATH_OR_INLINE}}`
 - Progress projection status: `{{CURRENT_STALE_MISSING_UNAUTHORIZED}}`
-- Last progress update event: {{EVENT_TIME_OR_NONE}}
+- Dashboard HTML path: `{{DASHBOARD_HTML_PATH_OR_NONE}}`
+- Dashboard state path: `{{DASHBOARD_STATE_PATH_OR_NONE}}`
+- Dashboard projection status: `{{CURRENT_STALE_MISSING_UNAUTHORIZED_UNSUPPORTED}}`
+- Last projection update event: {{EVENT_TIME_OR_NONE}}
 - Recorded source conflicts: {{CONFLICTS_OR_NONE}}
 
 ## Permission envelope
@@ -69,6 +90,7 @@
 - Inspect-only scope: {{INSPECT_ONLY}}
 - Forbidden scope: {{FORBIDDEN_SCOPE}}
 - Decision delegation: {{DECISIONS}}
+- Matreshka source-intent/run-state authority: {{TRACEABILITY_STATE_AUTHORITY}}
 - Local writes/commands: {{LOCAL_AUTHORITY}}
 - Capability tiers and highest-cost opt-in: {{ROLE_TIERS_TURN_LIMITS}}
 - Git workspace/history/remote: {{GIT_AUTHORITY}}
@@ -82,9 +104,9 @@
 
 ## Task map and phase budget
 
-| Task | Dependency | Status | Agent turns used/max | High-judgment turns |
-| --- | --- | --- | --- | --- |
-| {{TASK_ID}} | {{DEPENDENCY}} | {{STATUS}} | {{USED_MAX}} | {{USED}} |
+| Task | Dependency | U/S requirements | Status | Agent turns used/max | High-judgment turns |
+| --- | --- | --- | --- | --- | --- |
+| {{TASK_ID}} | {{DEPENDENCY}} | {{U_AND_S_IDS}} | {{STATUS}} | {{USED_MAX}} | {{USED}} |
 
 - Current task: `{{TASK_ID}}`
 - Total agent turns used/max: `{{USED_MAX}}`
@@ -100,6 +122,7 @@
 ## Review
 
 - Confirmed findings: {{FINDINGS_OR_NONE}}
+- Source-intent narrowing findings: {{U_REQUIREMENT_FINDINGS_OR_NONE}}
 - Rejected/adjacent findings: {{ADJUDICATION}}
 - Fixer wave used: {{YES_NO}}
 - Targeted re-review result: {{RESULT_OR_PENDING}}
@@ -111,8 +134,9 @@
 | `{{COMMAND}}` | {{EXIT}} | {{COUNTS}} | {{NOTE}} | {{STATE}} |
 
 - Pre-existing failures: {{FAILURES_OR_NONE}}
-- Verification status: `{{STATUS}}`
+- Technical/security verification status: `{{STATUS}}`
 - Quality-gate rows: {{PASS_FAIL_NOT_RUN_BLOCKED_SUMMARY}}
+- Blind acceptance follows technical/security verification when G4 applies; it never substitutes for these rows.
 
 ## Workspace and learning
 
@@ -126,8 +150,10 @@
 
 - Loaded contract/plugin version: `{{LOADED_CONTRACT_AND_PLUGIN_VERSION}}`
 - Version difference and in-memory compatibility: {{VERSION_DIFFERENCE_OR_NONE}}
-- Progress/ledger/actual-state mismatch: {{MISMATCH_OR_NONE}}
+- Source brief/manifest mismatch: {{INTENT_MISMATCH_OR_NONE}}
+- Progress/dashboard/ledger/actual-state mismatch: {{MISMATCH_OR_NONE}}
 - Last safe checkpoint: {{CHECKPOINT}}
+- Last verified checkpoint: {{VERIFIED_CHECKPOINT}}
 - Active turns: {{ACTIVE_OR_NONE}}
 - Stop reason: {{REASON_OR_NONE}}
 - Exact next action: {{ONE_ACTION}}
