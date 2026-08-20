@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design Product Experience · Matreshka Agent"
+  short_description: "Создать цельный UX/UI и DESIGN.md"
+  default_prompt: "Use $designing-product-experience to design or reconcile this product experience. If I do not know what I want, explore a few genuinely different UI directions, then produce or update the root DESIGN.md. Apply the Apple-inspired Matreshka design core without blindly imitating Apple visuals."
+policy:
+  allow_implicit_invocation: true
