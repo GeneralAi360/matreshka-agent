@@ -28,6 +28,11 @@ jobs:
           python3 -B plugins/matreshka-agent/scripts/validate_package.py
           plugins/matreshka-agent --marketplace-root . --self-test
 
+      - name: Matreshka 0.5 development component integrity
+        run: >-
+          python3 -B plugins/matreshka-agent/scripts/check_dev_05.py
+          plugins/matreshka-agent
+
       - name: Read-only package doctor
         run: >-
           python3 -B plugins/matreshka-agent/scripts/doctor.py
