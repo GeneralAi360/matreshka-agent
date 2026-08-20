@@ -28,6 +28,9 @@
 | Role capability routing | {{YES_NO}} | {{DETAIL}} |
 | Turn/usage status | {{YES_NO}} | {{DETAIL}} |
 | Local dashboard display | {{YES_NO}} | {{DETAIL_WITHOUT_IMPLIED_AUTHORITY}} |
+| Browser E2E | {{YES_NO_DEGRADED}} | {{FRAMEWORK_COMMAND_MODE_ISOLATION}} |
+| Browser screenshots/trace | {{YES_NO_DEGRADED}} | {{DETAIL}} |
+| Browser console/network inspection | {{YES_NO_DEGRADED}} | {{DETAIL}} |
 
 - Mode status: `{{FULL_DEGRADED_INLINE_HANDOFF}}`
 - Missing guarantees: {{GAPS_OR_NONE}}
@@ -72,6 +75,28 @@
 - G4 report/evidence: {{G4_REPORT_OR_NONE}}
 - Material source-intent drift: {{DRIFT_OR_NONE}}
 
+## Browser / E2E verification
+
+- Web/browser relevance: `{{YES_NO_NOT_APPLICABLE}}`
+- Existing E2E framework: `{{FRAMEWORK_OR_NONE}}`
+- Existing E2E command: `{{COMMAND_OR_NONE}}`
+- Browser mode: `{{PLAYWRIGHT_MANAGED_CHROME_CDP_HOST_BROWSER_TOOL_OTHER_UNAVAILABLE_NOT_APPLICABLE}}`
+- Isolated browser context: `{{YES_NO_DEGRADED_NOT_APPLICABLE}}`
+- Browser install/download required: `{{YES_NO}}`
+- Local app/process start required: `{{YES_NO}}`
+- Port bind/listen required: `{{YES_NO}}`
+- Test-data mutation required: `{{YES_NO}}`
+- Destructive test setup possible: `{{YES_NO}}`
+- Destructive test environment proof: {{ENVIRONMENT_MUTATION_AUTHORITY_ROLLBACK_OR_NONE}}
+- Automated E2E status: `{{PASS_FAIL_NOT_RUN_BLOCKED_NOT_APPLICABLE}}`
+- Automated E2E counts: {{PASSED_FAILED_SKIPPED_OR_NONE}}
+- Browser G4 status: `{{PASS_PARTIAL_FAIL_BLOCKED_HANDOFF_NOT_APPLICABLE}}`
+- Browser G4 target: {{SAFE_URL_OR_ENV_LABEL_OR_NONE}}
+- Browser evidence refs: {{SCREENSHOT_TRACE_VIDEO_REPORT_REFS_OR_NONE}}
+- Browser console findings: {{COUNT_SUMMARY_OR_NONE_UNAVAILABLE}}
+- Browser network findings: {{COUNT_SUMMARY_OR_NONE_UNAVAILABLE}}
+- Browser blocked authority/capability: {{MISSING_AUTHORITY_OR_CAPABILITY_OR_NONE}}
+
 ## Durable project artifacts
 
 - Context path: `{{CONTEXT_PATH_OR_NONE}}`
@@ -93,6 +118,12 @@
 - Decision delegation: {{DECISIONS}}
 - Matreshka source-intent/run-state authority: {{TRACEABILITY_STATE_AUTHORITY}}
 - Local writes/commands: {{LOCAL_AUTHORITY}}
+- Browser interaction: {{BROWSER_TARGET_MODE_INTERACTION_AUTHORITY}}
+- Local process/runtime: {{LOCAL_PROCESS_START_STOP_AUTHORITY}}
+- Port binding/listening: {{PORT_AUTHORITY}}
+- Browser/dependency installation: {{BROWSER_DEPENDENCY_INSTALL_AUTHORITY}}
+- Test-data mutation: {{TEST_DATA_MUTATION_AUTHORITY}}
+- Destructive E2E setup: {{DESTRUCTIVE_TEST_AUTHORITY}}
 - Capability tiers and highest-cost opt-in: {{ROLE_TIERS_TURN_LIMITS}}
 - Git workspace/history/remote: {{GIT_AUTHORITY}}
 - Dependencies/network: {{NETWORK_AUTHORITY}}
@@ -130,14 +161,15 @@
 
 ## Verification
 
-| Command | Exit | Counts | Relevant note | Baseline/current |
+| Command/interaction | Exit/signal | Counts | Relevant note | Baseline/current |
 | --- | --- | --- | --- | --- |
-| `{{COMMAND}}` | {{EXIT}} | {{COUNTS}} | {{NOTE}} | {{STATE}} |
+| `{{COMMAND_OR_INTERACTION}}` | {{EXIT_OR_SIGNAL}} | {{COUNTS}} | {{NOTE}} | {{STATE}} |
 
 - Pre-existing failures: {{FAILURES_OR_NONE}}
 - Technical/security verification status: `{{STATUS}}`
 - Quality-gate rows: {{PASS_FAIL_NOT_RUN_BLOCKED_SUMMARY}}
-- Blind acceptance follows technical/security verification when G4 applies; it never substitutes for these rows.
+- Required browser E2E rows: {{PASS_FAIL_NOT_RUN_BLOCKED_NOT_APPLICABLE_SUMMARY}}
+- Blind acceptance follows technical/security verification when G4 applies; browser G4 is one observation mode and never substitutes for required technical/security rows.
 
 ## Workspace and learning
 
@@ -152,6 +184,7 @@
 - Loaded contract/plugin version: `{{LOADED_CONTRACT_AND_PLUGIN_VERSION}}`
 - Version difference and in-memory compatibility: {{VERSION_DIFFERENCE_OR_NONE}}
 - Source brief/manifest mismatch: {{INTENT_MISMATCH_OR_NONE}}
+- Browser capability/evidence mismatch: {{BROWSER_MISMATCH_OR_NONE}}
 - Progress/dashboard/ledger/actual-state mismatch: {{MISMATCH_OR_NONE}}
 - Last safe checkpoint: {{CHECKPOINT}}
 - Last verified checkpoint: {{VERIFIED_CHECKPOINT}}
