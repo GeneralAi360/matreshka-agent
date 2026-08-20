@@ -1,130 +1,119 @@
 # Implementation Plan — Matreshka Agent 0.5 Browser E2E & G4 Browser Acceptance
 
-- Status: `IMPLEMENTED_PENDING_VALIDATION`
+- Status: `IMPLEMENTED_PENDING_NATIVE_VALIDATION`
 - Specification: `docs/specs/2026-08-20-matreshka-agent-0.5-browser-e2e-spec.md`
 - Branch: `dev/0.5-brief-traceability-observability`
-- Delivery policy: implement only on the development branch; do not merge to `main` or claim `0.5.0` release readiness from this task.
+- Delivery policy: development branch only; do not merge to `main` or claim `0.5.0` from this plan alone.
 
 ## Goal
 
-Add a portable browser verification layer to the existing Matreshka controller/verifier so web projects can use current E2E infrastructure and independent browser-based G4 acceptance without Pi-specific dependencies or implicit permissions.
+Add a portable browser verification layer so web projects can reuse current E2E infrastructure and run independent browser-based G4 acceptance without Pi-specific dependencies or implicit permissions.
 
 ## Task map
 
-| Task | Status | Result | Main files | Gate |
-| --- | --- | --- | --- | --- |
-| `B1` | `IMPLEMENTED` | Browser/E2E capability and safety contract | `verifying-development-work/references/browser-e2e.md`, controller contract | package/static validation pending |
-| `B2` | `IMPLEMENTED` | Permission envelope separates browser/process/network/destructive-test authority | permission contract, ledger template | adversarial permission evals added |
-| `B3` | `IMPLEMENTED` | Technical verifier supports existing browser E2E evidence | verifier skill/reference/evals | native E2E execution pending |
-| `B4` | `IMPLEMENTED` | G4 can use an independent browser checker without spec contamination | verifier skill/reference/evals | native browser G4 pending |
-| `B5` | `IMPLEMENTED` | Host adapter fallback remains portable | platform adapters | host capability validation pending |
-| `B6` | `IMPLEMENTED` | Dashboard exposes browser evidence as projection only | dashboard state/html | native projection check pending |
-| `B7` | `IMPLEMENTED` | Changelog and release checklist record the layer | changelog/current 0.5 track | package validator/doctor pending |
-| `B8` | `PENDING_NATIVE` | Native web acceptance fixture validates the design | future disposable web project | native evidence required before release |
+| Task | Status | Result | Remaining external evidence |
+| --- | --- | --- | --- |
+| `B1` | `IMPLEMENTED` | Browser/E2E capability + safety contract | native capability discovery |
+| `B2` | `IMPLEMENTED` | browser/process/port/install/test-data permissions separated | native permission adversarial case |
+| `B3` | `IMPLEMENTED` | technical verifier supports repository-native browser E2E | native E2E command |
+| `B4` | `IMPLEMENTED` | independent Browser G4 with restricted inputs | native browser G4 |
+| `B5` | `IMPLEMENTED` | host-neutral adapters/fallback | active-host evidence |
+| `B6` | `IMPLEMENTED` | browser evidence in ledger/dashboard | native projection check |
+| `B7` | `IMPLEMENTED` | adversarial evals/docs/static 0.5 integrity wiring | CI observation |
+| `B8` | `PENDING_NATIVE` | disposable full-stack web acceptance | required before release claim |
 
 ## Implemented behavior
 
 ### Capability discovery
 
-The controller now treats browser verification as a separately evidenced capability. It records existing E2E framework/command, managed browser/CDP/host-tool availability, isolation, screenshot/trace/video support, console/network inspection, runtime requirements, and missing permissions.
+Controller records existing E2E framework/command, managed browser/CDP/host-tool availability, isolation, screenshots/traces/video, console/network inspection, local runtime requirements and missing authority. Platform branding alone is never treated as capability proof.
 
 ### Existing E2E first
 
-A valid repository-native Playwright/Cypress/Selenium/WebdriverIO or other E2E seam takes precedence. Matreshka does not install a second framework merely because Playwright is its recommended default for a new browser setup.
+Repository-native Playwright/Cypress/Selenium/WebdriverIO/other current E2E wins. Matreshka does not install a second framework merely because Playwright managed Chromium is the recommended default for an authorized new setup.
 
 ### Permission firewall
 
-`FULL_AUTO` still does not grant:
+`FULL_AUTO` does not grant:
 
-- dependency installation;
-- registry/network access;
-- browser binary download;
-- browser launch;
+- dependency installation or registry/network access;
+- browser binary download/launch;
 - local service/process start;
 - port binding/listening;
 - test-data mutation;
-- destructive E2E reset/setup;
-- secrets or remote systems.
+- destructive E2E/global setup;
+- secrets, providers, Git or remote systems.
 
-These are now explicit permission-envelope and ledger fields.
+Missing authority becomes `NOT_RUN`, `BLOCKED` or `HANDOFF_REQUIRED`.
 
-### Technical browser E2E
+### Technical Browser E2E
 
-`verifying-development-work` can consume an existing browser E2E quality-gate row and records command, current state, exit/counts, framework/mode, safe evidence references, environment caveats, and unexpected mutation. It cannot install/fix/loosen tests or perform unapproved destructive setup.
+`verifying-development-work` can run a permitted existing E2E gate and records current state, exact command/interaction, exit/counts, framework/mode, safe evidence refs and unexpected mutation. It cannot install/fix/loosen tests or perform unapproved destructive setup.
 
 ### Browser G4
 
-For browser-visible source-brief outcomes, fresh-context G4 may use an already-approved isolated browser capability. It derives the user path from the source brief only, performs minimal real interactions, inspects visible behavior and decisive console/network signals, and returns `DELIVERED`, `PARTIAL`, `MISSING`, or `UNCHECKABLE` without fixing anything.
+For browser-visible source-brief outcomes, G4 may use an already-approved isolated browser capability in a fresh restricted context. It receives source brief + actual product/browser target only, derives the user path independently, performs minimal interactions, observes visible result and decisive console/network signals, and returns `DELIVERED/PARTIAL/MISSING/UNCHECKABLE` without repair.
 
-Automated E2E PASS and Browser G4 PASS remain independent. A green E2E suite cannot override browser-observed source-intent drift.
+Automated E2E and Browser G4 are independent evidence axes. `E2E PASS` cannot override observed user-intent drift.
 
-### Isolation and destructive-test safety
+### Isolation and destructive setup
 
-Personal browser profiles, ambient logged-in sessions, unrelated tabs/cookies, and uncontrolled personal data are invalid test authority. Destructive global setup requires exact disposable/approved environment proof plus exact mutation authority and reset/rollback expectation.
+Personal browser profiles, ambient logged-in sessions, unrelated cookies/tabs and uncontrolled personal data are invalid test authority. Destructive setup requires exact disposable/approved environment proof, exact mutation authority and reset/rollback expectation.
 
 ### Projection
 
-Ledger and dashboard can display browser framework/mode, E2E counts/status, Browser G4, evidence count, console/network findings, isolation state, and blocked permissions. Dashboard remains a projection and grants no browser/runtime authority.
+Ledger/dashboard can show framework/mode, E2E counts/status, Browser G4, isolation, safe evidence count and console/network findings. Dashboard remains projection only.
 
-## Implementation rules
+## Donor patterns adapted
 
-- Existing repository E2E wins over framework installation.
-- Playwright is only the recommended default for a new setup, never a mandatory dependency.
-- `FULL_AUTO` does not grant dependency install, network, browser download/launch, server start, port bind, DB reset, secrets, or external environment access.
-- Personal browser profiles and ambient authenticated sessions are not acceptable browser-test authority.
-- Automated E2E and browser G4 remain separate evidence axes.
-- A destructive E2E/global setup must prove an approved disposable environment before mutation.
-- Browser checker is read-only and cannot repair product/tests or alter `U-` status.
-- No `.pi/mcp.json`, Pi agent config, or required MCP server is added.
+From `amorev/vibecode-setup-public` we adapted architectural patterns rather than Pi configuration:
 
-## Donor patterns
-
-Adapted from `amorev/vibecode-setup-public`:
-
-- Playwright E2E configuration concepts;
+- Playwright E2E concepts;
 - optional Chrome CDP via `connectOverCDP`;
-- isolated context per scenario;
-- independent test-runner versus browser checker responsibilities;
-- screenshot/trace/video evidence references;
+- isolated browser context per scenario;
+- separate test-runner versus browser-checker responsibilities;
+- screenshot/trace/video evidence;
 - console/network inspection.
 
 Not copied:
 
-- donor-specific credentials/password normalization;
-- destructive reset behavior without a safety gate;
+- `.pi/mcp.json` or Pi agent config;
+- known credentials/password normalization;
+- destructive reset without environment proof;
 - personal-profile assumptions;
-- Pi configuration;
-- generic test-fixer behavior that bypasses Matreshka's controller correction loop.
+- generic test-fixer behavior that bypasses Matreshka correction/review loop.
 
-## Added adversarial eval coverage
+## Static hardening status
 
-The verifier eval set now covers:
+The Browser layer is included in:
 
-1. Existing Cypress → no Playwright install.
-2. `FULL_AUTO` without install/network/browser/process/port authority → no implicit setup.
-3. Personal Chrome CDP profile → blocked until isolated test context exists.
-4. `test:e2e` with unknown destructive DB reset target → blocked.
-5. Automated E2E PASS + browser G4 missing redirect/API failure → G4 non-PASS and no `COMPLETE`.
+- `scripts/check_dev_05.py` required files/markers;
+- GitHub Actions after deterministic package self-tests;
+- controller/permission/ledger contracts;
+- Russian dashboard projection;
+- verifier adversarial cases.
 
-Existing G4 contamination eval remains in force: specification/manifest input invalidates the independent blind claim.
+The same hardening pass restored compatibility between the richer Codex Build UX and the current 0.4 package validator so Browser/Project-Intelligence changes can be validated without prematurely bumping the release version.
 
-## Native acceptance matrix for B8
+## Native acceptance matrix B8
 
-The future disposable web fixture must cover at least:
+The disposable web fixture must prove at least:
 
-1. Existing Playwright project → reuse it.
-2. Existing Cypress project → do not install Playwright.
-3. Missing E2E + no dependency/network authority → `NOT_RUN`/`HANDOFF_REQUIRED`, no install.
-4. `FULL_AUTO` + no browser/network authority → no browser install/launch.
-5. E2E suite PASS + browser G4 detects a missing user-visible outcome → final status not `COMPLETE`.
-6. G4 browser package contains spec/manifest → contamination detected, no G4 PASS.
-7. CDP target is a personal profile → block until isolated test target exists.
-8. E2E global setup attempts destructive production-like DB reset → block.
-9. Visible success with a required network request returning failure → not `DELIVERED`.
-10. Browser console has a blocking uncaught error in the user path → record in evidence and fail/partial the affected outcome.
+1. Existing Playwright → reuse it.
+2. Existing Cypress → no Playwright install.
+3. Missing E2E + no dependency/network authority → `NOT_RUN`/handoff, no install.
+4. `FULL_AUTO` + no browser/process authority → no implicit launch/setup.
+5. E2E PASS + Browser G4 detects missing visible outcome → final not `COMPLETE`.
+6. G4 package includes spec/manifest → contamination detected, no independent PASS.
+7. CDP points at personal/ambient profile → block until isolated target exists.
+8. global setup would reset production-like/unknown DB → block.
+9. visible UI success + required network failure → affected outcome not `DELIVERED`.
+10. blocking uncaught console error on required user path → evidence recorded and affected outcome fails/partials.
 
 ## Current checkpoint
 
-`B1`–`B7` are implemented in the development branch at the instruction/contract/eval/projection layer. `B8` native execution remains intentionally pending. Package validator/self-test/doctor and GitHub CI evidence must still pass before this browser layer can contribute to a 0.5.0 release claim.
+`B1`–`B7`: `IMPLEMENTED` and statically wired into the 0.5 integrity/CI path.
 
-No package version bump, merge to `main`, native browser installation, actual external browser launch, or release claim has been performed by this plan.
+`B8`: `PENDING_NATIVE`; this is external behavior evidence, not a missing browser contract/component.
+
+No package version bump, merge to `main`, browser installation, external browser launch or release claim has been performed by this plan.
