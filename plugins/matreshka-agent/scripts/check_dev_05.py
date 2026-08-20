@@ -68,12 +68,12 @@ MARKERS = {
         "Project Intelligence",
     ),
     "skills/planning-software-work/SKILL.md": (
-        "PROJECT_TOPOLOGY",
+        "Project Topology",
         "AREA_CONTEXT_SET",
         "IC-",
         "RUNTIME_MAP",
-        "DOCUMENTATION_DRIFT_GATE",
-        "SPECIALIST_ROLE_ROUTING",
+        "documentation impact",
+        "Specialist routing",
     ),
     "skills/reviewing-agent-work/SKILL.md": (
         "frozen cross-area",
