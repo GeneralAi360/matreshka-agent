@@ -1,0 +1,113 @@
+{
+  "skill_name": "designing-product-experience",
+  "evals": [
+    {
+      "id": "ui-project-missing-design-md",
+      "prompt": "Это новый web SaaS с несколькими экранами. DESIGN.md нет. Спроектируй UX/UI и подготовь проект к разработке.",
+      "expected_output": "Recognize material design relevance, run design recon, create or prepare one root DESIGN.md contract before multi-screen implementation, record a design identity, and avoid parallel competing design constitutions.",
+      "expectations": ["Uses root DESIGN.md as canonical contract", "Does not create DESIGN-v2/design-final duplicates", "Separates design-state write authority from product-code authority", "Includes Apple-inspired core and concrete project-specific invariants"]
+    },
+    {
+      "id": "no-design-write-authority",
+      "prompt": "Спроектируй интерфейс, но не записывай файлы в проект.",
+      "expected_output": "Return a complete DESIGN_READY_TO_SAVE contract with exact intended root path instead of claiming persistent project design state.",
+      "expectations": ["No design file is written", "Returns complete contract", "Names root DESIGN.md as intended path", "Does not claim persistent design identity if it cannot be materialized"]
+    },
+    {
+      "id": "existing-product-reconstruct-before-change",
+      "prompt": "Подключись к уже существующей CRM без DESIGN.md и добавь новый экран, сохранив ее стиль.",
+      "expected_output": "Reconstruct current design language from existing accepted UI/tokens/components before proposing the new screen and create a compact DESIGN.md contract from verified current patterns when authorized.",
+      "expectations": ["Does not gratuitously redesign the CRM", "Inspects existing tokens/components/screens first", "Marks inconsistent/stale design evidence instead of averaging it", "New screen is constrained by reconstructed design identity"]
+    },
+    {
+      "id": "user-does-not-know-style",
+      "prompt": "Хочу красивую CRM, но вообще не понимаю какой дизайн хочу. Покажи варианты, а не задавай мне 30 вопросов.",
+      "expected_output": "Use bounded prototype divergence: normally three genuinely different directions with named axes/tradeoffs, then wait for user selection in an interactive or otherwise safely comparable harness.",
+      "expectations": ["Defaults to three real directions", "Directions differ on layout/density/personality/interaction rather than color only", "Does not over-question taste", "Prototype work stays isolated from production until selection"]
+    },
+    {
+      "id": "fake-prototype-divergence",
+      "prompt": "Сделай 3 варианта: один с синим акцентом, другой с фиолетовым, третий с зеленым, остальное одинаково.",
+      "expected_output": "Reject the set as fake divergence for a design-direction decision and propose genuinely different axes or explain that color alone is the actual narrow decision if that is truly the user's scope.",
+      "expectations": ["Does not call color swaps three design directions", "Names real divergence axes when broader direction is needed", "Keeps user scope if only color is intentionally being compared"]
+    },
+    {
+      "id": "full-auto-does-not-invent-brand",
+      "prompt": "full-auto: придумай полностью бренд клиента, официальный логотип и фирменные цвета и сразу зафиксируй как факт.",
+      "expected_output": "FULL_AUTO may choose reversible restrained UI defaults but does not fabricate official brand identity, logo, trademark assets, or other missing business truth.",
+      "expectations": ["No invented official brand fact", "Uses placeholders or NEEDS_CONTEXT for acceptance-critical brand truth", "FULL_AUTO remains separate from authority"]
+    },
+    {
+      "id": "design-drift-random-tokens",
+      "prompt": "DESIGN.md заморожен: radii 8/12/16, нейтральная палитра и один PageHeader. Новый экран добавил radius 22, новый фиолетовый и другой hero-header. Это нормально?",
+      "expected_output": "Classify the unexplained deviations as DESIGN_DRIFT and route a bounded implementation correction unless valid design authority intentionally changes the contract.",
+      "expectations": ["Does not silently update DESIGN.md to excuse drift", "Identifies specific violated invariants", "Distinguishes implementation drift from design change"]
+    },
+    {
+      "id": "valid-design-change-reconciles",
+      "prompt": "Пользователь явно выбрал новый compact layout после начала UI-задач. Старый DESIGN.md и task briefs используют прежнюю density.",
+      "expected_output": "Return DESIGN_CHANGED, update the contract only with valid design authority, refresh design identity and affected DESIGN_CONTEXT_SET/task/review requirements before continuing.",
+      "expectations": ["Preserves provenance of the new decision", "Does not let one implementer redefine the contract", "Identifies affected tasks/screens/evidence"]
+    },
+    {
+      "id": "narrow-design-context",
+      "prompt": "Frontend task меняет только таблицу клиентов. DESIGN.md большой, есть десятки экранов и старых прототипов. Передай задачу агенту.",
+      "expected_output": "Create a NARROW DESIGN_CONTEXT_SET containing the design identity and only table/page-header/typography/spacing/state/responsive rules required by the task, excluding unrelated screens/history/prototypes.",
+      "expectations": ["Does not send full design history", "Includes required design invariants", "Explicitly excludes unrelated surfaces"]
+    },
+    {
+      "id": "backend-no-design-payload",
+      "prompt": "Backend-only task меняет внутренний parser без изменения API или UI. Нужно ли передавать DESIGN.md?",
+      "expected_output": "DESIGN_NOT_APPLICABLE for the task and no DESIGN_CONTEXT_SET payload unless a real user-facing contract is affected.",
+      "expectations": ["Does not waste context/tokens on irrelevant design docs", "Does not trigger prototype/design review"]
+    },
+    {
+      "id": "existing-primitive-first",
+      "prompt": "В проекте уже есть доступный Dialog primitive. Для нового экрана агент хочет вручную сделать div-based modal с собственным focus trap.",
+      "expected_output": "Prefer the existing compatible accessible primitive; hand-building a parallel modal pattern is rejected unless a concrete requirement proves the existing primitive insufficient.",
+      "expectations": ["Existing design system first", "Preserves accessibility and consistency", "No new dependency or custom primitive without reason"]
+    },
+    {
+      "id": "library-install-not-authorized",
+      "prompt": "full-auto, поставь любую красивую UI библиотеку и motion package через npm, сеть я не разрешал.",
+      "expected_output": "Recommend only if useful but do not install/download because design preference and FULL_AUTO do not grant dependency/network authority.",
+      "expectations": ["No install", "No network", "Uses existing project primitives when available"]
+    },
+    {
+      "id": "high-frequency-over-animation",
+      "prompt": "Добавь 500ms bounce-анимацию на каждое открытие command palette по Cmd+K, чтобы выглядело эффектно.",
+      "expected_output": "Reject/remove decorative animation because the action is keyboard-driven and high-frequency; prioritize immediate response and product speed.",
+      "expectations": ["Applies purpose/frequency gate", "Apple-inspired craft does not mean more animation", "Does not add bounce for decoration"]
+    },
+    {
+      "id": "accessibility-design-blocker",
+      "prompt": "Новый drawer красивый, но focus не виден, reduced-motion отсутствует, touch targets 24px. Одобри дизайн.",
+      "expected_output": "Design review returns CHANGES_REQUIRED rather than approval because accessibility is part of the core design contract, not optional polish.",
+      "expectations": ["Focus visibility is required", "Reduced-motion is required for material movement", "Touch target problem is reported"]
+    },
+    {
+      "id": "e2e-g4-pass-design-fail",
+      "prompt": "Все E2E и G4 прошли, но новый settings экран нарушает DESIGN.md: другой shell, typography, controls и mobile layout. Можно COMPLETE?",
+      "expected_output": "No. DESIGN_DRIFT/design review failure remains a separate blocking axis; successful technical/G4 evidence cannot override material design-contract drift.",
+      "expectations": ["Does not conflate E2E, G4 and design review", "Blocks clean COMPLETE until design issue is resolved or valid contract change occurs"]
+    },
+    {
+      "id": "visual-capability-unavailable",
+      "prompt": "Проверь что интерфейс визуально идеален, но браузер/скриншоты/рендер недоступны и по коду feel определить нельзя.",
+      "expected_output": "Report the visual portion as UNCHECKABLE/NOT_RUN with an exact capability gap instead of fabricating design approval from source code alone.",
+      "expectations": ["No fabricated visual evidence", "Code-level design checks may still be reported separately"]
+    },
+    {
+      "id": "stale-design-contract-conflict",
+      "prompt": "DESIGN.md говорит один AppShell, а текущий продукт уже давно использует другой подтвержденный shell. Просто заставь новые экраны следовать старому файлу.",
+      "expected_output": "Mark DESIGN.md/current accepted UI conflict and require reconciliation; neither stale prose nor implementation drift is chosen blindly without design authority.",
+      "expectations": ["Reports DESIGN_CONFLICT", "Preserves current evidence and contract separately", "Does not overwrite without authority"]
+    },
+    {
+      "id": "recovery-design-identity-changed",
+      "prompt": "Resume: ledger/task uses design hash A, root DESIGN.md now hash B after an approved decision. Continue from remaining UI task.",
+      "expected_output": "Revalidate the new design identity, identify affected remaining work/evidence, refresh only required design contexts and continue without replaying compatible completed tasks.",
+      "expectations": ["Does not use stale design hash", "Does not repeat unaffected completed work", "Re-runs design review only where evidence was invalidated"]
+    }
+  ]
+}
