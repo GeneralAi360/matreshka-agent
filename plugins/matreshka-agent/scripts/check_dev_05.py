@@ -76,7 +76,7 @@ MARKERS = {
         "SPECIALIST_ROLE_ROUTING",
     ),
     "skills/reviewing-agent-work/SKILL.md": (
-        "cross-area interface",
+        "frozen cross-area",
         "IC-",
         "source-intent narrowing",
     ),
