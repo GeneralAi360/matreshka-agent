@@ -11,7 +11,13 @@ window.MATRESHKA_RUN_STATE = {
     "network": false,
     "secrets": false,
     "remoteSystems": false,
-    "deploy": false
+    "deploy": false,
+    "browserInteraction": false,
+    "localProcess": false,
+    "portBind": false,
+    "dependencyInstall": false,
+    "testDataMutation": false,
+    "destructiveTestSetup": false
   },
   "stages": [],
   "tasks": [],
@@ -24,6 +30,21 @@ window.MATRESHKA_RUN_STATE = {
     "dropped": 0
   },
   "security": {"required": 0, "proved": 0, "blocked": 0},
+  "browser": {
+    "relevant": false,
+    "framework": null,
+    "mode": "NOT_APPLICABLE",
+    "isolatedContext": "NOT_APPLICABLE",
+    "e2eStatus": "NOT_APPLICABLE",
+    "e2ePassed": 0,
+    "e2eFailed": 0,
+    "e2eSkipped": 0,
+    "g4Status": "NOT_APPLICABLE",
+    "consoleFindings": 0,
+    "networkFindings": 0,
+    "evidenceCount": 0,
+    "blockedReason": null
+  },
   "verification": "PENDING",
   "blindAcceptance": "PENDING",
   "lastVerifiedCheckpoint": null,
