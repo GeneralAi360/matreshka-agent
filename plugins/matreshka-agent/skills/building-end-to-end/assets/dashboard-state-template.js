@@ -1,6 +1,7 @@
 window.MATRESHKA_RUN_STATE = {
   "runId": "{{RUN_ID}}",
   "title": "{{GOAL}}",
+  "scenario": "{{LAUNCH_SCENARIO}}",
   "mode": "{{INTERACTION_MODE}}",
   "profile": "{{EXECUTION_PROFILE}}",
   "authority": {
