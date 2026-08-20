@@ -2,6 +2,10 @@
 
 - Status: `{{STATUS}}`
 - Stable thread ID: `{{THREAD_ID}}`
+- Role archetype: `{{ROLE_ARCHETYPE}}`
+- Primary area: `{{AREA_ID}}`
+- Cross-area contracts: {{IC_IDS_AND_HASHES_OR_NONE}}
+- Context guarantee: `{{NARROW_DEGRADED_CONTEXT_TOO_BROAD}}`
 - Task baseline: `{{BASELINE}}`
 - Current state or commit: `{{CURRENT_STATE}}`
 
@@ -17,6 +21,12 @@
 
 - `{{PATH_OR_DIFF_RANGE}}` — {{CHANGE_OR_REVIEW_NOTE}}
 
+## Interface/runtime observations
+
+- Frozen interface contract preserved: {{YES_NO_NA_WITH_EVIDENCE}}
+- Interface mismatch requiring controller reconciliation: {{DETAIL_OR_NONE}}
+- Runtime ownership/status issue: {{DETAIL_OR_NONE}}
+
 ## Evidence
 
 | Command/check | Exit | Counts | Relevant note |
@@ -28,6 +38,12 @@
 | Severity | Location | Requirement | Evidence | Minimal boundary |
 | --- | --- | --- | --- | --- |
 | {{CRITICAL_IMPORTANT_MINOR_OR_NONE}} | {{LOCATION}} | {{REQUIREMENT}} | {{EVIDENCE}} | {{BOUNDARY}} |
+
+## Documentation impact candidate
+
+- Durable truth changed: {{INTERFACE_TOPOLOGY_RUNTIME_DATA_SECURITY_ENV_WORKFLOW_OR_NONE}}
+- Candidate docs: {{PATHS_OR_NONE}}
+- This is a candidate only; the controller runs the post-verification documentation drift gate.
 
 ## Concerns and assumptions
 
