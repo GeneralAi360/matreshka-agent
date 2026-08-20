@@ -12,6 +12,12 @@ All notable changes to Matreshka Agent are recorded here.
 - A separate fresh-context blind-acceptance mode in `verifying-development-work`; technical/security verification remains mandatory and is not replaced by G4.
 - Optional dependency-free local dashboard projection with brief coverage, security-proof coverage, verification/blind status, authority summary, stages/tasks, checkpoint, and next action.
 - Complexity tiers `T0`–`T3` as decomposition budgets independent from execution profile and permission authority.
+- Simple public Build End-to-End modes `INTERVIEW`, `ASSISTED`, and `FULL_AUTO`, plus project scenarios `NEW_PROJECT`, `CONTINUE_PROJECT`, and `EXISTING_PROJECT`.
+- Browser/E2E capability preflight that detects existing repository E2E, managed browser, optional Chrome CDP, host browser tooling, isolation, console/network inspection, runtime needs, and missing permissions.
+- Browser verification contract that prefers existing Playwright/Cypress/Selenium/WebdriverIO infrastructure and recommends Playwright managed Chromium only for a separately authorized new setup.
+- Browser G4 blind acceptance for user-visible web outcomes, with isolated browser observation, minimal screenshots/traces, and decisive console/network evidence where supported.
+- Separate permission fields for browser interaction, local process/runtime, port binding, browser/dependency installation, test-data mutation, and destructive E2E setup.
+- Browser verification summaries in the ledger and live dashboard projection.
 - GitHub Actions package validation running the deterministic validator self-tests and read-only doctor on repository changes.
 
 ### Changed
@@ -19,14 +25,19 @@ All notable changes to Matreshka Agent are recorded here.
 - Controller state now includes an `ACCEPTANCE` stage between technical `VERIFY` and `FINISH` when source-intent G4 applies.
 - Planning maps `U-` and `S-` rows bidirectionally and rejects orphan requirements or unjustified product tasks.
 - Review packages may carry task-local exact source quotes to detect silent narrowing without forwarding the whole source brief.
-- Recovery validates actual state/evidence, ledger, source brief/requirement manifest and G1–G4 before human projections.
+- Recovery validates actual state/evidence, ledger, source brief/requirement manifest, browser evidence, and G1–G4 before human projections.
+- Public interaction names are kept separate from internal controller autonomy: `FULL_AUTO` never means `EXTENDED_AUTONOMOUS` and legacy `AUTONOMOUS_LOCAL` is compatibility/internal terminology only.
+- Existing browser E2E is now preferred over installing a second framework; automated E2E and browser G4 are separate evidence axes.
 - Canonical default paths in the controller permission contract are unified under `docs/context.md`, `docs/specs/`, `docs/plans/`, `docs/adr/`, `docs/runs/`, and `.matreshka/` internal state rather than parallel `docs/matreshka/` trees.
 
 ### Security
 
-- Source briefs, requirement manifests, and dashboards are explicitly untrusted data/projections and cannot expand authority.
+- Source briefs, requirement manifests, dashboards, browser screenshots/traces, console/network summaries, and other run evidence are explicitly untrusted data/projections and cannot expand authority.
 - Only valid user decision authority may mark a `U-` requirement `DROPPED`.
 - Dashboard creation does not authorize a local server, listener, browser launch, network access, Git action, or publication.
+- `FULL_AUTO` does not authorize dependency installation, browser download/launch, local service start, port binding, test-data mutation, destructive E2E setup, secrets, or remote actions.
+- CDP/host browser acceptance cannot use a personal browser profile, ambient authenticated session, unrelated tabs/cookies, or uncontrolled personal data as test authority.
+- E2E/global setup that resets, seeds, truncates, recreates, or migrates data requires exact disposable/approved environment proof and explicit mutation authority; `localhost` or a `test:e2e` command name is not sufficient.
 - Blind acceptance rejects contaminated input packages that include specification/manifest/task/report interpretations.
 - Existing Git, network, secret, provider, deploy, destructive, learning-promotion, independent-review, and Security-by-Design boundaries remain in force.
 
@@ -34,6 +45,7 @@ All notable changes to Matreshka Agent are recorded here.
 
 - Complete README/root workflow-eval/version metadata updates and run the full package validator/self-test/doctor against the finished branch.
 - Obtain native installation and behavior evidence on every claimed host.
+- Run a disposable web acceptance fixture covering existing Playwright/Cypress reuse, missing install authority, CDP isolation, destructive-test firewall, and the case where automated E2E passes but browser G4 correctly fails.
 - Benchmark plain-agent, minimal-controller, and full Matreshka variants for requirement coverage, acceptance quality, agent turns, wall time, and token usage where available.
 
 ## 0.4.0 - 2026-08-04
