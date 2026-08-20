@@ -5,7 +5,8 @@
 - Contract version: `{{CONTRACT_VERSION}}`
 - Plugin version: `{{PLUGIN_VERSION}}`
 - Run ID: `{{RUN_ID}}`
-- Updated at: `{{TIMESTAMP}}`
+- Updated at: `{{TIMESTAMP_ISO8601}}`
+- User-facing language: `{{USER_LANGUAGE}}`
 - Project real root: `{{PROJECT_ROOT}}`
 
 ## Baseline
@@ -27,6 +28,7 @@
 | Safe isolation/worktree | {{YES_NO}} | {{DETAIL}} |
 | Role capability routing | {{YES_NO}} | {{DETAIL}} |
 | Turn/usage status | {{YES_NO}} | {{DETAIL}} |
+| Token counters | {{YES_NO_PARTIAL}} | {{COUNTER_SOURCE_AND_SEMANTICS}} |
 | Local dashboard display | {{YES_NO}} | {{DETAIL_WITHOUT_IMPLIED_AUTHORITY}} |
 | Browser E2E | {{YES_NO_DEGRADED}} | {{FRAMEWORK_COMMAND_MODE_ISOLATION}} |
 | Browser screenshots/trace | {{YES_NO_DEGRADED}} | {{DETAIL}} |
@@ -34,6 +36,26 @@
 
 - Mode status: `{{FULL_DEGRADED_INLINE_HANDOFF}}`
 - Missing guarantees: {{GAPS_OR_NONE}}
+
+## Observability metrics
+
+- Timing status: `{{EXACT_PARTIAL_UNAVAILABLE}}`
+- Run started at: `{{STARTED_AT_ISO8601_OR_NONE}}`
+- Run finished at: `{{FINISHED_AT_ISO8601_OR_NONE}}`
+- Wall-clock elapsed: `{{ELAPSED_SECONDS_OR_NONE}}`
+- Implementation/fix/reverify elapsed: `{{IMPLEMENTATION_SECONDS_OR_NONE}}`
+- Timing source/limitations: {{TIMING_SOURCE_OR_LIMITATION}}
+- Token usage status: `{{EXACT_PARTIAL_UNAVAILABLE}}`
+- Total tokens: `{{TOTAL_TOKENS_OR_NONE}}`
+- Observed partial tokens: `{{OBSERVED_TOKENS_OR_NONE}}`
+- Input tokens: `{{INPUT_TOKENS_OR_NONE}}`
+- Output tokens: `{{OUTPUT_TOKENS_OR_NONE}}`
+- Reasoning tokens: `{{REASONING_TOKENS_OR_NONE}}`
+- Cached tokens: `{{CACHED_TOKENS_OR_NONE}}`
+- Usage counter source/semantics: {{USAGE_SOURCE_OR_LIMITATION}}
+- Agent/controller turns used: `{{TURNS_USED}}`
+
+Never estimate unavailable timing or token totals. `PARTIAL` token usage is an exact observed subset, not the total. Do not add repeated cumulative counters twice.
 
 ## Skill source map
 
@@ -165,6 +187,7 @@
 | --- | --- | --- | --- | --- |
 | `{{COMMAND_OR_INTERACTION}}` | {{EXIT_OR_SIGNAL}} | {{COUNTS}} | {{NOTE}} | {{STATE}} |
 
+- Latest applicable test-gate counts: {{PASSED_FAILED_SKIPPED_OR_NONE}}
 - Pre-existing failures: {{FAILURES_OR_NONE}}
 - Technical/security verification status: `{{STATUS}}`
 - Quality-gate rows: {{PASS_FAIL_NOT_RUN_BLOCKED_SUMMARY}}
@@ -185,6 +208,7 @@
 - Version difference and in-memory compatibility: {{VERSION_DIFFERENCE_OR_NONE}}
 - Source brief/manifest mismatch: {{INTENT_MISMATCH_OR_NONE}}
 - Browser capability/evidence mismatch: {{BROWSER_MISMATCH_OR_NONE}}
+- Timing/usage mismatch: {{OBSERVABILITY_MISMATCH_OR_NONE}}
 - Progress/dashboard/ledger/actual-state mismatch: {{MISMATCH_OR_NONE}}
 - Last safe checkpoint: {{CHECKPOINT}}
 - Last verified checkpoint: {{VERIFIED_CHECKPOINT}}
