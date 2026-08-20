@@ -96,11 +96,12 @@ MARKERS = {
         "Карта проекта",
         "Техническая проверка",
         "Независимая приёмка G4",
+        "s.intelligence",
     ),
     "skills/building-end-to-end/assets/dashboard-state-template.js": (
         '"timing"',
         '"usage"',
-        '"projectIntelligence"',
+        '"intelligence"',
         '"browser"',
     ),
     "skills/orchestrating-subagent-work/assets/ledger-template.md": (
