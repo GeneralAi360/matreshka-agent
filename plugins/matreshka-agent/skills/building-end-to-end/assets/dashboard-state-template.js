@@ -41,6 +41,20 @@ window.MATRESHKA_RUN_STATE = {
     "turnsUsed": 0,
     "source": null
   },
+  "intelligence": {
+    "topologyStatus": "NOT_APPLICABLE",
+    "areaCount": 0,
+    "affectedAreas": [],
+    "currentArea": null,
+    "interfacesTotal": 0,
+    "interfacesFrozen": 0,
+    "interfaceStatus": "NOT_APPLICABLE",
+    "runtimeStatus": "NOT_APPLICABLE",
+    "runtimeServices": 0,
+    "docsStatus": "PENDING",
+    "specialist": null,
+    "contextGuarantee": "NOT_APPLICABLE"
+  },
   "stages": [],
   "tasks": [],
   "requirements": {
