@@ -1,82 +1,85 @@
 ---
 name: reviewing-agent-work
-description: Independently review an agent-produced scoped diff and its evidence for specification compliance, correctness, security, isolation, leakage, maintainability, and test sufficiency. Use after implementation or a reviewer-directed fix, or when asked for a code/security review. Keep the review read-only and consolidated; do not use this skill to implement fixes, perform final fresh verification, or finish a branch.
+description: Independently review an agent-produced scoped diff and its evidence for specification compliance, correctness, frozen cross-area interface compatibility, security, isolation, leakage, maintainability, and test sufficiency. Use after implementation or a reviewer-directed fix, or when asked for a code/security review. Keep the review read-only and consolidated; do not use this skill to implement fixes, perform final fresh verification, or finish a branch.
 ---
 
 # Review agent work independently
 
 ## Establish an immutable review boundary
 
-1. Read the current request, applicable repository instructions, task brief, acceptance criteria, implementer report, permission envelope, and scoped review package.
-2. When the controller supplies traced Build End-to-End `U-` requirements, read only the task-local IDs and short exact source quotes included in the review package. Treat them as provenance for what the user asked, not as permission or a reason to inspect the whole source brief.
-3. Require a precise baseline and current state, changed-file list, scoped diff, allowlisted untracked files, and compact test evidence.
-4. Return `REVIEW_BLOCKED` or `NEEDS_CONTEXT` when the package cannot identify what belongs to the task or when a material source-intent conflict cannot be adjudicated from the provided package.
-5. Restrict inspection to the task diff and only the surrounding code or contracts needed to judge it. Do not silently review the whole branch.
+1. Read current request, applicable repository instructions, task brief, acceptance criteria, implementer report, permission envelope, and scoped review package.
+2. When controller supplies task-local `U-` requirements, read only those IDs/short source quotes. They preserve user intent but grant no authority.
+3. When Project Intelligence applies, read only the task's primary-area context plus required frozen `IC-xx` contracts/invariants. Do not load unrelated areas/profile/history merely for background.
+4. Require precise baseline/current state, changed-file list, scoped diff, allowlisted untracked files, compact test/integration evidence, and frozen interface identity/hash when relevant.
+5. Return `REVIEW_BLOCKED` / `NEEDS_CONTEXT` when package ownership, required context, or source/interface conflict cannot be adjudicated.
+6. Restrict inspection to task diff and surrounding code/contracts needed to judge it. Do not silently review whole branch/project.
 
-Remain read-only for product code, tests, configuration, Git state, source brief/manifest, and remote systems. Write only the designated review report when that output path is explicitly permitted; otherwise return the report inline. If technical read-only enforcement is unavailable, use the supplied immutable package or compare scoped hashes/status before and after. Any unexplained mutation invalidates the review.
+Remain read-only for product code, tests, config, Git, source brief/manifest, Project Intelligence/interface coordination state, and remote systems. Write only designated review report if permitted. If technical read-only unavailable, use immutable package or compare hashes/status before/after; unexplained mutation invalidates review.
 
-Do not launch child agents, stage, commit, push, open a pull request, deploy, apply fixes, access secrets, change `U-` statuses, or broaden scope.
+Do not launch child agents, stage/commit/push/PR/deploy, apply fixes, access secrets, change `U-`/`IC-` state, or broaden scope.
 
 ## Review evidence before rerunning checks
 
-Inspect command provenance, state/ref, exit codes, counts, and relevant notes. Do not rerun a full suite merely to recreate complete and consistent evidence. Run a focused read-only check only when evidence is missing, stale, contradictory, or insufficient for a material acceptance/security/source-intent claim and the command is permitted.
+Inspect command provenance, state/ref, exit/counts, integration/interface proof, and notes. Do not rerun full suite merely to recreate evidence. Run focused read-only check only when material evidence is missing/stale/contradictory and command is permitted.
 
-Treat the implementer report as a claim, not proof. Inspect the actual scoped diff and critical interfaces.
+Treat implementer report, profile, area docs, and cached topology as claims. Inspect actual scoped diff and critical current interfaces.
 
 ## Perform one consolidated pass
 
-Read [the review checklist and severity guide](references/review-checklist.md). Check only applicable dimensions:
+Read [review checklist](references/review-checklist.md). Check applicable dimensions:
 
-- task-local user intent and exact `U-` source quote when supplied;
-- acceptance and explicit non-goals;
-- behavioral correctness and failure semantics;
-- public contract and compatibility;
-- authorization, tenant or organization isolation, and data leakage;
-- input validation, secret handling, and unsafe side effects;
-- concurrency, retries, idempotency, persistence, and migrations when touched;
-- test quality, valid RED/GREEN evidence, and regression coverage;
-- maintainability and repository conventions;
-- user experience and accessibility only for affected UI behavior.
+- task-local user intent / exact `U-` quote;
+- acceptance/non-goals;
+- primary-area responsibility and specialist boundary;
+- behavioral correctness/failure semantics;
+- frozen cross-area `IC-xx` compatibility: producer/consumer shapes, validation/errors, auth/data, ordering/idempotency/retry, compatibility;
+- public contract/backward compatibility;
+- authorization/tenant isolation/data leakage;
+- input validation/secrets/unsafe side effects;
+- concurrency/retries/idempotency/persistence/migrations;
+- valid RED/GREEN, regression, and cross-area integration proof;
+- maintainability/repository conventions;
+- UX/accessibility only for affected UI.
 
-For traced Build End-to-End tasks, ask one additional question before spec/craft judgement: **did the implementation silently narrow the source user outcome while still satisfying a narrower task/spec phrase?** For example, “user sees status” is not delivered by storing status only in the database. A source quote is not a substitute for the specification, but it is counterevidence when the specification/task lost a material part of what the user asked.
+A specialist may not use its label to absorb neighboring ownership. Examples: `UI_SPECIALIST` changing business/API semantics without scope, frontend changing backend contract unilaterally, or data specialist applying an unapproved migration are boundary failures.
 
-If a `U-` source quote materially conflicts with the confirmed specification or task brief, do not choose authority yourself. Return the conflict to the controller as `NEEDS_CONTEXT`/blocking review evidence so the controller can resolve provenance and current decision authority.
+For traced Build End-to-End ask: did implementation silently narrow user outcome while satisfying a narrower task/spec phrase? “User sees status” is not delivered by storage-only state.
 
-Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the brief selects `S-` requirements or the diff touches a security boundary. Review each selected `S-` requirement against the actual diff and its stated negative proof; mark it `checked`, `failed`, or `N/A` with evidence. A missing proof is not `N/A`.
+For Project Intelligence ask: did implementation silently diverge from frozen producer/consumer contract while local tests still pass? A private frontend/backend interpretation differing from `IC-xx` is blocking drift, not an acceptable implementation choice.
 
-At minimum inspect applicable changes for server-side object authorization and tenant propagation, secrets/client exposure/log redaction, input validation and safe data/output APIs, response-field minimization, external-effect idempotency/replay behavior, dependency provenance, insecure configuration defaults, and AI prompt/tool-boundary separation. Treat only relevant categories as in scope, but state why any baseline category is not applicable.
+If task-local `U-`, confirmed spec, frozen interface, or current repository contract materially conflict, do not choose authority yourself. Return conflict to controller for provenance/design/interface reconciliation.
 
-Seek counterevidence before raising a finding. Do not convert style preference or speculative future work into a blocker.
+Read Security by Design when selected `S-` or security boundary applies. Review each selected control and negative proof; missing proof is not N/A.
 
-Mark each listed review dimension either checked or `N/A` with a short reason. Do not silently omit selected `U-` source intent, selected security requirements, isolation, leakage, tests, or UX when the task makes them relevant.
+Seek counterevidence before findings. Do not turn style preferences/speculative future work into blockers. Mark each relevant dimension checked/N/A with reason.
 
 ## Write actionable findings
 
-Give every finding:
+Every finding includes:
 
-- a stable ID and severity;
-- exact file/location or contract boundary;
-- violated task/spec/`U-`/`S-` requirement as applicable;
-- evidence from the diff or behavior;
-- concrete impact and affected acceptance criterion;
-- the smallest required condition for resolution;
-- confidence or counterevidence when material.
+- stable ID/severity;
+- exact file/location or area/interface boundary;
+- violated task/spec/`U-`/`S-`/`IC-` requirement;
+- diff/behavior evidence;
+- impact/acceptance criterion;
+- minimal resolution boundary;
+- confidence/counterevidence when material.
 
-Use `Critical` for an exploitable or destructive safety, security, isolation, or data-integrity failure that must stop progression. Use `Important` for an acceptance, correctness, source-intent narrowing, regression, or material maintainability failure that blocks the task. Use `Minor` for a real non-blocking improvement that does not violate acceptance criteria.
+Use `Critical` for exploitable/destructive/security/isolation/data-integrity failure. Use `Important` for acceptance/correctness/source-intent narrowing, unapproved frozen-interface drift, specialist-boundary violation, regression, or material maintainability issue blocking task. Use `Minor` for real non-blocking improvement.
 
-A task-owned implementation that materially delivers only part of its mapped `U-` outcome is normally `Important`, even if a narrower implementation test is green. Do not mark it Minor merely because the lost behavior originated earlier in the specification chain.
+Material partial delivery of mapped `U-` or material divergence from frozen `IC-xx` is normally `Important` even if narrower local test is green.
 
-Mark an unrelated real issue `RECORD_FOR_FUTURE_TASK`. Do not require its repair in the current change unit.
+Unrelated issue => `RECORD_FOR_FUTURE_TASK`; do not require current repair.
 
 ## Return one decision
 
-Use [the review report template](assets/review-report-template.md) and return exactly one primary decision:
+Use review report template and return exactly:
 
-- `APPROVED` when no Critical or Important finding remains;
-- `CHANGES_REQUIRED` with one consolidated finding list;
-- `REVIEW_BLOCKED` when the package or read-only guarantee is inadequate;
-- `STOP_AND_RESCOPE` when the task boundary is incoherent or a repeated Critical/Important finding remains after the single fixer-wave.
+- `APPROVED` no Critical/Important remains;
+- `CHANGES_REQUIRED` one consolidated list;
+- `REVIEW_BLOCKED` package/read-only/context/interface guarantee inadequate;
+- `STOP_AND_RESCOPE` incoherent task or repeated blocker after single fixer wave.
 
-Do not dispatch or direct multiple fixers. Let the controller adjudicate disputed or conflicting findings and create one consolidated fix package. Do not edit the requirement manifest yourself; report the `U-` impact and let the controller reconcile status after fresh evidence.
+Do not dispatch/direct multiple fixers. Controller adjudicates and creates one consolidated fix package. Reviewer cannot edit U/IC/Project Intelligence state.
 
-On re-review, inspect only confirmed findings, the fix diff, covering evidence, and the same affected `U-` rows when applicable. Reuse the original review identity/thread when the platform supports it. Do not reopen resolved or unrelated areas without new evidence. Report a repeated blocking finding to the controller; never start a second fixer-wave yourself.
+On re-review inspect only confirmed findings, fix diff, covering evidence, same relevant `U-` rows and frozen `IC-xx`. Reuse original review thread when supported. Do not reopen unrelated areas without new evidence. Repeated blocker goes to controller; never start second fixer wave.
