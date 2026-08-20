@@ -9,7 +9,7 @@
 - Использованный permission envelope: `<scope и срок действия>`
 - Пользовательский режим: `<INTERVIEW | ASSISTED | FULL_AUTO | NOT_APPLICABLE>`
 - Профиль выполнения: `<выбранный профиль и источник решения>`
-- Эффективные полномочия: `<точные local / Git / browser / runtime / remote / secret / destructive capabilities>`
+- Эффективные полномочия: `<точные local / docs/design / Git / browser / runtime / remote / secret / destructive capabilities>`
 - Последняя подтверждённая точка: `<путь отчёта, identity состояния и время при наличии>`
 - Progress / ledger identity: `<пути и совпадающие идентификаторы>`
 
@@ -22,17 +22,36 @@
 - Сгенерированные/неизвестные файлы оставлены без изменений: `<пути или нет>`
 - Context / ADR / progress: `<точные пути или не создавались>`
 - Project Intelligence: `<topology status, areas, IC IDs, runtime/docs state или not applicable>`
+- Design Intelligence: `<design relevance, DESIGN.md path, design identity, direction, review/visual/drift state или not applicable>`
 - Делегированные решения: `<решение, обоснование, обратимость или нет>`
 - Допущения: `<допущение, источник/статус или нет>`
 - Неразрешённые placeholders: `<элемент, влияние на acceptance, владелец решения или нет>`
 - Остаточные риски: `<риск, доказательство, владелец или нет>`
 
+## Дизайн и UX, если применимо
+
+- Root `DESIGN.md`: `<путь / DESIGN_READY_TO_SAVE / не применимо>`
+- Design identity: `<hash/identity>`
+- Выбранное направление: `<existing / название варианта / FULL_AUTO rationale>`
+- Product personality: `<кратко>`
+- Design context последней UI-задачи: `<NARROW/DEGRADED/...>`
+- Design review: `<APPROVED/CHANGES_REQUIRED/UNCHECKABLE/BLOCKED>`
+- Visual design check: `<PASS/PARTIAL/FAIL/NOT_RUN/BLOCKED>`
+- Design drift gate: `<DESIGN_NOT_APPLICABLE | DESIGN_CURRENT | DESIGN_UPDATE_REQUIRED | DESIGN_DRIFT | DESIGN_CONFLICT | DESIGN_BLOCKED>`
+- Проверенные viewports/states: `<список или недоступно>`
+- Design evidence refs: `<screenshots/report refs или нет>`
+- Неразрешённый design debt/drift: `<список или нет>`
+
+`DESIGN.md`, дизайн-отчёты и screenshots являются контекстом/доказательствами в своих границах, но не дают полномочий и не заменяют техническую проверку или G4.
+
 ## Доказательства качества
 
-- Решение review: `<решение и blocking findings>`
+- Решение code/security/design review: `<решение и blocking findings>`
 - Technical/security verification: `<вердикт>`
-- Browser/E2E, если применимо: `<framework/mode, counts, Browser G4, evidence refs>`
+- Browser/E2E, если применимо: `<framework/mode, counts, evidence refs>`
+- Visual design verification, если применимо: `<design identity, viewports/states, verdict, evidence refs>`
 - G4 blind acceptance, если применимо: `<PASS/PARTIAL/FAIL/BLOCKED/HANDOFF_REQUIRED>`
+- Design drift gate: `<состояние>`
 - Documentation drift gate: `<DOCS_NOT_REQUIRED | DOCS_CURRENT | DOCS_UPDATE_REQUIRED | DOCS_BLOCKED | DOCS_CONFLICT>`
 - Ключевые свежие проверки: `<command/interaction / exit/signal / counts / note>`
 - Непроверенные критерии: `<список или нет>`
@@ -51,7 +70,7 @@
 
 | Действие | Точная цель | Доказательство |
 | --- | --- | --- |
-| `<stage/commit/push/PR/merge/deploy/none>` | `<paths/repository/branch/environment>` | `<result/ref/status>` |
+| `<design-doc/prototype/product-write/stage/commit/push/PR/merge/deploy/none>` | `<paths/repository/branch/environment>` | `<result/ref/status>` |
 
 ## Внешняя передача, если нужна
 
@@ -67,6 +86,7 @@
 
 - Minor findings: `<список или нет>`
 - Соседние будущие задачи: `<список или нет>`
+- Design debt/решения для следующей сессии: `<список или нет>`
 - Допущения/опасения: `<список или нет>`
 - Pre-existing failures: `<список или нет>`
 - Ещё требуемые разрешения: `<список или нет>`
