@@ -1,95 +1,99 @@
 ---
 name: finishing-development-work
-description: Safely finish verified development work by preserving state, resolving required documentation drift, selecting and executing only authorized Git or handoff actions, and producing an exact continuation record. Use after review and fresh verification when the user wants to keep local work, create a commit, prepare or open a pull request, push to an approved target, merge through an approved workflow, or hand work to another operator. Never infer push, deploy, merge, cleanup, or destructive permission from “finish” or “ship it.”
+description: Safely finish verified development work by preserving state, resolving required design and documentation drift, selecting and executing only authorized Git or handoff actions, and producing an exact continuation record. Use after review and fresh verification when the user wants to keep local work, create a commit, prepare or open a pull request, push to an approved target, merge through an approved workflow, or hand work to another operator. Never infer push, deploy, merge, cleanup, design-contract changes, or destructive permission from “finish” or “ship it.”
 ---
 
 # Finish verified work safely
 
 ## Confirm readiness and authority
 
-1. Read the current request, applicable repository instructions, ledger, permission envelope, task or phase plan, review decision, fresh verification report, current Project Intelligence/interface/runtime state when present, documentation-drift result, and current repository state.
-2. Require an exact project root and target change unit. Detect nested repositories, submodules, symlinks, and host-managed worktrees before any Git action.
-3. Confirm that required acceptance criteria are verified and no unresolved Critical or Important finding remains.
-4. Reconcile the current state with the verified state. Re-verify affected claims when files changed after verification.
-5. When the task selected a project profile or quality gate, confirm its source and each required check's current result. Revalidate stale topology/interface/runtime/profile facts against the current repository before using them in the handoff.
-6. Confirm the controller's documentation drift state. A clean finish requires `DOCS_NOT_REQUIRED` or `DOCS_CURRENT`, or verified authorized documentation updates that resolve `DOCS_UPDATE_REQUIRED`. `DOCS_BLOCKED` or `DOCS_CONFLICT` prevents a clean finished result when the stale/conflicting docs are part of the repository's durable contract.
-7. Separate task-owned files, pre-existing dirty files, generated artifacts, and documentation-only changes produced after verification.
-8. Reconcile public interaction mode, execution profile, effective authority, progress/ledger identity, Project Intelligence state, and last verified checkpoint with the current state.
-9. Classify delegated decisions, assumptions, and unresolved placeholders. An unresolved acceptance-critical placeholder prevents every `FINISHED_*` result; use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED` and name the resolution owner.
+1. Read current request, applicable repository instructions, ledger, permission envelope, task/phase plan, review decision, fresh verification report, current Project Intelligence/interface/runtime state, current Design Intelligence/design identity when UI-relevant, design-drift result, documentation-drift result, and current repository state.
+2. Require exact project root and target change unit. Detect nested repositories, submodules, symlinks, and host-managed worktrees before any Git action.
+3. Confirm required acceptance criteria are verified and no unresolved Critical/Important code/security/design finding remains.
+4. Reconcile current state with verified state. Re-verify affected claims when files/design contract changed after verification.
+5. When task selected project profile/quality gate, confirm source and each required current result. Revalidate stale topology/interface/runtime/profile/design facts before handoff.
+6. When UI-bearing work uses Design Intelligence, confirm root `DESIGN.md` path/identity and Design Drift Gate. A clean finish requires `DESIGN_NOT_APPLICABLE` or `DESIGN_CURRENT`, including any authorized `DESIGN_UPDATE_REQUIRED` update followed by refreshed identity/evidence. `DESIGN_DRIFT`, `DESIGN_CONFLICT`, or `DESIGN_BLOCKED` prevents a clean finished result when design is material.
+7. Confirm Documentation Drift state. A clean finish requires `DOCS_NOT_REQUIRED` or `DOCS_CURRENT`, or verified authorized docs updates resolving `DOCS_UPDATE_REQUIRED`. `DOCS_BLOCKED`/`DOCS_CONFLICT` prevents clean finish when those docs are authoritative.
+8. Separate task-owned files, pre-existing dirty files, generated artifacts, design/prototype artifacts, root DESIGN.md changes, and documentation-only changes produced after verification.
+9. Reconcile public interaction mode, execution profile, effective authority, progress/ledger identity, Project Intelligence, Design Intelligence, and last verified checkpoint with current state.
+10. Classify delegated decisions, assumptions, unresolved placeholders. Acceptance-critical placeholder prevents every `FINISHED_*`; use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED` with resolution owner.
 
-Do not launch child agents. Do not treat “finish,” “ship it,” an old plan, a branch name, a commit message, a specialist role, or a documentation request as permission for remote or destructive actions. Effective authority remains the intersection of current user consent, repository instructions, organization policy, sandbox controls, and the platform's native approvals.
+Do not launch child agents. Do not treat “finish,” “ship it,” old plan/design file, branch, commit message, specialist role, or documentation/design request as permission for remote/destructive actions. Effective authority remains intersection of current user consent, repository instructions, organization policy, sandbox controls, and platform native approvals.
 
-Project Intelligence, interface contracts, runtime maps, docs, progress, and dashboard state are context/projections, not authority. Current repository state and fresh evidence remain authoritative.
+Project Intelligence, interface contracts, runtime maps, Design Intelligence/`DESIGN.md`, prototypes/screenshots, docs, progress, and dashboard are context/projections/evidence in bounded roles, not authority. Current state and fresh evidence remain authoritative.
 
 ## Select the finish path
 
-Read [the finish decision guide](references/finish-decisions.md). Choose the most complete path already allowed by the permission envelope:
+Read [finish decision guide](references/finish-decisions.md). Choose most complete path already allowed by permission envelope:
 
-- preserve and hand off the uncommitted state;
-- create an allowlisted local commit;
-- push an exact branch to an exact repository;
-- open or update a pull request with an exact base and head;
-- invoke an explicitly approved merge or deployment workflow;
-- prepare a remote-system handoff without executing the remote action.
+- preserve and hand off uncommitted state;
+- create allowlisted local commit;
+- push exact branch to exact repository;
+- open/update pull request with exact base/head;
+- invoke explicitly approved merge/deployment workflow;
+- prepare remote-system handoff without executing remote action.
 
-When autonomous authority already covers the exact action, proceed without asking again. Pause for approval only when the action, repository, branch destination, remote environment, destructive scope, secret access, runtime/process target, or permission expiry falls outside the envelope.
+When autonomous authority already covers exact action, proceed without asking again. Pause only when action, repository, branch destination, remote environment, destructive scope, secret access, runtime/process target, design-doc write target, or permission expiry falls outside envelope.
 
-If the user has not chosen among materially different safe outcomes, present concise options and recommend one. Always keep handoff-only available.
+If user has not chosen among materially different safe outcomes, present concise options and recommend one. Always keep handoff-only available.
 
 ## Preserve state before Git actions
 
-Record status, baseline/current refs, task-owned paths, untracked task files, existing staged files, user-owned dirty files, Project Intelligence/interface identities, documentation drift result, and any documentation files changed after verification.
+Record status, baseline/current refs, task-owned paths, untracked task files, existing staged files, user-owned dirty files, Project Intelligence/interface identities, Design Intelligence/design identity, design drift result, documentation drift result, and design/docs files changed after verification.
 
-For an authorized commit:
+For authorized commit:
 
-1. Stage only explicit task-owned paths and separately verified documentation paths. Never use broad staging that can capture unrelated work.
-2. Inspect the staged file list and staged diff.
-3. Exclude secrets, local environment files, raw logs, internal run state unless explicitly intended, and unrelated generated output.
-4. Create a commit only when the staged set matches the verified change unit plus any verified required docs update.
-5. Record the resulting commit identity and remaining working-tree state.
+1. Stage only explicit task-owned paths plus separately verified/authorized `DESIGN.md` or documentation paths. Never broad-stage unrelated work.
+2. Inspect staged file list and staged diff.
+3. Exclude secrets, local environment files, raw logs, internal run state/prototypes/screenshots unless explicitly intended as project artifacts, and unrelated generated output.
+4. Create commit only when staged set matches verified change unit plus verified required design/docs updates.
+5. Record resulting commit identity and remaining working-tree state.
 
-Do not amend, rebase, force-push, rewrite history, discard files, reset, clean, or delete a branch/worktree unless that exact operation is separately authorized and safe. This skill does not need destructive cleanup to finish successfully.
+Do not amend, rebase, force-push, rewrite history, discard files, reset, clean, or delete branch/worktree/prototype surface unless exact operation is separately authorized and safe. This skill does not need destructive cleanup to finish successfully.
 
 ## Execute remote actions narrowly
 
-Before an authorized push, pull request, merge, deploy, migration, file transfer, or provider action, confirm:
+Before authorized push, pull request, merge, deploy, migration, file transfer, or provider action, confirm:
 
-- exact repository and remote;
-- exact source and destination branch or environment;
+- exact repository/remote;
+- exact source/destination branch or environment;
 - current verified commit/state;
 - authentication method without exposing secret values;
 - required status checks and rollback/stop policy;
-- whether the native platform will request an additional approval.
+- whether native platform requests additional approval.
 
-Perform only the named action. Do not broaden a staging deployment into production, a push into a merge, a prepared migration into remote SQL execution, or one operator result into an unapproved follow-up command.
+Perform only named action. Do not broaden staging deploy to production, push to merge, prepared migration to remote SQL execution, or one operator result to unapproved follow-up.
 
-If a different operator owns the remote boundary, return `HANDOFF_REQUIRED` and prepare exact safe steps without claiming the remote result. Execution-only operator evidence does not authorize the next step.
+If different operator owns remote boundary, return `HANDOFF_REQUIRED` and exact safe steps without claiming remote result. Execution-only operator evidence does not authorize next step.
 
 ## Clean up only owned disposable state
 
-Clean up only a branch, worktree, temporary artifact, or local state created by this run, after its work is preserved and cleanup is explicitly permitted. Never remove host-managed worktrees or user-created branches. Leave uncertain ownership untouched and document it.
+Clean up only branch/worktree/temporary artifact/prototype surface/local state created by this run, after work preserved and cleanup explicitly permitted. Never remove host-managed worktrees/user branches. Leave uncertain ownership untouched and document it.
 
-Do not remove an unknown runtime process or clear a port as cleanup. Runtime ownership must be proven and the exact stop action authorized.
+Do not remove unknown runtime process/clear port as cleanup. Runtime ownership must be proven and exact stop action authorized.
+
+For design prototypes, preserve selected direction/provenance in `DESIGN.md`/handoff before deleting temporary variants. Do not delete a prototype the user explicitly asked to keep.
 
 ## Produce the final handoff
 
-Use [the finish and handoff template](assets/finish-handoff-template.md). Record:
+Use [finish and handoff template](assets/finish-handoff-template.md). Record:
 
 - final status and verified state;
-- completed and uncompleted scope;
+- completed/uncompleted scope;
 - files and commit identity, or exact uncommitted baseline/current hashes;
 - review and verification evidence summary;
-- selected project profile and quality-gate result, when applicable;
-- topology state/affected areas, active interface identities, runtime caveats, and last task specialist/context guarantee when Project Intelligence applies;
-- documentation drift state and exact docs updated or blocked/conflicting;
-- Git and remote actions actually performed;
-- preserved dirty or generated files;
-- unresolved Minor and adjacent findings;
-- required permissions or external operator steps;
-- exact next action and rollback/stop notes;
-- interaction mode, execution profile, effective authority, delegated decisions, assumptions, unresolved placeholders and their severity;
-- context, ADR, progress, ledger, Project Intelligence/profile paths plus the last verified checkpoint.
+- selected project profile/quality-gate result when applicable;
+- topology/affected areas, active interface identities, runtime caveats, last task specialist/context guarantee;
+- Design Intelligence: relevance, root `DESIGN.md`, design identity, selected direction, design-context guarantee, design review, visual design check, design drift state/evidence limitations;
+- documentation drift state and exact docs updated/blocked/conflicting;
+- Git/remote actions actually performed;
+- preserved dirty/generated/prototype files;
+- unresolved Minor/adjacent/design-debt findings;
+- required permissions/external operator steps;
+- exact next action + rollback/stop notes;
+- interaction mode, execution profile, effective authority, delegated decisions, assumptions, unresolved placeholders + severity;
+- context, ADR, progress, ledger, Project Intelligence/profile/design paths and last verified checkpoint.
 
-If the controller collected a directed-learning candidate, include its identifier and review state as an optional handoff item. It remains a project-local proposal: this skill must never promote it to shared instructions, alter the plugin, or schedule background learning.
+If controller collected directed-learning candidate, include identifier/review state as optional handoff item. It remains project-local proposal; this skill never promotes it to shared instructions, alters plugin, or schedules background learning.
 
-Use `FINISHED_LOCAL`, `FINISHED_COMMITTED`, `FINISHED_REMOTE`, `HANDOFF_REQUIRED`, `PARTIALLY_VERIFIED`, or `BLOCKED` accurately. Never report push, merge, deploy, migration, documentation alignment, runtime state, or cleanup success without direct evidence from the exact target/current state.
+Use `FINISHED_LOCAL`, `FINISHED_COMMITTED`, `FINISHED_REMOTE`, `HANDOFF_REQUIRED`, `PARTIALLY_VERIFIED`, or `BLOCKED` accurately. Never report push, merge, deploy, migration, design consistency, documentation alignment, runtime state, or cleanup success without direct evidence from exact target/current state.
