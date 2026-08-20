@@ -1,9 +1,12 @@
+// Статическая проекция Matreshka. Не является разрешением, доказательством или источником истины.
 window.MATRESHKA_RUN_STATE = {
   "runId": "{{RUN_ID}}",
   "title": "{{GOAL}}",
+  "locale": "ru",
   "scenario": "{{LAUNCH_SCENARIO}}",
   "mode": "{{INTERACTION_MODE}}",
   "profile": "{{EXECUTION_PROFILE}}",
+  "complexityTier": "{{COMPLEXITY_TIER}}",
   "authority": {
     "localWrites": false,
     "gitHistory": false,
@@ -19,6 +22,25 @@ window.MATRESHKA_RUN_STATE = {
     "testDataMutation": false,
     "destructiveTestSetup": false
   },
+  "timing": {
+    "status": "UNAVAILABLE",
+    "startedAt": null,
+    "finishedAt": null,
+    "elapsedSeconds": null,
+    "implementationSeconds": null,
+    "source": null
+  },
+  "usage": {
+    "status": "UNAVAILABLE",
+    "totalTokens": null,
+    "observedTokens": null,
+    "inputTokens": null,
+    "outputTokens": null,
+    "reasoningTokens": null,
+    "cachedTokens": null,
+    "turnsUsed": 0,
+    "source": null
+  },
   "stages": [],
   "tasks": [],
   "requirements": {
@@ -30,6 +52,7 @@ window.MATRESHKA_RUN_STATE = {
     "dropped": 0
   },
   "security": {"required": 0, "proved": 0, "blocked": 0},
+  "tests": {"passed": 0, "failed": 0, "skipped": 0, "status": "PENDING"},
   "browser": {
     "relevant": false,
     "framework": null,
@@ -49,5 +72,5 @@ window.MATRESHKA_RUN_STATE = {
   "blindAcceptance": "PENDING",
   "lastVerifiedCheckpoint": null,
   "nextAction": "{{NEXT_ACTION}}",
-  "updatedAt": "{{TIMESTAMP}}"
+  "updatedAt": "{{TIMESTAMP_ISO8601}}"
 };
