@@ -23,9 +23,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Deterministic package validation and negative self-tests
+      - name: Deterministic 0.5 development package validation and negative self-tests
         run: >-
-          python3 -B plugins/matreshka-agent/scripts/validate_package.py
+          python3 -B plugins/matreshka-agent/scripts/validate_dev_05.py
           plugins/matreshka-agent --marketplace-root . --self-test
 
       - name: Matreshka 0.5 development component integrity
@@ -33,7 +33,7 @@ jobs:
           python3 -B plugins/matreshka-agent/scripts/check_dev_05.py
           plugins/matreshka-agent
 
-      - name: Read-only package doctor
+      - name: Read-only 0.5 development package doctor
         run: >-
-          python3 -B plugins/matreshka-agent/scripts/doctor.py
+          python3 -B plugins/matreshka-agent/scripts/doctor_dev_05.py
           plugins/matreshka-agent --marketplace-root .
