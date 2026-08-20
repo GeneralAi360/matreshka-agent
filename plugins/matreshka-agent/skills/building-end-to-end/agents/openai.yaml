@@ -1,6 +1,6 @@
 interface:
   display_name: "Build End-to-End · Matreshka Agent"
-  short_description: "Matreshka Agent: build software end to end safely"
-  default_prompt: "Use $building-end-to-end to build this substantial software request through Matreshka's safe end-to-end workflow."
+  short_description: "Build new or existing software end to end"
+  default_prompt: "Use $matreshka-agent:building-end-to-end. Choose: interview — ask product questions first; assisted — ask only important questions (default); full-auto — make safe reversible local technical decisions; continue-project — continue a Matreshka-managed project; existing-project — work on an existing project that did not previously use Matreshka. Then describe what you want to build or change."
 policy:
   allow_implicit_invocation: true
