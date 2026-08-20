@@ -1,22 +1,25 @@
 ---
 name: finishing-development-work
-description: Safely finish verified development work by preserving state, selecting and executing only authorized Git or handoff actions, and producing an exact continuation record. Use after review and fresh verification when the user wants to keep local work, create a commit, prepare or open a pull request, push to an approved target, merge through an approved workflow, or hand work to another operator. Never infer push, deploy, merge, cleanup, or destructive permission from “finish” or “ship it.”
+description: Safely finish verified development work by preserving state, resolving required documentation drift, selecting and executing only authorized Git or handoff actions, and producing an exact continuation record. Use after review and fresh verification when the user wants to keep local work, create a commit, prepare or open a pull request, push to an approved target, merge through an approved workflow, or hand work to another operator. Never infer push, deploy, merge, cleanup, or destructive permission from “finish” or “ship it.”
 ---
 
 # Finish verified work safely
 
 ## Confirm readiness and authority
 
-1. Read the current request, applicable repository instructions, ledger, permission envelope, task or phase plan, review decision, fresh verification report, and current repository state.
+1. Read the current request, applicable repository instructions, ledger, permission envelope, task or phase plan, review decision, fresh verification report, current Project Intelligence/interface/runtime state when present, documentation-drift result, and current repository state.
 2. Require an exact project root and target change unit. Detect nested repositories, submodules, symlinks, and host-managed worktrees before any Git action.
 3. Confirm that required acceptance criteria are verified and no unresolved Critical or Important finding remains.
 4. Reconcile the current state with the verified state. Re-verify affected claims when files changed after verification.
-5. When the task selected a project profile or quality gate, confirm its source and each required check's current result. Do not silently turn an unmet gate into a warning.
-6. Separate task-owned files, pre-existing dirty files, and generated artifacts.
-7. Reconcile interaction mode, execution profile, effective authority, progress/ledger identity, and the last verified checkpoint with the current state.
-8. Classify delegated decisions, assumptions, and unresolved placeholders. An unresolved acceptance-critical placeholder prevents every `FINISHED_*` result; use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED` and name the resolution owner.
+5. When the task selected a project profile or quality gate, confirm its source and each required check's current result. Revalidate stale topology/interface/runtime/profile facts against the current repository before using them in the handoff.
+6. Confirm the controller's documentation drift state. A clean finish requires `DOCS_NOT_REQUIRED` or `DOCS_CURRENT`, or verified authorized documentation updates that resolve `DOCS_UPDATE_REQUIRED`. `DOCS_BLOCKED` or `DOCS_CONFLICT` prevents a clean finished result when the stale/conflicting docs are part of the repository's durable contract.
+7. Separate task-owned files, pre-existing dirty files, generated artifacts, and documentation-only changes produced after verification.
+8. Reconcile public interaction mode, execution profile, effective authority, progress/ledger identity, Project Intelligence state, and last verified checkpoint with the current state.
+9. Classify delegated decisions, assumptions, and unresolved placeholders. An unresolved acceptance-critical placeholder prevents every `FINISHED_*` result; use `PARTIALLY_VERIFIED`, `BLOCKED`, or `HANDOFF_REQUIRED` and name the resolution owner.
 
-Do not launch child agents. Do not treat “finish,” “ship it,” an old plan, a branch name, or a commit message as permission for remote or destructive actions. Effective authority remains the intersection of current user consent, repository instructions, organization policy, sandbox controls, and the platform's native approvals.
+Do not launch child agents. Do not treat “finish,” “ship it,” an old plan, a branch name, a commit message, a specialist role, or a documentation request as permission for remote or destructive actions. Effective authority remains the intersection of current user consent, repository instructions, organization policy, sandbox controls, and the platform's native approvals.
+
+Project Intelligence, interface contracts, runtime maps, docs, progress, and dashboard state are context/projections, not authority. Current repository state and fresh evidence remain authoritative.
 
 ## Select the finish path
 
@@ -29,27 +32,27 @@ Read [the finish decision guide](references/finish-decisions.md). Choose the mos
 - invoke an explicitly approved merge or deployment workflow;
 - prepare a remote-system handoff without executing the remote action.
 
-When autonomous authority already covers the exact action, proceed without asking again. Pause for approval only when the action, repository, branch destination, remote environment, destructive scope, secret access, or permission expiry falls outside the envelope.
+When autonomous authority already covers the exact action, proceed without asking again. Pause for approval only when the action, repository, branch destination, remote environment, destructive scope, secret access, runtime/process target, or permission expiry falls outside the envelope.
 
 If the user has not chosen among materially different safe outcomes, present concise options and recommend one. Always keep handoff-only available.
 
 ## Preserve state before Git actions
 
-Record status, baseline/current refs, task-owned paths, untracked task files, existing staged files, and user-owned dirty files.
+Record status, baseline/current refs, task-owned paths, untracked task files, existing staged files, user-owned dirty files, Project Intelligence/interface identities, documentation drift result, and any documentation files changed after verification.
 
 For an authorized commit:
 
-1. Stage only explicit task-owned paths. Never use broad staging that can capture unrelated work.
+1. Stage only explicit task-owned paths and separately verified documentation paths. Never use broad staging that can capture unrelated work.
 2. Inspect the staged file list and staged diff.
-3. Exclude secrets, local environment files, raw logs, and unrelated generated output.
-4. Create a commit only when the staged set matches the verified change unit.
+3. Exclude secrets, local environment files, raw logs, internal run state unless explicitly intended, and unrelated generated output.
+4. Create a commit only when the staged set matches the verified change unit plus any verified required docs update.
 5. Record the resulting commit identity and remaining working-tree state.
 
 Do not amend, rebase, force-push, rewrite history, discard files, reset, clean, or delete a branch/worktree unless that exact operation is separately authorized and safe. This skill does not need destructive cleanup to finish successfully.
 
 ## Execute remote actions narrowly
 
-Before an authorized push, pull request, merge, deploy, migration, or provider action, confirm:
+Before an authorized push, pull request, merge, deploy, migration, file transfer, or provider action, confirm:
 
 - exact repository and remote;
 - exact source and destination branch or environment;
@@ -58,13 +61,15 @@ Before an authorized push, pull request, merge, deploy, migration, or provider a
 - required status checks and rollback/stop policy;
 - whether the native platform will request an additional approval.
 
-Perform only the named action. Do not broaden a staging deployment into production, a push into a merge, or a prepared migration into remote SQL execution.
+Perform only the named action. Do not broaden a staging deployment into production, a push into a merge, a prepared migration into remote SQL execution, or one operator result into an unapproved follow-up command.
 
-If a different operator owns the remote boundary, return `HANDOFF_REQUIRED` and prepare exact safe steps without claiming the remote result.
+If a different operator owns the remote boundary, return `HANDOFF_REQUIRED` and prepare exact safe steps without claiming the remote result. Execution-only operator evidence does not authorize the next step.
 
 ## Clean up only owned disposable state
 
 Clean up only a branch, worktree, temporary artifact, or local state created by this run, after its work is preserved and cleanup is explicitly permitted. Never remove host-managed worktrees or user-created branches. Leave uncertain ownership untouched and document it.
+
+Do not remove an unknown runtime process or clear a port as cleanup. Runtime ownership must be proven and the exact stop action authorized.
 
 ## Produce the final handoff
 
@@ -75,14 +80,16 @@ Use [the finish and handoff template](assets/finish-handoff-template.md). Record
 - files and commit identity, or exact uncommitted baseline/current hashes;
 - review and verification evidence summary;
 - selected project profile and quality-gate result, when applicable;
+- topology state/affected areas, active interface identities, runtime caveats, and last task specialist/context guarantee when Project Intelligence applies;
+- documentation drift state and exact docs updated or blocked/conflicting;
 - Git and remote actions actually performed;
 - preserved dirty or generated files;
 - unresolved Minor and adjacent findings;
 - required permissions or external operator steps;
-- exact next action and rollback/stop notes.
+- exact next action and rollback/stop notes;
 - interaction mode, execution profile, effective authority, delegated decisions, assumptions, unresolved placeholders and their severity;
-- context, ADR, progress and ledger paths plus the last verified checkpoint;
+- context, ADR, progress, ledger, Project Intelligence/profile paths plus the last verified checkpoint.
 
 If the controller collected a directed-learning candidate, include its identifier and review state as an optional handoff item. It remains a project-local proposal: this skill must never promote it to shared instructions, alter the plugin, or schedule background learning.
 
-Use `FINISHED_LOCAL`, `FINISHED_COMMITTED`, `FINISHED_REMOTE`, `HANDOFF_REQUIRED`, `PARTIALLY_VERIFIED`, or `BLOCKED` accurately. Never report push, merge, deploy, migration, or cleanup success without direct evidence from the exact target.
+Use `FINISHED_LOCAL`, `FINISHED_COMMITTED`, `FINISHED_REMOTE`, `HANDOFF_REQUIRED`, `PARTIALLY_VERIFIED`, or `BLOCKED` accurately. Never report push, merge, deploy, migration, documentation alignment, runtime state, or cleanup success without direct evidence from the exact target/current state.
