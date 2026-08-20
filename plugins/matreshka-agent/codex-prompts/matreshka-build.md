@@ -1,19 +1,19 @@
 ---
-description: Build or extend software through Matreshka Agent's safe end-to-end entry
+description: Разработка нового или существующего проекта через безопасный end-to-end workflow Matreshka Agent
 argument-hint: "[interview|assisted|full-auto] [continue-project|existing-project] <TASK>"
 ---
 
-Use $$matreshka-agent:building-end-to-end for this substantial software request.
+Используй $$matreshka-agent:building-end-to-end для этой задачи.
 
-Request: $ARGUMENTS
+Запрос: $ARGUMENTS
 
-User-facing modes:
-- `interview` — ask one important product question at a time before building;
-- `assisted` — ask only important questions; default;
-- `full-auto` — make safe reversible local technical decisions automatically.
+Режимы:
+- `interview` — сначала подробно опросить по продукту, по одному важному вопросу за раз;
+- `assisted` — задавать только важные вопросы; режим по умолчанию;
+- `full-auto` — самостоятельно принимать безопасные обратимые локальные технические решения.
 
-Project shortcuts:
-- `continue-project` — continue a project already managed by Matreshka;
-- `existing-project` — work on an existing project that did not previously use Matreshka.
+Сценарии существующего проекта:
+- `continue-project` — продолжить проект, который уже разрабатывался с Matreshka;
+- `existing-project` — подключить Matreshka к существующему проекту, который раньше разрабатывался без неё.
 
-Auto-detect the project scenario from read-only repository evidence when the user does not name one. Keep launch scenario, public interaction mode, execution profile, internal controller autonomy, and permissions separate. No mode/scenario grants Git, network, secrets, providers, deploy, destructive, or remote authority. Route the actual workflow only to Matreshka Agent's namespaced controller, preserve source-intent traceability, security, review, technical verification, and G4 blind acceptance, and stop with `DECISION_MAP_REQUIRED` when one trustworthy specification cannot bound the destination.
+Если пользователь не указал сценарий, определи его по read-only анализу репозитория. Не смешивай сценарий запуска, пользовательский режим, execution profile, внутреннюю автономность controller и permissions. Ни один режим или сценарий не даёт автоматически Git, network, secrets, provider, deploy, destructive или remote authority. Реальный workflow передавай только namespaced controller Matreshka Agent; сохраняй source-intent traceability, security, review, technical verification и G4 blind acceptance. Если одну надёжную specification для задачи построить нельзя, остановись с `DECISION_MAP_REQUIRED`.
