@@ -1,73 +1,74 @@
-# Finish and handoff — <task, phase, or branch>
+# Итог и передача — <задача, этап или ветка>
 
-## Final status
+## Итоговый статус
 
-- Result: `<FINISHED_LOCAL | FINISHED_COMMITTED | FINISHED_REMOTE | HANDOFF_REQUIRED | PARTIALLY_VERIFIED | BLOCKED>`
-- Project root: `<resolved root or NO_GIT_MODE>`
-- Baseline/current state: `<refs, commit, or hashes>`
-- Verified state matches current: `<yes/no and evidence>`
-- Permission envelope used: `<scope and expiry>`
-- Public interaction mode: `<INTERVIEW | ASSISTED | FULL_AUTO | NOT_APPLICABLE>`
-- Execution profile: `<selected profile and source>`
-- Effective authority: `<exact local / Git / remote / secret / destructive capabilities>`
-- Last verified checkpoint: `<report path, state identity, and time if available>`
-- Progress / ledger identity: `<paths and matching state identifiers>`
+- Результат: `<FINISHED_LOCAL | FINISHED_COMMITTED | FINISHED_REMOTE | HANDOFF_REQUIRED | PARTIALLY_VERIFIED | BLOCKED>`
+- Корень проекта: `<resolved root или NO_GIT_MODE>`
+- Базовое/текущее состояние: `<refs, commit или hashes>`
+- Проверенное состояние совпадает с текущим: `<да/нет + доказательство>`
+- Использованный permission envelope: `<scope и срок действия>`
+- Пользовательский режим: `<INTERVIEW | ASSISTED | FULL_AUTO | NOT_APPLICABLE>`
+- Профиль выполнения: `<выбранный профиль и источник решения>`
+- Эффективные полномочия: `<точные local / Git / browser / runtime / remote / secret / destructive capabilities>`
+- Последняя подтверждённая точка: `<путь отчёта, identity состояния и время при наличии>`
+- Progress / ledger identity: `<пути и совпадающие идентификаторы>`
 
-## Project Intelligence
+## Что доставлено
 
-- Topology state / affected areas: `<CURRENT/PARTIAL/STALE + AREA IDs>`
-- Active interface contracts: `<IC IDs + hashes/status, or none>`
-- Runtime map / caveats: `<service ownership/status/log facts or not applicable>`
-- Documentation drift state: `<DOCS_NOT_REQUIRED | DOCS_CURRENT | DOCS_UPDATE_REQUIRED | DOCS_BLOCKED | DOCS_CONFLICT>`
-- Documentation updated: `<exact paths or none>`
-- Last task specialist/context: `<role archetype + primary area + NARROW/DEGRADED>`
+- Выполнено: `<результаты acceptance>`
+- Не выполнено: `<оставшиеся результаты>`
+- Файлы задачи: `<точные пути>`
+- Сохранённые исходные dirty-файлы: `<пути или нет>`
+- Сгенерированные/неизвестные файлы оставлены без изменений: `<пути или нет>`
+- Context / ADR / progress: `<точные пути или не создавались>`
+- Project Intelligence: `<topology status, areas, IC IDs, runtime/docs state или not applicable>`
+- Делегированные решения: `<решение, обоснование, обратимость или нет>`
+- Допущения: `<допущение, источник/статус или нет>`
+- Неразрешённые placeholders: `<элемент, влияние на acceptance, владелец решения или нет>`
+- Остаточные риски: `<риск, доказательство, владелец или нет>`
 
-A clean finished result requires the documentation drift state required by the controller to be resolved. Project Intelligence is context/state, not permission or verification evidence by itself.
+## Доказательства качества
 
-## Delivered scope
+- Решение review: `<решение и blocking findings>`
+- Technical/security verification: `<вердикт>`
+- Browser/E2E, если применимо: `<framework/mode, counts, Browser G4, evidence refs>`
+- G4 blind acceptance, если применимо: `<PASS/PARTIAL/FAIL/BLOCKED/HANDOFF_REQUIRED>`
+- Documentation drift gate: `<DOCS_NOT_REQUIRED | DOCS_CURRENT | DOCS_UPDATE_REQUIRED | DOCS_BLOCKED | DOCS_CONFLICT>`
+- Ключевые свежие проверки: `<command/interaction / exit/signal / counts / note>`
+- Непроверенные критерии: `<список или нет>`
 
-- Completed: `<acceptance results>`
-- Not completed: `<remaining results>`
-- Task-owned files: `<exact paths>`
-- Pre-existing dirty files preserved: `<paths or none>`
-- Generated/unknown files left untouched: `<paths or none>`
-- Context / ADR / progress paths: `<exact paths or not created>`
-- Project profile / Project Intelligence paths: `<exact paths or inline/not created>`
-- Delegated decisions: `<decision, rationale, reversibility, or none>`
-- Assumptions made: `<assumption, source/status, or none>`
-- Unresolved placeholders: `<item, acceptance impact/severity, resolution owner, or none>`
-- Residual risks: `<risk, evidence, owner, or none>`
+## Наблюдаемость
 
-## Quality evidence
+- Общее время: `<точное wall-clock elapsed или Недоступно>`
+- Время implementation/fix/reverify: `<точное/частичное или Недоступно>`
+- Токены: `<EXACT total | PARTIAL observed | Недоступно>`
+- Агентные/controller ходы: `<count>`
+- Ограничения метрик: `<source/semantics или нет>`
 
-- Review decision: `<decision and blocking findings>`
-- Verification verdict: `<verdict>`
-- Cross-area integration/interface proof: `<evidence or not applicable>`
-- Key fresh commands/interactions: `<command / exit / counts / note>`
-- Unverified criteria: `<list or none>`
+Не оценивай недоступные токены или время по длине текста, количеству сообщений или памяти агента.
 
-## Actions performed
+## Выполненные действия
 
-| Action | Exact target | Evidence |
+| Действие | Точная цель | Доказательство |
 | --- | --- | --- |
-| `<stage/commit/push/PR/merge/deploy/none>` | `<paths/repository/branch/environment>` | `<result/ref/URL/status>` |
+| `<stage/commit/push/PR/merge/deploy/none>` | `<paths/repository/branch/environment>` | `<result/ref/status>` |
 
-## External handoff, if required
+## Внешняя передача, если нужна
 
-- Local operator: `<operator>`
-- Remote operator: `<operator>`
-- Remote system: `<system and exact environment>`
-- Allowed preparation: `<artifacts and commands prepared>`
-- Forbidden execution: `<actions not performed>`
-- Verification steps: `<exact steps and expected result>`
-- Rollback or stop policy: `<policy>`
+- Локальный оператор: `<operator>`
+- Удалённый оператор: `<operator>`
+- Удалённая система: `<system + exact environment>`
+- Разрешённая подготовка: `<artifacts/commands prepared>`
+- Не выполнено из-за границ полномочий: `<actions not performed>`
+- Шаги проверки: `<exact steps + expected result>`
+- Rollback/stop policy: `<policy>`
 
-## Continuation
+## Продолжение
 
-- Minor findings: `<list or none>`
-- Adjacent future tasks: `<list or none>`
-- Assumptions and concerns: `<list or none>`
-- Pre-existing failures: `<list or none>`
-- Permissions still required: `<list or none>`
-- Cleanup performed: `<owned targets and evidence, or none>`
-- Exact next action: `<single next step or none>`
+- Minor findings: `<список или нет>`
+- Соседние будущие задачи: `<список или нет>`
+- Допущения/опасения: `<список или нет>`
+- Pre-existing failures: `<список или нет>`
+- Ещё требуемые разрешения: `<список или нет>`
+- Выполненная cleanup: `<owned targets + evidence или нет>`
+- Точное следующее действие: `<один следующий шаг или нет>`
