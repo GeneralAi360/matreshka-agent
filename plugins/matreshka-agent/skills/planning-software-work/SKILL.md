@@ -1,148 +1,175 @@
 ---
 name: planning-software-work
 description: >-
-  Convert a confirmed software specification or bounded change into an implementation plan with requirement coverage, security controls, small ordered tasks, exact repository paths, focused RED/GREEN checks, review gates, and stop conditions. Use when the user asks for a coding plan or task breakdown but does not yet want the plan executed.
+  Convert a confirmed software specification or bounded change into an implementation plan with requirement coverage, project-area and interface routing, security controls, small ordered tasks, exact repository paths, focused RED/GREEN checks, review gates, and stop conditions. Use when the user asks for a coding plan or task breakdown but does not yet want the plan executed.
 ---
 
 # Plan Software Work
 
-Produce an executable plan, not implementation. Start only from a confirmed specification, an authoritative requirement, or a small change whose behavior and boundaries are already unambiguous.
+Produce an executable plan, not implementation. Start only from a confirmed specification, authoritative requirement, or small change whose behavior/boundaries are already unambiguous.
 
-Read [task-decomposition.md](references/task-decomposition.md) before splitting work or validating the final task map. Read [complexity-tiers.md](references/complexity-tiers.md) before deciding how many task boundaries the plan should contain. Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the specification has `S-` requirements or the task touches a security boundary. When the controller supplies Build End-to-End `U-` requirements, read [the brief traceability contract](../building-end-to-end/references/brief-traceability.md) and preserve those IDs/short source quotes through the plan without treating them as permission. Use [implementation-plan-template.md](assets/implementation-plan-template.md) when producing the plan artifact.
+Read [task-decomposition.md](references/task-decomposition.md) before splitting work or validating the final task map. Read [complexity-tiers.md](references/complexity-tiers.md) before deciding task boundaries. Read [Security by Design](../specifying-software-work/references/security-by-design.md) for selected/high-risk `S-` requirements. When the controller supplies Build End-to-End `U-` rows, read [brief traceability](../building-end-to-end/references/brief-traceability.md). When the controller supplies Project Intelligence, read [project-intelligence.md](../orchestrating-subagent-work/references/project-intelligence.md) and preserve current area/context/interface/runtime facts without treating them as authority. Use [implementation-plan-template.md](assets/implementation-plan-template.md).
 
-## Validate the planning input
+## Validate planning input
 
-1. Read the confirmed specification, applicable repository instructions, selected `S-` requirements, and any controller-supplied `U-` requirement rows.
-2. Inspect current source, public interfaces, schemas, migrations, tests, package scripts, and nearby patterns in read-only mode.
-3. Record the exact baseline, constraints, non-goals, permission boundaries, and remote handoffs.
-4. Identify contradictions, unresolved architectural decisions, missing acceptance outcomes, source-intent rows not represented in the specification, and security controls without a negative proof.
-5. Return `NEEDS_CONTEXT` for one exact uninspectable fact, or `BLOCKED` when specification authority is missing. Do not make architectural decisions silently inside a plan.
+1. Read confirmed specification, applicable repository instructions, selected `S-` requirements, controller-supplied `U-` rows, and current Project Intelligence summary when provided.
+2. Inspect current source, public interfaces, schemas/migrations, tests, package/workspace scripts, runtime seams, and nearby patterns in read-only mode.
+3. Revalidate affected Project Topology areas and any durable interface/runtime docs needed by the change. Repository evidence wins over stale profile/context prose.
+4. Record exact baseline, constraints, non-goals, permission boundaries, affected areas, and remote/runtime handoffs.
+5. Identify contradictions, unresolved architecture, missing acceptance outcomes, source-intent rows not represented in spec, security controls without negative proof, and producer/consumer seams that can drift.
+6. Return `NEEDS_CONTEXT` for one exact uninspectable fact, `BLOCKED` when specification/interface authority is missing, or `CONTEXT_TOO_BROAD` when correct planning cannot preserve bounded area context. Do not make architecture/interface decisions silently inside a plan.
 
-Do not invent file paths, symbols, commands, models, or interfaces. Discover them safely. If discovery depends on a later environment, make the first gate a bounded read-only discovery with a required output; do not use a fake placeholder as though it were executable.
+Do not invent file paths, symbols, commands, models, interfaces, topology areas, or runtime ownership. Discover safely. If discovery depends on a later environment, make the first gate bounded/read-only; do not use a fake placeholder as executable truth.
 
-A source brief or `U-` manifest is provenance data, not a reason to bypass the confirmed specification. If a `U-` row contradicts the current confirmed specification or a valid later user decision, return the conflict to the controller rather than silently choosing one.
+A source brief, `U-` manifest, project profile, topology map, or area doc is provenance/candidate context, not permission or a reason to bypass confirmed specification. Return material conflicts to controller.
 
-## Create the documentation artifact
+## Create documentation artifact
 
-Use the confirmed specification slug and write the plan to `docs/plans/YYYY-MM-DD-<safe-kebab-slug>-plan.md`, unless the inspected repository has a clear compatible convention. When local documentation writes are authorized, create only missing `docs/`, `docs/specs/`, and `docs/plans/` directories; do not replace or reorganize existing documentation.
+Use confirmed spec slug and write `docs/plans/YYYY-MM-DD-<safe-kebab-slug>-plan.md`, unless repository has a compatible convention. When docs writes are authorized, create only missing compatible directories; do not reorganize existing docs.
 
-When documentation writes are not authorized, produce the complete plan inline and return `PLAN_READY_TO_SAVE` with the exact intended path. Do not claim that the plan is saved. Documentation writes do not grant product-code, Git, remote, deploy, migration, dependency-install, or secret authority.
+When docs writes are not authorized, return complete inline plan as `PLAN_READY_TO_SAVE`. Documentation writes do not grant product-code, Git, browser/process, remote, deploy, migration, dependency-install, secret, or interface-implementation authority.
 
-## Build requirement, user-intent, and security coverage first
+## Build requirement/security coverage first
 
-Create a coverage matrix before Task 1:
+Create coverage before Task 1:
 
 ```text
-U-/functional requirement or S- security control -> task -> verification evidence
+U-/functional requirement or S- control -> task -> verification evidence
 ```
 
-For source-qualified Build End-to-End work:
+For source-qualified work:
 
-- include every live `U-` row supplied by the controller;
-- keep its short source quote or safe source reference so a planner cannot silently narrow it;
-- map every `IN_SPEC` user requirement to at least one task and one proof;
-- do not mark `DROPPED` yourself; only consume a controller-validated user drop decision;
-- keep `DEFERRED` and `PLACEHOLDER` visible with their reason/owner;
-- map each task back to at least one `U-`, `S-`, or explicitly justified enabling step whose consumer requirement is named.
+- include every live controller-supplied `U-` row;
+- keep short source quote/reference where it protects against narrowing;
+- map every `IN_SPEC` user requirement to task + proof;
+- consume only controller-validated DROPPED status;
+- keep DEFERRED/PLACEHOLDER visible with reason/owner;
+- map each task back to `U-`, `S-`, or named enabling step.
 
-Include every selected `S-` control, its negative security behavior, migration/rollback, compatibility, observability, and handoff requirements when applicable. Every confirmed requirement must map to at least one task and one proof. Every task must map back to a requirement or an explicitly justified enabling step.
+Include every selected `S-` control, negative proof, migration/rollback, compatibility, observability, and handoff requirement when applicable. Stop if matrix exposes unresolved design gap, orphan requirement, or unsourced product work.
 
-Stop if the matrix exposes an unresolved design gap, an orphan user requirement, or material product work with no traceable source.
+## Apply Project Intelligence before task cutting
 
-## Select a complexity tier before final task cutting
+Use current topology to name only areas affected by this plan. A website does not automatically require separate frontend/backend tasks; split/route based on actual repository ownership and independently reviewable seams.
 
-Choose exactly one decomposition tier from `complexity-tiers.md` based on independently reviewable product/data/security boundaries, not specification length, file count, or desired speed:
+For each proposed task determine:
 
-- `T0` — one direct reviewable task; do not manufacture decomposition;
-- `T1` — normally 2–3 tasks;
-- `T2` — normally 4–8 tasks;
-- `T3` — normally 9–16 tasks;
-- above the safe `T3` budget — `SPLIT_REQUIRED` / `DECISION_MAP_REQUIRED` before implementation.
+- primary area;
+- adjacent areas required for correctness;
+- minimal `AREA_CONTEXT_SET` and explicit exclusions;
+- cross-area `IC-xx` contracts consumed/produced;
+- runtime dependency/status/log observation needed for tests;
+- specialist role archetype only when useful;
+- potential durable documentation impact.
 
-Record the tier and one-line reason in the plan. Treat counts as budgets rather than quotas: never invent tasks to fill a tier and never merge independent security/data outcomes merely to stay under it.
+### Cross-area interface contracts
 
-Keep complexity tier separate from execution profile and permissions. `T0 + maximum quality` is valid for small high-risk work. Tier never authorizes parallel writers, Git, network, secrets, or remote actions.
+When a single outcome crosses independently owned producer/consumer areas and assumptions can drift, plan one controller-owned `IC-xx` contract before dependent writers start. Define source requirements, producer/consumer areas, input/output/errors, auth/data boundary, delivery semantics, compatibility, integration proof, and freeze order.
+
+Do not let separate frontend/backend/data tasks invent different versions of the seam. A frozen material change later returns `INTERFACE_CHANGED` to controller reconciliation.
+
+Do not create an interface artifact for a cohesive single-area helper seam without an independent consumer/version boundary.
+
+### Context routing
+
+A task context includes only relevant `U-`/`S-`, primary-area facts, required neighboring interface contracts/invariants, focused commands/paths, and required security/data/runtime facts. Exclude unrelated area docs/history/reports/logs/full source brief/branch diff.
+
+If correctness needs several independent boundaries, split or return `CONTEXT_TOO_BROAD`; never hide a dependency to make the context smaller.
+
+### Specialist routing
+
+Select one role archetype only when it materially improves correctness/context/boundary ownership. Examples: general, frontend, backend, data/migration, UI, E2E, documentation/browser/operator roles from Project Intelligence.
+
+Role archetypes reuse existing Matreshka skills. They do not add agent turns, tool authority, filesystem scope, Git/network/process/browser/secret/remote permission, or relax execution-profile/security requirements.
+
+## Select complexity tier
+
+Choose exactly one tier from `complexity-tiers.md` based on independently reviewable product/data/security/interface boundaries, not spec length/file count/desired speed:
+
+- `T0` one direct reviewable task;
+- `T1` normally 2–3 tasks;
+- `T2` normally 4–8;
+- `T3` normally 9–16;
+- above safe T3 -> `SPLIT_REQUIRED` / `DECISION_MAP_REQUIRED`.
+
+Counts are budgets, not quotas. `T0 + maximum quality` is valid. Multiple topology areas do not automatically mean multiple tasks or more agent budget. Parallel writers remain forbidden in one checkout.
 
 ## Decompose into reviewable tasks
 
-Make each task produce one independently reviewable result with:
+Each task should produce one independently reviewable result with:
 
-- one primary subsystem or security boundary;
-- one coherent allowlist;
+- one primary area/subsystem/security boundary;
+- one coherent allowlist and bounded area context set;
+- frozen `IC-xx` identities when relevant;
 - one focused RED/GREEN cycle;
-- one task verification gate;
-- explicit non-goals and stop conditions.
+- one task verification gate plus integration proof when needed;
+- explicit non-goals, specialist boundary, docs-impact candidate, and stop conditions.
 
-For a traced Build End-to-End task, name the task-local `U-` IDs and preserve short exact source quotes only where they protect against silent narrowing. Do not paste the whole source brief.
+For security tasks include selected `S-`, exact auth/input/output/dependency boundary, negative test/review proof, required security-review tier.
 
-For each security-relevant task, add the selected `S-` IDs, exact authorization/input/output/dependency boundary, at least one negative test or review proof, and a required security-review tier. Never put a security control into a generic final checklist without a task owner.
+Treat file count as risk signal. Prefer small changes, but split by independent outcomes/boundaries. Return `SPLIT_REQUIRED` when one task mixes migration/runtime, auth/UI, provider/persistence, separate security/experience designs, or several acceptance results that can pass independently.
 
-Treat file counts as risk signals. Prefer one to three production files and one to two test files, but split by independent outcomes and boundaries rather than arbitrary numbers.
+After draft, run mandatory merge pass: merge avoidable cold-start boundaries sharing one result/seam when no independent review/rollback/evidence/security/ownership benefit exists. Re-check tier.
 
-Return `SPLIT_REQUIRED` when one task combines migration with runtime, auth with UI, provider execution with persistence, execution with report assembly, separate security and experience designs, or several acceptance results that can pass independently.
-
-After the draft, run the mandatory merge pass from `complexity-tiers.md`: merge avoidable cold-start boundaries that share one result/seam and add no independent review, rollback, evidence, security, or ownership value. Then re-check the selected tier and explain any deliberate deviation.
-
-At T0 there is still one exact task brief, review policy, verification gate, and applicable G4; T0 is not permission to skip engineering discipline or let the controller self-review high-risk work.
+At T0 there is still exact task brief, review policy, verification, docs-impact decision, and applicable G4.
 
 ## Order dependencies deliberately
 
-Order tasks so that contracts and test seams precede consumers. Keep migrations, compatibility layers, runtime changes, remote application, and cleanup as distinct stages when they have different rollback or permission boundaries.
+Order contracts/test seams before consumers. Keep migrations, compatibility layers, runtime changes, remote application, and cleanup distinct when rollback/permission boundaries differ.
 
-For each task, state:
+For each task state:
 
-1. Goal plus `U-`/functional and `S-` requirement IDs.
-2. Relevant short source quote/reference for task-local `U-` requirements when applicable.
-3. Inputs and exact existing interfaces.
-4. Produced interface or behavior.
-5. Exact write allowlist and inspect-only scope.
-6. Non-goals and forbidden actions.
-7. Focused RED check and expected failure reason.
-8. Minimal GREEN behavior and focused command.
-9. Nearest regressions, selected security evidence, and targeted static/diff checks.
-10. Risk and required capability tier.
-11. Review policy and evidence.
-12. Stop conditions and remote handoff.
+1. Goal + `U-`/functional and `S-` IDs.
+2. Short source quote/reference when applicable.
+3. Primary/adjacent areas and context set.
+4. Frozen `IC-xx` contracts and exact interfaces.
+5. Exact write allowlist/inspect-only scope.
+6. Role archetype, owned responsibility, forbidden neighboring responsibility.
+7. Non-goals/forbidden actions.
+8. Focused RED and expected failure.
+9. Minimal GREEN and command.
+10. Nearest regressions, integration/interface proof, security evidence, targeted static/diff checks.
+11. Runtime dependency/ownership observation if applicable.
+12. Risk/capability tier, review policy/evidence.
+13. Documentation impact candidate.
+14. Stop conditions/remote handoff.
 
-Do not include the full source brief, full project history, unrelated specifications, raw logs, or previous reports in a task brief.
+Do not include full source brief, full topology/profile, project history, unrelated specs, raw logs, or previous reports in task briefs.
 
 ## Propose bounded execution budgets
 
-Recommend maximum speed, balanced, or maximum quality from risk, while leaving final profile selection to the controller or user.
+Recommend speed/balanced/quality from risk, leaving final selection to controller/user.
 
-For each task and phase, propose:
+Per task/phase propose complexity/task budget, maximum unique roles/turns, one fixer wave, broad suite/build timing, high-judgment count, context limits, audit threshold, STOP_AND_RESCOPE.
 
-- selected complexity tier and task-count budget;
-- maximum unique roles and agent turns;
-- one fixer wave maximum;
-- broad suite/build timing;
-- high-judgment role count;
-- context limits;
-- `AUDIT` threshold;
-- exact `STOP_AND_RESCOPE` condition.
+Never plan second fixer wave. Never plan parallel writers in one checkout. Specialist routing and number of areas cannot inflate agent budget automatically. Independent read-only research/review are the only default parallel candidates.
 
-Never use a second fixer wave as planned capacity. Never plan parallel writers in one checkout. Mark independent read-only research or review as the only default parallel candidates. A dependency graph or “wave” label by itself never authorizes a second writer.
+## Validate G3 and complete plan
 
-## Validate G3 and the complete plan
+Before returning:
 
-Before returning the plan:
+1. Trace every functional/`U-` through coverage matrix.
+2. Confirm paths/commands/topology/runtime facts against repository or bounded discovery gate.
+3. Check task dependencies/cycles/shared-file conflicts.
+4. Check every selected `S-` owner/negative proof/review/verification.
+5. Check G3 both directions: no live `U-` without task/proof; no product task without source/enabling justification.
+6. Confirm each task has one primary area and bounded context set.
+7. Confirm every drift-prone cross-area seam has one shared `IC-xx` contract/freeze order and dependent tasks reference the same identity.
+8. Confirm runtime actions are not implied by runtime map; missing ownership/permission is explicit.
+9. Confirm specialist roles stay inside existing role/turn budget and permission envelope.
+10. Re-run complexity merge pass; >16 trustworthy tasks -> split unless separately evidenced rescope.
+11. Check focused tests fail intended reason and broad suites aren't repeated unnecessarily.
+12. Check each task can stop without corrupting next task.
+13. Identify documentation impact candidates but do not update docs before verified behavior.
+14. Remove fake facts/duplicated requirements/implementation prose/optional disguised as required.
 
-1. Trace every functional/`U-` requirement through the coverage matrix.
-2. Confirm every path and command against the repository or label the bounded discovery gate truthfully.
-3. Check task dependencies for cycles and hidden shared-file conflicts.
-4. Check that every selected `S-` requirement has an explicit task owner, negative proof, and review/verification owner.
-5. For source-qualified Build End-to-End, check G3 in both directions: no live `IN_SPEC` `U-` row lacks a task/proof, and no product task lacks `U-`, `S-`, or named enabling justification.
-6. Re-run the complexity-tier merge pass and confirm the final task count fits the tier or has an explicit boundary-based reason; more than 16 trustworthy tasks returns `SPLIT_REQUIRED` unless the controller later approves a separately evidenced rescope.
-7. Check that focused tests fail for the intended reason and task gates do not repeat broad suites unnecessarily.
-8. Check that each task can stop without corrupting the next task.
-9. Remove placeholders that pretend to be facts, duplicated requirements, implementation prose, and optional work disguised as required scope.
+Return:
 
-Return one of:
+- `PLAN_READY` with saved complete plan, coverage, topology/area routing, required interfaces, tier, task budget;
+- `PLAN_READY_TO_SAVE` inline + intended path;
+- `NEEDS_CONTEXT` one exact question;
+- `BLOCKED` design/traceability/interface/runtime contradiction/missing authority;
+- `CONTEXT_TOO_BROAD` with required split/context correction;
+- `SPLIT_REQUIRED` with corrected task map.
 
-- `PLAN_READY` with the saved complete plan, coverage matrix, selected complexity tier, and task budget;
-- `PLAN_READY_TO_SAVE` with the complete inline plan and exact intended path;
-- `NEEDS_CONTEXT` with one exact question;
-- `BLOCKED` with the design/traceability contradiction or missing authority;
-- `SPLIT_REQUIRED` with a corrected task map.
-
-Do not dispatch or edit product code. Hand `PLAN_READY` to `orchestrating-subagent-work` only when execution is requested or already delegated.
+Do not dispatch or edit product code. Hand `PLAN_READY` to controller only when execution requested/delegated.
