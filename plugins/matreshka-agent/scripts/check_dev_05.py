@@ -2,9 +2,9 @@
 """Deterministic integrity check for the unreleased Matreshka Agent 0.5 track.
 
 Read-only and offline. This proves that intended development contracts/assets
-exist and that major controller seams are wired through planning, dispatch,
-review, verification, finish, recovery and observability. It does not claim
-native host behavior.
+exist and that major controller seams are wired through design, planning,
+dispatch, review, verification, finish, recovery and observability. It does
+not claim native host behavior.
 """
 
 from __future__ import annotations
@@ -26,9 +26,18 @@ PLUGIN_REQUIRED_FILES = (
     "skills/building-end-to-end/assets/requirement-manifest-template.md",
     "skills/building-end-to-end/assets/dashboard-state-template.js",
     "skills/building-end-to-end/assets/dashboard-template.html",
+    "skills/designing-product-experience/SKILL.md",
+    "skills/designing-product-experience/agents/openai.yaml",
+    "skills/designing-product-experience/references/design-core.md",
+    "skills/designing-product-experience/references/design-intelligence.md",
+    "skills/designing-product-experience/references/prototype-exploration.md",
+    "skills/designing-product-experience/assets/design-contract-template.md",
+    "skills/designing-product-experience/evals/evals.json",
+    "skills/designing-product-experience/evals/trigger-evals.json",
     "skills/planning-software-work/references/complexity-tiers.md",
     "skills/verifying-development-work/references/browser-e2e.md",
     "skills/orchestrating-subagent-work/references/project-intelligence.md",
+    "skills/orchestrating-subagent-work/references/design-intelligence.md",
     "skills/orchestrating-subagent-work/assets/project-intelligence-template.md",
     "skills/orchestrating-subagent-work/assets/interface-contract-template.md",
     "skills/orchestrating-subagent-work/assets/task-brief-template.md",
@@ -38,12 +47,46 @@ PLUGIN_REQUIRED_FILES = (
     "skills/orchestrating-subagent-work/assets/project-profile-template.md",
     "skills/orchestrating-subagent-work/evals/project-intelligence-evals.json",
     "skills/finishing-development-work/assets/finish-handoff-template.md",
+    "codex-prompts/matreshka-design.md",
+    "scripts/validate_dev_05.py",
+    "scripts/doctor_dev_05.py",
 )
 
 PLUGIN_MARKERS = {
     "skills/building-end-to-end/SKILL.md": (
         "INTERVIEW", "ASSISTED", "FULL_AUTO", "CONTINUE_PROJECT", "EXISTING_PROJECT",
         "SOURCE_BRIEF", "matreshka-agent:orchestrating-subagent-work",
+        "DESIGN_RELEVANCE_SIGNAL", "designing-product-experience", "DESIGN.md",
+    ),
+    "skills/designing-product-experience/SKILL.md": (
+        "DESIGN_CURRENT", "DESIGN_RECON_REQUIRED", "DESIGN_DIRECTION_REQUIRED",
+        "DESIGN_READY_TO_SAVE", "DESIGN_CHANGED", "DESIGN_DRIFT",
+        "DESIGN_CONTEXT_SET", "DESIGN.md", "Apple-inspired",
+    ),
+    "skills/designing-product-experience/references/design-core.md": (
+        "Purpose", "Agency", "Responsibility", "Familiarity", "Flexibility",
+        "Simplicity", "Craft", "Delight", "Wayfinding", "Reduced motion",
+    ),
+    "skills/designing-product-experience/references/design-intelligence.md": (
+        "DESIGN_RELEVANCE", "DESIGN_RECON", "DESIGN_CONTEXT_SET", "DESIGN_REVIEW",
+        "VISUAL_DESIGN_CHECK", "DESIGN_DRIFT_GATE", "DESIGN_CHANGED", "DESIGN_DRIFT",
+    ),
+    "skills/designing-product-experience/references/prototype-exploration.md": (
+        "Default to **3** directions", "Real divergence", "Prototype isolation",
+        "Picker behavior", "Promotion",
+    ),
+    "skills/designing-product-experience/assets/design-contract-template.md": (
+        "# Product Design Contract", "Product personality", "UX principles",
+        "Typography", "Components and primitives", "Accessibility", "Motion system",
+        "Design invariants", "Apple-inspired core reminder",
+    ),
+    "skills/orchestrating-subagent-work/references/design-intelligence.md": (
+        "PREFLIGHT", "SPECIFICATION", "PLAN", "REVIEW", "VERIFY", "FINISH", "RECOVERY",
+        "DESIGN_CHANGED", "DESIGN_DRIFT", "G4 isolation",
+    ),
+    "skills/orchestrating-subagent-work/references/project-profile.md": (
+        "PROJECT_TOPOLOGY", "RUNTIME_MAP", "AREA_CONTEXT_SET", ".matreshka/project-profile.md",
+        "DESIGN.md", "DESIGN_CONTEXT_SET", "designing-product-experience",
     ),
     "skills/orchestrating-subagent-work/SKILL.md": (
         "PROJECT_TOPOLOGY", "AREA_CONTEXT_SET", "IC-", "RUNTIME_MAP",
@@ -57,33 +100,40 @@ PLUGIN_MARKERS = {
         "Documentation writes", "Browser interaction", "Local process/runtime",
         "Destructive E2E setup", "Project Intelligence",
     ),
-    "skills/orchestrating-subagent-work/references/project-profile.md": (
-        "PROJECT_TOPOLOGY", "RUNTIME_MAP", "AREA_CONTEXT_SET", ".matreshka/project-profile.md",
-    ),
     "skills/planning-software-work/SKILL.md": (
         "Project Topology", "AREA_CONTEXT_SET", "IC-", "RUNTIME_MAP",
-        "documentation impact", "Specialist routing",
+        "documentation impact", "Specialist routing", "DESIGN_CONTEXT_SET",
+        "DESIGN_CHANGED", "DESIGN_DRIFT", "designing-product-experience",
+    ),
+    "skills/planning-software-work/assets/implementation-plan-template.md": (
+        "Design Intelligence snapshot", "Design Intelligence routing", "Design identity",
+        "Visual design check", "Design impact candidates", "DESIGN_CONTEXT_SET",
     ),
     "skills/reviewing-agent-work/SKILL.md": (
         "frozen cross-area", "IC-", "source-intent narrowing", "specialist",
+        "Design Intelligence", "Apple-inspired", "DESIGN.md", "UNCHECKABLE",
     ),
     "skills/verifying-development-work/SKILL.md": (
         "browser", "Blind user-intent acceptance", "technical/security", "G4",
+        "Visual design verification", "VISUAL_DESIGN_CHECK", "DESIGN_VERIFICATION",
+        "DESIGN.md", "G4 must not",
     ),
     "skills/finishing-development-work/SKILL.md": (
         "documentation drift", "Project Intelligence", "DOCS_NOT_REQUIRED", "DOCS_CURRENT",
+        "Design Intelligence", "DESIGN_DRIFT", "DESIGN_CURRENT", "DESIGN.md",
     ),
     "skills/orchestrating-subagent-work/assets/task-brief-template.md": (
         "Project Intelligence routing", "AREA_CONTEXT_SET", "INTERFACE_CHANGED",
+        "Design Intelligence routing", "DESIGN_CONTEXT_SET", "DESIGN_CHANGED", "DESIGN_DRIFT",
         "Role-specific boundary", "Documentation impact",
     ),
     "skills/orchestrating-subagent-work/assets/dispatch-templates.md": (
-        "Documentation maintainer", "Execution-only operator", "AREA_CONTEXT_SET",
-        "IC-xx", "Role:",
+        "Design engineer", "Design reviewer", "Documentation maintainer",
+        "Execution-only operator", "AREA_CONTEXT_SET", "DESIGN_CONTEXT_SET", "IC-xx",
     ),
     "skills/orchestrating-subagent-work/assets/agent-report-template.md": (
-        "Role archetype", "Primary area", "Cross-area contracts",
-        "Documentation impact candidate", "Runtime ownership/status issue",
+        "Role archetype", "Primary area", "Cross-area contracts", "Design observations",
+        "Design impact candidate", "Documentation impact candidate", "Runtime ownership/status issue",
     ),
     "skills/orchestrating-subagent-work/assets/project-intelligence-template.md": (
         "Project topology", "Area context index", "Cross-area interfaces",
@@ -94,25 +144,41 @@ PLUGIN_MARKERS = {
         "Failure semantics", "Delivery semantics", "Integration/contract proof",
     ),
     "skills/orchestrating-subagent-work/assets/ledger-template.md": (
-        "## Project Intelligence", "Documentation drift state", "Current specialist archetype",
-        "Token usage status", "Browser / E2E verification", "Interface-contract mismatch",
+        "## Project Intelligence", "## Design Intelligence", "Root design contract path",
+        "Design review status", "Visual design check status", "Design drift gate",
+        "Documentation drift state", "Token usage status", "Browser / E2E verification",
     ),
     "skills/finishing-development-work/assets/finish-handoff-template.md": (
-        "Итоговый статус", "Project Intelligence", "Documentation drift gate",
+        "Итоговый статус", "Project Intelligence", "Design Intelligence", "Root `DESIGN.md`",
+        "Design Drift Gate", "Visual design check", "Documentation drift gate",
         "Общее время", "Токены",
     ),
     "skills/building-end-to-end/assets/dashboard-template.html": (
-        "Общий прогресс", "Общее время", "Токены", "Карта проекта",
-        "Техническая проверка", "Независимая приёмка G4", "s.intelligence",
+        "Общий прогресс", "Общее время", "Токены", "Карта проекта", "Дизайн и UX",
+        "Design Drift Gate", "DESIGN.md", "Техническая проверка",
+        "Независимая приёмка G4", "s.intelligence", "s.design",
     ),
     "skills/building-end-to-end/assets/dashboard-state-template.js": (
-        '"timing"', '"usage"', '"intelligence"', '"tests"', '"browser"',
+        '"timing"', '"usage"', '"intelligence"', '"design"', '"tests"', '"browser"',
+        '"designDocWrite"', '"prototypeWrite"',
+    ),
+    "codex-prompts/matreshka-design.md": (
+        'argument-hint: "[TASK]"', "$$matreshka-agent:designing-product-experience",
+        "$ARGUMENTS", "DESIGN.md", "Purpose", "Delight",
+    ),
+    "scripts/validate_dev_05.py": (
+        "designing-product-experience", "matreshka-design.md", "validate_package.py",
+    ),
+    "scripts/doctor_dev_05.py": (
+        "designing-product-experience", "matreshka-design.md", "doctor.py",
     ),
 }
 
 JSON_FILES = (
     "skills/building-end-to-end/evals/evals.json",
     "skills/building-end-to-end/evals/trigger-evals.json",
+    "skills/designing-product-experience/evals/evals.json",
+    "skills/designing-product-experience/evals/trigger-evals.json",
     "skills/orchestrating-subagent-work/evals/evals.json",
     "skills/orchestrating-subagent-work/evals/trigger-evals.json",
     "skills/orchestrating-subagent-work/evals/project-intelligence-evals.json",
@@ -131,6 +197,8 @@ MARKETPLACE_REQUIRED_FILES = (
     "docs/plans/2026-08-20-matreshka-agent-0.5-browser-e2e-plan.md",
     "docs/specs/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-spec.md",
     "docs/plans/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-plan.md",
+    "docs/specs/2026-08-20-matreshka-agent-0.5-design-intelligence-spec.md",
+    "docs/plans/2026-08-20-matreshka-agent-0.5-design-intelligence-plan.md",
 )
 
 MARKETPLACE_MARKERS = {
@@ -139,7 +207,7 @@ MARKETPLACE_MARKERS = {
         "Browser E2E + Browser G4", "check_dev_05.py",
     ),
     ".github/workflows/package-validation.yml": (
-        "validate_package.py", "check_dev_05.py", "doctor.py", "python-version: '3.11'",
+        "validate_dev_05.py", "check_dev_05.py", "doctor_dev_05.py", "python-version: '3.11'",
     ),
     "docs/plans/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-plan.md": (
         "IMPLEMENTED_PENDING_NATIVE_RELEASE_VALIDATION", "T5", "STATIC_HARDENING_IMPLEMENTED",
@@ -149,6 +217,12 @@ MARKETPLACE_MARKERS = {
     ),
     "docs/plans/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-plan.md": (
         "IMPLEMENTED_PENDING_NATIVE_VALIDATION", "P1", "P6", "P7", "P8",
+    ),
+    "docs/specs/2026-08-20-matreshka-agent-0.5-design-intelligence-spec.md": (
+        "DESIGN INTELLIGENCE", "D1", "D8", "DESIGN.md", "Apple-inspired", "designing-product-experience",
+    ),
+    "docs/plans/2026-08-20-matreshka-agent-0.5-design-intelligence-plan.md": (
+        "D1", "D9", "D10", "DESIGN.md", "Apple-inspired",
     ),
 }
 
@@ -223,14 +297,24 @@ def main() -> int:
     if "$$matreshka-agent:building-end-to-end" not in build_prompt:
         failures.append("CODEX build wrapper must route to namespaced Matreshka Build End-to-End")
 
+    design_prompt = read(plugin_root / "codex-prompts/matreshka-design.md", failures)
+    if 'argument-hint: "[TASK]"' not in design_prompt:
+        failures.append("CODEX design wrapper must keep validator-compatible [TASK] argument hint")
+    if "$$matreshka-agent:designing-product-experience" not in design_prompt:
+        failures.append("CODEX design wrapper must route to namespaced Matreshka Design Product Experience")
+
     openai_yaml = read(plugin_root / "skills/building-end-to-end/agents/openai.yaml", failures)
     if "$building-end-to-end" not in openai_yaml:
-        failures.append("Codex skill card must preserve the canonical skill token")
+        failures.append("Codex Build skill card must preserve canonical skill token")
     if "$matreshka-agent:building-end-to-end" not in openai_yaml:
-        failures.append("Codex skill card must show the namespaced Matreshka invocation")
+        failures.append("Codex Build skill card must show namespaced Matreshka invocation")
     for public_word in ("interview", "assisted", "full-auto", "continue-project", "existing-project"):
         if public_word not in openai_yaml:
-            failures.append(f"Codex skill card is missing public launch hint {public_word!r}")
+            failures.append(f"Codex Build skill card missing public launch hint {public_word!r}")
+
+    design_yaml = read(plugin_root / "skills/designing-product-experience/agents/openai.yaml", failures)
+    if "$designing-product-experience" not in design_yaml:
+        failures.append("Codex design skill card must preserve canonical $designing-product-experience token")
 
     pi_evals_path = plugin_root / "skills/orchestrating-subagent-work/evals/project-intelligence-evals.json"
     try:
@@ -252,10 +336,35 @@ def main() -> int:
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         failures.append(f"Project Intelligence eval suite unreadable: {exc}")
 
+    design_evals_path = plugin_root / "skills/designing-product-experience/evals/evals.json"
+    try:
+        design_payload = json.loads(design_evals_path.read_text(encoding="utf-8"))
+        cases = design_payload.get("evals", []) if isinstance(design_payload, dict) else []
+        if len(cases) < 18:
+            failures.append("Design Intelligence adversarial suite must contain at least 18 cases")
+        ids = {str(case.get("id")) for case in cases if isinstance(case, dict)}
+        required_ids = {
+            "ui-project-missing-design-md", "no-design-write-authority",
+            "existing-product-reconstruct-before-change", "user-does-not-know-style",
+            "fake-prototype-divergence", "full-auto-does-not-invent-brand",
+            "design-drift-random-tokens", "valid-design-change-reconciles",
+            "narrow-design-context", "backend-no-design-payload", "existing-primitive-first",
+            "library-install-not-authorized", "high-frequency-over-animation",
+            "accessibility-design-blocker", "e2e-g4-pass-design-fail",
+            "visual-capability-unavailable", "stale-design-contract-conflict",
+            "recovery-design-identity-changed",
+        }
+        missing_ids = sorted(required_ids - ids)
+        if missing_ids:
+            failures.append(f"Design Intelligence eval coverage missing: {', '.join(missing_ids)}")
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        failures.append(f"Design Intelligence eval suite unreadable: {exc}")
+
     state_text = read(plugin_root / "skills/building-end-to-end/assets/dashboard-state-template.js", failures)
     html_text = read(plugin_root / "skills/building-end-to-end/assets/dashboard-template.html", failures)
     dashboard_contract = {
         "intelligence": "s.intelligence",
+        "design": "s.design",
         "timing": "s.timing",
         "usage": "s.usage",
         "tests": "s.tests",
@@ -264,7 +373,7 @@ def main() -> int:
     }
     for state_key, html_marker in dashboard_contract.items():
         if f'"{state_key}"' not in state_text or html_marker not in html_text:
-            failures.append(f"DASHBOARD contract mismatch for {state_key}: state/html are not both wired")
+            failures.append(f"DASHBOARD contract mismatch for {state_key}: state/html not both wired")
 
     if failures:
         print(f"Matreshka 0.5 development integrity: FAIL ({len(failures)} finding(s))")
@@ -273,13 +382,15 @@ def main() -> int:
         return 1
 
     print("Matreshka 0.5 development integrity: PASS")
+    print("- 11-skill development package inventory + Codex design wrapper: present")
     print("- launch modes/scenarios: present and Codex-routed")
     print("- source brief + U/S + G1-G4: present")
-    print("- Russian dashboard + state/timing/tokens: wired")
-    print("- Browser/E2E: wired through controller/verifier/dashboard")
-    print("- Project Intelligence P1-P6: wired through controller/planner/task/review/finish/recovery")
-    print("- task/dispatch/report/handoff templates: wired")
+    print("- Russian dashboard + state/timing/tokens + Design Intelligence: wired")
+    print("- Browser/E2E: wired through verifier/dashboard")
+    print("- Project Intelligence P1-P6: wired through planning/task/review/finish/recovery")
+    print("- Design Intelligence D1-D9: contracts, DESIGN.md, Apple-inspired core, prototypes, context, review, visual check and drift: wired")
     print("- Project Intelligence adversarial coverage: 14 required cases present")
+    print("- Design Intelligence adversarial coverage: 18 required cases present")
     print("- plans/README/CI development-track markers: present")
     print("Native host behavior is intentionally outside this static check.")
     return 0
