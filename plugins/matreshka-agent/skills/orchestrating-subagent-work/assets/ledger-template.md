@@ -97,6 +97,29 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 - G4 report/evidence: {{G4_REPORT_OR_NONE}}
 - Material source-intent drift: {{DRIFT_OR_NONE}}
 
+## Project Intelligence
+
+- Intelligence state path: `{{PROJECT_INTELLIGENCE_PATH_OR_INLINE}}`
+- Topology status: `{{CURRENT_PARTIAL_STALE_UNAVAILABLE}}`
+- Topology identity/source: {{TOPOLOGY_IDENTITY_AND_SOURCE}}
+- Area count: `{{AREA_COUNT}}`
+- Affected areas: {{AREA_IDS}}
+- Current primary area: `{{AREA_ID_OR_NONE}}`
+- Area-context guarantee for current task: `{{NARROW_DEGRADED_CONTEXT_TOO_BROAD_NOT_APPLICABLE}}`
+- Current included context sources: {{CONTEXT_SOURCES_OR_NONE}}
+- Current explicit context exclusions: {{CONTEXT_EXCLUSIONS_OR_NONE}}
+- Active cross-area interface contracts: {{IC_IDS_HASHES_STATUS_OR_NONE}}
+- Interface contract drift/conflict: {{INTERFACE_DRIFT_OR_NONE}}
+- Runtime-map status: `{{CURRENT_PARTIAL_STALE_UNAVAILABLE_NOT_APPLICABLE}}`
+- Runtime services relevant to run: {{SERVICE_IDS_OR_NONE}}
+- Runtime ownership/blocker: {{RUNTIME_OWNERSHIP_OR_NONE}}
+- Documentation drift state: `{{DOCS_NOT_REQUIRED_DOCS_CURRENT_DOCS_UPDATE_REQUIRED_DOCS_BLOCKED_DOCS_CONFLICT_PENDING}}`
+- Documentation impact paths: {{DOC_PATHS_OR_NONE}}
+- Current specialist archetype: `{{ROLE_ARCHETYPE_OR_NONE}}`
+- Specialist routing rationale/budget: {{RATIONALE_AND_BUDGET_OR_NONE}}
+
+Project Intelligence is descriptive coordination state. It cannot grant authority, replace current repository evidence, satisfy verification, or add agent budget.
+
 ## Browser / E2E verification
 
 - Web/browser relevance: `{{YES_NO_NOT_APPLICABLE}}`
@@ -123,6 +146,8 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 
 - Context path: `{{CONTEXT_PATH_OR_NONE}}`
 - Context source and review state: {{CONTEXT_SOURCE_REVIEW_OR_NONE}}
+- Project profile path: `{{PROJECT_PROFILE_PATH_OR_NONE}}`
+- Project profile current/stale state: {{PROFILE_STATE_OR_NONE}}
 - ADR IDs: {{ADR_IDS_OR_NONE}}
 - Progress path: `{{PROGRESS_PATH_OR_INLINE}}`
 - Progress projection status: `{{CURRENT_STALE_MISSING_UNAUTHORIZED}}`
@@ -139,7 +164,9 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 - Forbidden scope: {{FORBIDDEN_SCOPE}}
 - Decision delegation: {{DECISIONS}}
 - Matreshka source-intent/run-state authority: {{TRACEABILITY_STATE_AUTHORITY}}
+- Project Intelligence state/profile authority: {{PROJECT_INTELLIGENCE_STATE_AUTHORITY}}
 - Local writes/commands: {{LOCAL_AUTHORITY}}
+- Documentation writes: {{DOCUMENTATION_AUTHORITY}}
 - Browser interaction: {{BROWSER_TARGET_MODE_INTERACTION_AUTHORITY}}
 - Local process/runtime: {{LOCAL_PROCESS_START_STOP_AUTHORITY}}
 - Port binding/listening: {{PORT_AUTHORITY}}
@@ -158,9 +185,9 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 
 ## Task map and phase budget
 
-| Task | Dependency | U/S requirements | Status | Agent turns used/max | High-judgment turns |
-| --- | --- | --- | --- | --- | --- |
-| {{TASK_ID}} | {{DEPENDENCY}} | {{U_AND_S_IDS}} | {{STATUS}} | {{USED_MAX}} | {{USED}} |
+| Task | Dependency | U/S requirements | Area | Role archetype | Interfaces | Context | Status | Agent turns used/max | High-judgment turns |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{TASK_ID}} | {{DEPENDENCY}} | {{U_AND_S_IDS}} | `{{AREA_ID}}` | `{{ROLE_ARCHETYPE}}` | {{IC_IDS_OR_NONE}} | {{NARROW_DEGRADED}} | {{STATUS}} | {{USED_MAX}} | {{USED}} |
 
 - Current task: `{{TASK_ID}}`
 - Total agent turns used/max: `{{USED_MAX}}`
@@ -169,14 +196,15 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 
 ## Dispatches
 
-| Turn | Task | Role | Stable thread ID | Tier | Brief/report | Status |
-| --- | --- | --- | --- | --- | --- | --- |
-| {{N}} | {{TASK}} | {{ROLE}} | `{{THREAD_ID}}` | {{TIER}} | {{PATHS}} | {{STATUS}} |
+| Turn | Task | Area | Role archetype | Stable thread ID | Tier | Brief/report | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| {{N}} | {{TASK}} | `{{AREA_ID}}` | `{{ROLE_ARCHETYPE}}` | `{{THREAD_ID}}` | {{TIER}} | {{PATHS}} | {{STATUS}} |
 
 ## Review
 
 - Confirmed findings: {{FINDINGS_OR_NONE}}
 - Source-intent narrowing findings: {{U_REQUIREMENT_FINDINGS_OR_NONE}}
+- Cross-area interface findings: {{INTERFACE_FINDINGS_OR_NONE}}
 - Rejected/adjacent findings: {{ADJUDICATION}}
 - Fixer wave used: {{YES_NO}}
 - Targeted re-review result: {{RESULT_OR_PENDING}}
@@ -188,10 +216,14 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 | `{{COMMAND_OR_INTERACTION}}` | {{EXIT_OR_SIGNAL}} | {{COUNTS}} | {{NOTE}} | {{STATE}} |
 
 - Latest applicable test-gate counts: {{PASSED_FAILED_SKIPPED_OR_NONE}}
+- Area-local evidence: {{AREA_EVIDENCE_SUMMARY}}
+- Cross-area integration/contract evidence: {{INTERFACE_EVIDENCE_OR_NONE}}
+- Runtime evidence/caveat: {{RUNTIME_EVIDENCE_OR_NONE}}
 - Pre-existing failures: {{FAILURES_OR_NONE}}
 - Technical/security verification status: `{{STATUS}}`
 - Quality-gate rows: {{PASS_FAIL_NOT_RUN_BLOCKED_SUMMARY}}
 - Required browser E2E rows: {{PASS_FAIL_NOT_RUN_BLOCKED_NOT_APPLICABLE_SUMMARY}}
+- Documentation drift gate runs from verified current behavior after these technical rows; docs never substitute for technical/security evidence.
 - Blind acceptance follows technical/security verification when G4 applies; browser G4 is one observation mode and never substitutes for required technical/security rows.
 
 ## Workspace and learning
@@ -207,6 +239,10 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 - Loaded contract/plugin version: `{{LOADED_CONTRACT_AND_PLUGIN_VERSION}}`
 - Version difference and in-memory compatibility: {{VERSION_DIFFERENCE_OR_NONE}}
 - Source brief/manifest mismatch: {{INTENT_MISMATCH_OR_NONE}}
+- Project Intelligence topology/profile mismatch: {{TOPOLOGY_PROFILE_MISMATCH_OR_NONE}}
+- Interface-contract mismatch: {{INTERFACE_MISMATCH_OR_NONE}}
+- Runtime ownership/state mismatch: {{RUNTIME_MISMATCH_OR_NONE}}
+- Documentation drift mismatch: {{DOCS_MISMATCH_OR_NONE}}
 - Browser capability/evidence mismatch: {{BROWSER_MISMATCH_OR_NONE}}
 - Timing/usage mismatch: {{OBSERVABILITY_MISMATCH_OR_NONE}}
 - Progress/dashboard/ledger/actual-state mismatch: {{MISMATCH_OR_NONE}}
