@@ -9,6 +9,8 @@ window.MATRESHKA_RUN_STATE = {
   "complexityTier": "{{COMPLEXITY_TIER}}",
   "authority": {
     "localWrites": false,
+    "designDocWrite": false,
+    "prototypeWrite": false,
     "gitHistory": false,
     "gitRemote": false,
     "network": false,
@@ -54,6 +56,21 @@ window.MATRESHKA_RUN_STATE = {
     "docsStatus": "PENDING",
     "specialist": null,
     "contextGuarantee": "NOT_APPLICABLE"
+  },
+  "design": {
+    "relevant": false,
+    "status": "DESIGN_NOT_APPLICABLE",
+    "contractPath": null,
+    "identity": null,
+    "direction": null,
+    "prototypeStatus": "NOT_APPLICABLE",
+    "contextGuarantee": "NOT_APPLICABLE",
+    "reviewStatus": "NOT_APPLICABLE",
+    "visualStatus": "NOT_APPLICABLE",
+    "driftStatus": "DESIGN_NOT_APPLICABLE",
+    "screensChecked": 0,
+    "evidenceCount": 0,
+    "blockedReason": null
   },
   "stages": [],
   "tasks": [],
