@@ -1,6 +1,6 @@
 # Implementation Plan — Matreshka Agent 0.5 Project Intelligence Layer
 
-- Status: `IN_PROGRESS`
+- Status: `IMPLEMENTED_PENDING_NATIVE_VALIDATION`
 - Specification: `docs/specs/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-spec.md`
 - Branch: `dev/0.5-brief-traceability-observability`
 - Delivery policy: development branch only; no merge to `main` or `0.5.0` release claim from this plan.
@@ -11,46 +11,48 @@ Implement a portable Project Intelligence Layer for the existing Matreshka contr
 
 ## Task map
 
-| Task | Result | Main files | Gate |
-| --- | --- | --- | --- |
-| `P1` | `PROJECT_TOPOLOGY` and reusable profile shape | project-intelligence reference, project-profile reference/template | topology cases |
-| `P2` | `AREA_CONTEXT_SET` routing into task briefs | project-intelligence reference, task brief/report templates | context cases |
-| `P3` | Controller-owned `IC-xx` contracts for cross-area seams | interface contract template, planning template | producer/consumer cases |
-| `P4` | Safe `RUNTIME_MAP` with ownership/permission separation | project-intelligence reference, profile/ledger templates | runtime cases |
-| `P5` | Documentation impact/drift gate after verification | project-intelligence reference, ledger/final handoff | stale-doc cases |
-| `P6` | Specialist role archetypes without authority inflation | project-intelligence reference, task/dispatch/report templates | routing/budget cases |
-| `P7` | Project Intelligence observable and recoverable | ledger/dashboard projection | projection/recovery cases |
-| `P8` | Package/native hardening | existing 0.5 release phase | validator/doctor/native tests |
+| Task | Status | Result | Main files | Remaining gate |
+| --- | --- | --- | --- | --- |
+| `P1` | `IMPLEMENTED` | `PROJECT_TOPOLOGY` and reusable profile shape | project-intelligence reference, project-profile reference/template | native full-stack topology proof |
+| `P2` | `IMPLEMENTED` | `AREA_CONTEXT_SET` routing into task briefs/dispatch | controller, task brief, dispatch/report templates | native context-isolation proof |
+| `P3` | `IMPLEMENTED` | Controller-owned/frozen `IC-xx` contracts for cross-area seams | interface-contract template, planner/controller/reviewer | native producer/consumer proof |
+| `P4` | `IMPLEMENTED` | Safe `RUNTIME_MAP` with ownership/permission separation | project-intelligence, controller, permission/ledger | native runtime ownership proof |
+| `P5` | `IMPLEMENTED` | Documentation impact/drift gate after verified behavior | project-intelligence, finish, ledger/handoff | native docs-drift proof |
+| `P6` | `IMPLEMENTED` | Specialist role archetypes without authority/budget inflation | controller/planner/task/dispatch/review | native routing proof |
+| `P7` | `IMPLEMENTED` | Project Intelligence observable/recoverable | ledger, dashboard state/html, recovery | native projection/recovery proof |
+| `P8` | `STATIC_HARDENING_IMPLEMENTED` | deterministic integrity check + CI wiring + docs/evals | `scripts/check_dev_05.py`, workflow, README, eval suite | CI evidence + native acceptance |
 
 ## P1 — Project Topology
 
-Read-only discovery must identify real architectural areas instead of assuming a frontend/backend template. Record area ID, kind, purpose, roots, entry points, verified commands and source, produced/consumed interfaces, state/data ownership, security/trust boundary, applicable instructions, and freshness identity.
+Read-only discovery identifies real architectural areas instead of assuming a frontend/backend template. Each area can record ID, kind, purpose, roots, entry points, verified commands/source, produced/consumed interfaces, state/data ownership, security/trust boundary, applicable instructions and freshness identity.
 
-Examples may include `FRONTEND`, `BACKEND`, `DATA`, `E2E`, `CLI`, `WORKER`, `QUEUE`, `MOBILE`, or repository-specific areas. A single-area project stays single-area.
+A full-stack repository may expose `AREA-FRONTEND`, `AREA-BACKEND`, `AREA-DATA`, `AREA-E2E`; a small CLI may remain one/two cohesive areas. Area count is descriptive and never creates permissions or agent budget.
 
 ## P2 — Area Context Router
 
-Derive one minimal context package per dispatched task. Preserve relevant `U-`/`S-` rows, primary area facts, necessary adjacent interface contracts, focused commands, security/data/runtime invariants, and exact scoped paths. Exclude unrelated area history, reports, raw logs, full source brief, and broad diffs.
+Every controller-dispatched task receives a bounded `AREA_CONTEXT_SET`: task-local U/S requirements, primary area, only necessary adjacent interfaces/invariants, exact paths/commands and security/data/runtime facts. Unrelated area history/docs/reports/raw logs/full source brief/full branch diff are excluded.
 
-Return `CONTEXT_TOO_BROAD` when correctness cannot be preserved with a bounded task package.
+If correctness cannot survive context reduction, controller returns `CONTEXT_TOO_BROAD` or splits the work instead of hiding dependencies.
 
 ## P3 — Cross-Area Interface Contract
 
-For one user outcome crossing multiple area owners, create one `IC-xx` contract before dependent writers begin. Default run-local path when state writes are authorized:
+For real producer/consumer seams the controller creates one shared `IC-xx` before dependent writer dispatch. Default run-local path:
 
 ```text
-.matreshka/runs/<run-id>/interfaces/IC-xx-<slug>.md
+.matreshka/runs/<run-id>/interfaces/IC-xx-<safe-slug>.md
 ```
 
-Producer and consumer tasks reference the same contract identity/hash. A material contract change blocks dependent dispatch until controller reconciliation. Do not create an interface artifact for a single-area task with no shared seam.
+Producer and consumers pin the same contract identity/hash. Material change after freeze returns `INTERFACE_CHANGED` to controller reconciliation. Single-area internal helper seams do not receive decorative contracts.
 
 ## P4 — Runtime Map
 
-Map verified service/process ownership, start/stop/status/log commands, ports when evidenced, environment class, and mutation implications. Status/log observation remains separate from process start/stop, port bind, network, and destructive authority. Unknown process ownership must never cause broad kill-by-port/process cleanup.
+Runtime state records verified service/process ownership, start/stop/status/log commands, evidenced ports/sockets, environment class and mutation implications. Read-only observation never grants process start/stop/kill, port bind, network, test-data or destructive authority.
+
+Unknown ownership of an occupied port produces an exact blocker/context request, not broad process killing.
 
 ## P5 — Documentation Drift Gate
 
-After fresh technical verification and before final handoff, classify:
+After fresh technical/security verification and before clean finish, controller classifies:
 
 ```text
 DOCS_NOT_REQUIRED
@@ -60,11 +62,11 @@ DOCS_BLOCKED
 DOCS_CONFLICT
 ```
 
-Only affected authorized durable docs may be updated, and only from verified current behavior. Public interfaces, topology, runtime commands, persistence, security boundaries, environment contracts, and documented user workflows are eligible durable changes. Private refactors are not.
+Durable public/interface/topology/runtime/persistence/security/env/test/deploy/user-workflow truth is checked. Private refactors normally return `DOCS_NOT_REQUIRED`. Required documentation updates are docs-only, evidence-backed and separately authorized.
 
 ## P6 — Specialist Role Routing
 
-Reuse existing Matreshka skills with narrower role archetypes instead of adding package skills solely for labels:
+Supported role archetypes reuse existing Matreshka skills:
 
 - `GENERAL_IMPLEMENTER`
 - `FRONTEND_IMPLEMENTER`
@@ -74,31 +76,72 @@ Reuse existing Matreshka skills with narrower role archetypes instead of adding 
 - `TEST_E2E_SPECIALIST`
 - `DOCUMENTATION_MAINTAINER`
 - `BROWSER_CHECKER`
-- `REMOTE_OPERATOR` / `FILE_TRANSFER_OPERATOR` only for separately authorized remote workflows
+- `REMOTE_OPERATOR`
+- `FILE_TRANSFER_OPERATOR`
 
-Specialization stays inside execution-profile role/turn budgets and never grants additional permissions.
+They narrow responsibility/context but never create extra skill identity, agent-turn budget, filesystem scope or permissions. Execution-only operators return evidence and cannot decide follow-up actions.
 
-## P7 — State and observability
+## P7 — State, recovery and dashboard
 
-Extend run state/ledger with compact topology, affected/current areas, active interface IDs, runtime status/service count, documentation drift state, selected specialist, and context-package summary. Dashboard may display these values but remains a projection.
+Ledger/run state now preserves compact topology, affected/current area, context guarantee, active interface identities, runtime map state, docs drift and current specialist. Recovery revalidates stale topology/interface/runtime/profile facts against the current repository before reuse.
 
-## Required adversarial cases
+The Russian dashboard can display Project Intelligence compactly but remains a projection and cannot dispatch work, grant authority or satisfy a verification gate.
 
-1. Multi-area web repository -> real frontend/backend/E2E areas detected.
-2. Small CLI -> no fabricated frontend/backend areas.
-3. Frontend depends on backend API -> shared interface contract before dependent dispatch.
-4. Existing area docs disagree with current code -> repository wins; docs/cache marked stale.
-5. Backend task context keeps required API seam but excludes unrelated UI history.
-6. Unknown process owns expected port -> no broad kill; blocker/ownership resolution.
-7. Status/log command exists but start permission does not -> observation only.
-8. Public API changed and authoritative docs are stale -> docs gate blocks clean finish until update or handoff.
-9. Private helper refactor -> `DOCS_NOT_REQUIRED`.
-10. UI-only specialist cannot change API/business logic.
-11. High-risk migration specialization does not downgrade security/profile rigor.
-12. Multiple areas do not automatically increase agent-turn budget.
-13. Execution-only remote operator returns evidence and does not choose follow-up actions.
-14. Recovery revalidates stale topology/interface/runtime data before reuse.
+## Static hardening completed
+
+The development branch now contains:
+
+- `skills/orchestrating-subagent-work/references/project-intelligence.md`;
+- `skills/orchestrating-subagent-work/assets/project-intelligence-template.md`;
+- `skills/orchestrating-subagent-work/assets/interface-contract-template.md`;
+- integration in controller, controller-contract, permission/ledger, planner, plan/task/dispatch/report templates, reviewer, finish/handoff, project profile and dashboard;
+- a 14-case Project Intelligence adversarial suite;
+- `scripts/check_dev_05.py`, which checks required 0.5 files, cross-skill markers, JSON syntax and key Project Intelligence cases;
+- GitHub Actions execution of package validator/self-test, 0.5 integrity checker and doctor on `dev/**`/`main` pushes and PRs.
+
+During hardening an actual compatibility defect was found and fixed: the richer Codex Build wrapper/default prompt had diverged from the current 0.4 package validator's expected `[TASK]` hint/canonical skill token. The UX remains rich in the wrapper body/card while static validator compatibility is restored.
+
+## Adversarial coverage
+
+The dedicated suite covers at least:
+
+1. real full-stack topology;
+2. CLI without fake frontend/backend split;
+3. interface freeze before producer/consumer work;
+4. interface drift mid-run;
+5. narrow area context;
+6. unknown process/port ownership;
+7. observe-runtime without start permission;
+8. public contract docs drift;
+9. private refactor with no docs work;
+10. UI-specialist boundary;
+11. no agent-budget inflation from area count;
+12. execution-only remote operator;
+13. recovery from stale topology/interface cache;
+14. documentation conflict without write authority.
+
+## Remaining native gate
+
+Project Intelligence is implemented and statically hardened, but `0.5.0` is not claimed until a disposable native full-stack acceptance run proves the actual host behavior:
+
+```text
+frontend + backend + data/E2E topology
+→ frozen IC contract
+→ narrow area contexts
+→ specialist routing within budget
+→ runtime observation/permissions
+→ Playwright/browser evidence
+→ G4
+→ docs drift
+→ Russian dashboard
+```
+
+The native test must audit artifacts/evidence rather than trusting the controller's self-reported PASS.
 
 ## Current checkpoint
 
-Implementation starts on this branch. P1-P7 must be wired into controller/planning/task/state contracts before this plan can move to `IMPLEMENTED`. Native proof remains part of the wider 0.5 release gate.
+`P1`–`P7`: `IMPLEMENTED`.
+
+`P8`: static hardening is implemented; observable CI result and native full-stack acceptance remain external evidence gates.
+
+No merge to `main`, package version bump, publication or release claim has been performed by this plan.
