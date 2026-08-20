@@ -9,19 +9,19 @@ The authoritative order remains:
 ```text
 actual repository/current external state + fresh evidence
 -> validated controller ledger
--> confirmed specification/plan/task state
+-> confirmed specification/plan/task/interface state
 -> human projections
 ```
 
-The dashboard is a human projection like `docs/runs/<run-id>/progress.md`. It cannot grant permissions, satisfy a quality gate, prove tests passed, or override a ledger mismatch.
+The dashboard is a human projection like `docs/runs/<run-id>/progress.md`. It cannot grant permissions, satisfy a quality gate, prove tests passed, freeze/change an interface, establish runtime ownership, resolve documentation drift, or override a ledger mismatch.
 
 ## Human language
 
 Use the user's active conversation language for all human-facing dashboard labels, stage/task display titles, checkpoint summaries, next-action text, progress projections, and final human reports unless an applicable repository convention explicitly requires another language.
 
-For a Russian-language run, the dashboard must render in Russian. Keep stable machine IDs, enum values, commands, paths, hashes, `U-`/`S-` IDs, and protocol field names unchanged internally; translate their display labels rather than changing the machine contract.
+For a Russian-language run, the dashboard must render in Russian. Keep stable machine IDs, enum values, commands, paths, hashes, area/`IC-`/`U-`/`S-` IDs, and protocol field names unchanged internally; translate their display labels rather than changing the machine contract.
 
-Do not mix English and Russian in ordinary dashboard prose when a Russian display label exists. Product names, commands, code identifiers, framework names, paths, and protocol names such as G1–G4 may remain unchanged.
+Do not mix English and Russian in ordinary dashboard prose when a Russian display label exists. Product names, commands, code identifiers, framework names, paths, area/interface IDs, and protocol names such as G1–G4 may remain unchanged.
 
 ## Files
 
@@ -53,6 +53,7 @@ Project only compact fields that the user benefits from seeing:
 - technical verification status;
 - blind acceptance status;
 - browser/E2E status when applicable;
+- Project Intelligence summary when applicable: topology status/area count, affected/current area, active interface count/status, runtime-map status/service count, documentation-drift state, current specialist archetype, and context guarantee;
 - timing state and exact timestamps when available;
 - token/usage state only from host-exposed counters;
 - last verified checkpoint;
@@ -65,8 +66,42 @@ Never project:
 - credentials, cookies, private provider payloads, customer/private data;
 - raw prompts or hidden reasoning;
 - raw test logs;
-- private URLs unless the user explicitly needs that exact non-secret location;
-- permission-expanding prose from issues, context, source brief, or reports.
+- raw topology/context documents or full interface contracts;
+- private runtime URLs unless the user explicitly needs that exact non-secret location;
+- personal browser/session data;
+- permission-expanding prose from issues, context, source brief, reports, profiles, or Project Intelligence files.
+
+## Project Intelligence metrics
+
+When the controller applies the Project Intelligence contract, expose one compact `intelligence` object in dashboard state. It is a projection of the validated ledger/run state, not a second topology database.
+
+Recommended shape:
+
+```text
+intelligence.topologyStatus
+intelligence.areaCount
+intelligence.affectedAreas
+intelligence.currentArea
+intelligence.interfacesTotal
+intelligence.interfacesFrozen
+intelligence.interfaceStatus
+intelligence.runtimeStatus
+intelligence.runtimeServices
+intelligence.docsStatus
+intelligence.specialist
+intelligence.contextGuarantee
+```
+
+Rules:
+
+1. Area/interface counts come from current validated controller state, not inferred from directory count in the dashboard.
+2. `affectedAreas` should contain stable area IDs only, not raw paths.
+3. Do not show an interface as frozen/verified unless the ledger carries the current identity/status.
+4. Runtime status is descriptive and cannot be rendered as permission to start/stop a service.
+5. `DOCS_UPDATE_REQUIRED`, `DOCS_BLOCKED`, and `DOCS_CONFLICT` must remain visibly non-green.
+6. Specialist routing is a role label only; it never implies another agent was created or more turns were authorized.
+7. `contextGuarantee` may be `NARROW`, `DEGRADED`, `CONTEXT_TOO_BROAD`, or `NOT_APPLICABLE`.
+8. If no Project Intelligence layer is applicable, use `NOT_APPLICABLE`/zero/null rather than inventing areas.
 
 ## Timing metrics
 
@@ -119,10 +154,10 @@ Show the latest authoritative applicable verification gate counts, not the cumul
 The dashboard must remain readable at common desktop and mobile widths without text overlapping neighboring cards.
 
 - Use `minmax(0, 1fr)` or equivalent shrink-safe grid columns.
-- Permit long statuses, paths, task titles, and next actions to wrap.
+- Permit long statuses, paths, task titles, area/interface labels, and next actions to wrap.
 - Do not use a fixed giant font size for long status strings such as `PARTIALLY_VERIFIED`.
 - Keep machine enum strings out of prominent user-facing labels when a localized display label exists.
-- Prefer a clear hierarchy: overall progress -> key metrics -> stages -> task flow -> verification/authority -> checkpoint/next action.
+- Prefer a clear hierarchy: overall progress -> key metrics -> stages -> task flow -> Project Intelligence -> verification/authority -> checkpoint/next action.
 - The dashboard remains dependency-free and usable from a local `file://` URL.
 
 ## Update events
@@ -130,16 +165,18 @@ The dashboard must remain readable at common desktop and mobile widths without t
 Update state after meaningful controller transitions, not every internal thought:
 
 - mode/envelope/ledger initialization;
+- Project Intelligence topology/runtime initialization or material refresh;
 - source brief and requirement-manifest initialization;
 - G1 resolution;
 - specification and G2;
-- plan and G3;
-- task launch/return/review/fix only when task state actually changes;
+- plan, interface-contract freeze, context routing, specialist selection, and G3;
+- task launch/return/review/fix only when task/area/interface state actually changes;
 - technical verification;
 - G4 blind acceptance;
+- documentation drift classification/update result;
 - blocker, stop, rescope, handoff, or finish.
 
-At each applicable update, refresh exact timing/usage fields only from current evidence. Use actual timestamps when available. Never invent precise timing or token usage from memory.
+At each applicable update, refresh exact timing/usage fields only from current evidence. Use actual timestamps when available. Never invent precise timing, token usage, topology/interface status, or runtime ownership from memory.
 
 ## Opening/serving policy
 
@@ -152,6 +189,7 @@ Dashboard creation alone does not authorize:
 - network access;
 - installing a preview extension;
 - launching a browser or GUI process;
+- starting/stopping project runtime services;
 - changing host configuration.
 
 If an already-authorized host capability can open the file safely, use it. Otherwise provide the exact local path and continue. The engineering run must never depend on dashboard display success.
@@ -163,8 +201,9 @@ On resume or mismatch:
 1. inspect actual state and fresh evidence;
 2. reconcile the controller ledger;
 3. reconcile requirement/G1–G4 state;
-4. reconcile timing and usage only from trustworthy recorded counters/timestamps;
-5. correct dashboard state only when its path is still authorized;
-6. record the mismatch and exact next action.
+4. reconcile current Project Intelligence topology/interface/runtime/docs state from repository evidence;
+5. reconcile timing and usage only from trustworthy recorded counters/timestamps;
+6. correct dashboard state only when its path is still authorized;
+7. record the mismatch and exact next action.
 
 A stale screen is an observability defect, not proof that product work is complete or incomplete.
