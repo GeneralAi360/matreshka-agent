@@ -33,6 +33,7 @@
 | Browser E2E | {{YES_NO_DEGRADED}} | {{FRAMEWORK_COMMAND_MODE_ISOLATION}} |
 | Browser screenshots/trace | {{YES_NO_DEGRADED}} | {{DETAIL}} |
 | Browser console/network inspection | {{YES_NO_DEGRADED}} | {{DETAIL}} |
+| Visual design rendering/check | {{YES_NO_DEGRADED}} | {{VIEWPORT_SCREENSHOT_RENDER_CAPABILITY}} |
 
 - Mode status: `{{FULL_DEGRADED_INLINE_HANDOFF}}`
 - Missing guarantees: {{GAPS_OR_NONE}}
@@ -120,6 +121,30 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 
 Project Intelligence is descriptive coordination state. It cannot grant authority, replace current repository evidence, satisfy verification, or add agent budget.
 
+## Design Intelligence
+
+- Design relevance/state: `{{DESIGN_NOT_APPLICABLE_CURRENT_RECON_REQUIRED_DIRECTION_REQUIRED_BLOCKED_READY_TO_SAVE}}`
+- Root design contract path: `{{DESIGN_MD_PATH_OR_INLINE_OR_NONE}}`
+- Root design contract current/stale/conflict state: `{{CURRENT_STALE_CONFLICT_UNAVAILABLE_NOT_APPLICABLE}}`
+- Frozen design identity/hash: `{{DESIGN_IDENTITY_OR_NONE}}`
+- Product personality: {{PRODUCT_PERSONALITY_OR_NONE}}
+- Approved/selected direction: {{DESIGN_DIRECTION_OR_EXISTING_OR_NONE}}
+- Direction selection authority/source: {{USER_FULL_AUTO_EXISTING_RECON_OR_NONE}}
+- Prototype state/path: {{NONE_INLINE_RUN_LOCAL_PROJECT_SANDBOX_SELECTED_RETIRED}}
+- Prototype evidence refs: {{SAFE_REFS_OR_NONE}}
+- Current task design-context guarantee: `{{NARROW_DEGRADED_DESIGN_CONTEXT_TOO_BROAD_NOT_APPLICABLE}}`
+- Current included design context: {{DESIGN_CONTEXT_SOURCES_OR_NONE}}
+- Current explicit design exclusions: {{DESIGN_CONTEXT_EXCLUSIONS_OR_NONE}}
+- Design review status: `{{APPROVED_CHANGES_REQUIRED_UNCHECKABLE_BLOCKED_PENDING_NOT_APPLICABLE}}`
+- Visual design check status: `{{PASS_PARTIAL_FAIL_NOT_RUN_BLOCKED_UNCHECKABLE_NOT_APPLICABLE}}`
+- Visual design viewports/states: {{VIEWPORTS_STATES_OR_NONE}}
+- Visual design evidence refs: {{SAFE_SCREENSHOT_REPORT_REFS_OR_NONE}}
+- Design drift gate: `{{DESIGN_NOT_APPLICABLE_DESIGN_CURRENT_DESIGN_UPDATE_REQUIRED_DESIGN_DRIFT_DESIGN_CONFLICT_DESIGN_BLOCKED_PENDING}}`
+- Design drift/update detail: {{DESIGN_DRIFT_OR_UPDATE_DETAIL_OR_NONE}}
+- Material design decision history refs: {{DECISION_REFS_OR_NONE}}
+
+Design Intelligence/`DESIGN.md` is durable UX/UI context and bounded evidence. It cannot grant implementation, dependency, browser/process, Git, remote, secret, provider, destructive, or design-change authority by itself. G4 must not consume this section.
+
 ## Browser / E2E verification
 
 - Web/browser relevance: `{{YES_NO_NOT_APPLICABLE}}`
@@ -148,6 +173,7 @@ Project Intelligence is descriptive coordination state. It cannot grant authorit
 - Context source and review state: {{CONTEXT_SOURCE_REVIEW_OR_NONE}}
 - Project profile path: `{{PROJECT_PROFILE_PATH_OR_NONE}}`
 - Project profile current/stale state: {{PROFILE_STATE_OR_NONE}}
+- Design contract path: `{{DESIGN_MD_PATH_OR_NONE}}`
 - ADR IDs: {{ADR_IDS_OR_NONE}}
 - Progress path: `{{PROGRESS_PATH_OR_INLINE}}`
 - Progress projection status: `{{CURRENT_STALE_MISSING_UNAUTHORIZED}}`
@@ -155,7 +181,7 @@ Project Intelligence is descriptive coordination state. It cannot grant authorit
 - Dashboard state path: `{{DASHBOARD_STATE_PATH_OR_NONE}}`
 - Dashboard projection status: `{{CURRENT_STALE_MISSING_UNAUTHORIZED_UNSUPPORTED}}`
 - Last projection update event: {{EVENT_TIME_OR_NONE}}
-- Recorded source conflicts: {{CONFLICTS_OR_NONE}}
+- Recorded source/design/context conflicts: {{CONFLICTS_OR_NONE}}
 
 ## Permission envelope
 
@@ -165,7 +191,10 @@ Project Intelligence is descriptive coordination state. It cannot grant authorit
 - Decision delegation: {{DECISIONS}}
 - Matreshka source-intent/run-state authority: {{TRACEABILITY_STATE_AUTHORITY}}
 - Project Intelligence state/profile authority: {{PROJECT_INTELLIGENCE_STATE_AUTHORITY}}
-- Local writes/commands: {{LOCAL_AUTHORITY}}
+- Design recon/read authority: {{DESIGN_READ_AUTHORITY}}
+- Root `DESIGN.md` / design-state writes: {{DESIGN_STATE_WRITE_AUTHORITY}}
+- Prototype write/cleanup authority: {{DESIGN_PROTOTYPE_AUTHORITY}}
+- Local product writes/commands: {{LOCAL_AUTHORITY}}
 - Documentation writes: {{DOCUMENTATION_AUTHORITY}}
 - Browser interaction: {{BROWSER_TARGET_MODE_INTERACTION_AUTHORITY}}
 - Local process/runtime: {{LOCAL_PROCESS_START_STOP_AUTHORITY}}
@@ -185,9 +214,9 @@ Project Intelligence is descriptive coordination state. It cannot grant authorit
 
 ## Task map and phase budget
 
-| Task | Dependency | U/S requirements | Area | Role archetype | Interfaces | Context | Status | Agent turns used/max | High-judgment turns |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| {{TASK_ID}} | {{DEPENDENCY}} | {{U_AND_S_IDS}} | `{{AREA_ID}}` | `{{ROLE_ARCHETYPE}}` | {{IC_IDS_OR_NONE}} | {{NARROW_DEGRADED}} | {{STATUS}} | {{USED_MAX}} | {{USED}} |
+| Task | Dependency | U/S requirements | Area | Role archetype | Interfaces | Area context | Design ID/context | Status | Agent turns used/max | High-judgment turns |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{TASK_ID}} | {{DEPENDENCY}} | {{U_AND_S_IDS}} | `{{AREA_ID}}` | `{{ROLE_ARCHETYPE}}` | {{IC_IDS_OR_NONE}} | {{NARROW_DEGRADED}} | {{DESIGN_ID_AND_CONTEXT_OR_NA}} | {{STATUS}} | {{USED_MAX}} | {{USED}} |
 
 - Current task: `{{TASK_ID}}`
 - Total agent turns used/max: `{{USED_MAX}}`
@@ -196,15 +225,17 @@ Project Intelligence is descriptive coordination state. It cannot grant authorit
 
 ## Dispatches
 
-| Turn | Task | Area | Role archetype | Stable thread ID | Tier | Brief/report | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| {{N}} | {{TASK}} | `{{AREA_ID}}` | `{{ROLE_ARCHETYPE}}` | `{{THREAD_ID}}` | {{TIER}} | {{PATHS}} | {{STATUS}} |
+| Turn | Task | Area | Role archetype | Design identity | Stable thread ID | Tier | Brief/report | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| {{N}} | {{TASK}} | `{{AREA_ID}}` | `{{ROLE_ARCHETYPE}}` | {{DESIGN_ID_OR_NA}} | `{{THREAD_ID}}` | {{TIER}} | {{PATHS}} | {{STATUS}} |
 
 ## Review
 
 - Confirmed findings: {{FINDINGS_OR_NONE}}
 - Source-intent narrowing findings: {{U_REQUIREMENT_FINDINGS_OR_NONE}}
 - Cross-area interface findings: {{INTERFACE_FINDINGS_OR_NONE}}
+- Design findings: {{DESIGN_FINDINGS_OR_NONE}}
+- Design evidence limitation: {{VISUAL_REVIEW_LIMITATION_OR_NONE}}
 - Rejected/adjacent findings: {{ADJUDICATION}}
 - Fixer wave used: {{YES_NO}}
 - Targeted re-review result: {{RESULT_OR_PENDING}}
@@ -223,13 +254,16 @@ Project Intelligence is descriptive coordination state. It cannot grant authorit
 - Technical/security verification status: `{{STATUS}}`
 - Quality-gate rows: {{PASS_FAIL_NOT_RUN_BLOCKED_SUMMARY}}
 - Required browser E2E rows: {{PASS_FAIL_NOT_RUN_BLOCKED_NOT_APPLICABLE_SUMMARY}}
-- Documentation drift gate runs from verified current behavior after these technical rows; docs never substitute for technical/security evidence.
-- Blind acceptance follows technical/security verification when G4 applies; browser G4 is one observation mode and never substitutes for required technical/security rows.
+- Design verification: {{DESIGN_REVIEW_AND_VISUAL_STATUS_OR_NOT_APPLICABLE}}
+- Design drift gate runs from frozen design identity + current verified/rendered state; design docs never substitute for technical/security evidence.
+- Documentation drift gate runs after design reconciliation and verified current behavior; docs never substitute for technical/security evidence.
+- Blind acceptance follows sufficient technical/security/design evidence when G4 applies; G4 must not read `DESIGN.md`, design state, review or visual reports.
 
 ## Workspace and learning
 
 - Run worktree: {{PATH_BRANCH_TASK_OWNERSHIP_OR_NONE}}
 - Worktree cleanup authority: {{AUTHORITY_OR_NONE}}
+- Prototype cleanup state: {{OWNED_PROTOTYPE_PATHS_AND_AUTHORITY_OR_NONE}}
 - Learning mode: `{{OFF_PROPOSE_LOCAL_REVIEWED}}`
 - Candidate IDs and evidence: {{CANDIDATES_OR_NONE}}
 - Promotion/revalidation status: {{STATUS_OR_NONE}}
@@ -242,6 +276,8 @@ Project Intelligence is descriptive coordination state. It cannot grant authorit
 - Project Intelligence topology/profile mismatch: {{TOPOLOGY_PROFILE_MISMATCH_OR_NONE}}
 - Interface-contract mismatch: {{INTERFACE_MISMATCH_OR_NONE}}
 - Runtime ownership/state mismatch: {{RUNTIME_MISMATCH_OR_NONE}}
+- Design contract/identity mismatch: {{DESIGN_IDENTITY_MISMATCH_OR_NONE}}
+- Design context/review/visual mismatch: {{DESIGN_EVIDENCE_MISMATCH_OR_NONE}}
 - Documentation drift mismatch: {{DOCS_MISMATCH_OR_NONE}}
 - Browser capability/evidence mismatch: {{BROWSER_MISMATCH_OR_NONE}}
 - Timing/usage mismatch: {{OBSERVABILITY_MISMATCH_OR_NONE}}
