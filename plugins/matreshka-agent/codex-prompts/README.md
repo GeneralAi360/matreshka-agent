@@ -22,6 +22,7 @@ Copy-Item "C:\path\to\matreshka-agent\plugins\matreshka-agent\codex-prompts\*.md
 | --- | --- |
 | `/prompts:matreshka-build` | `building-end-to-end` (Build End-to-End) |
 | `/prompts:matreshka-orchestrate` | `orchestrating-subagent-work` |
+| `/prompts:matreshka-design` | `designing-product-experience` (UX/UI + root `DESIGN.md`) |
 | `/prompts:matreshka-spec` | `specifying-software-work` |
 | `/prompts:matreshka-plan` | `planning-software-work` |
 | `/prompts:matreshka-prompt` | `writing-portable-agent-prompt` |
@@ -31,4 +32,4 @@ Copy-Item "C:\path\to\matreshka-agent\plugins\matreshka-agent\codex-prompts\*.md
 | `/prompts:matreshka-verify` | `verifying-development-work` |
 | `/prompts:matreshka-finish` | `finishing-development-work` |
 
-The wrappers do not add permissions, hooks, network access, or automation. They only expand an explicit skill invocation and pass your text as the task. Codex marks custom prompts as deprecated, so skills remain the preferred mechanism; these files are an optional compatibility layer for people who specifically need a slash command.
+The wrappers do not add permissions, hooks, dependency installation, browser/process authority, network access, or automation. They only expand an explicit skill invocation and pass your text as the task. Codex marks custom prompts as deprecated, so skills remain the preferred mechanism; these files are an optional compatibility layer for people who specifically need a slash command.
