@@ -42,10 +42,11 @@
 
 - Goal: {{GOAL}}
 - Risk summary: {{RISK}}
-- Interaction mode: `{{GUIDED_ASSISTED_AUTONOMOUS_LOCAL_NOT_APPLICABLE}}`
+- Launch scenario: `{{NEW_PROJECT_CONTINUE_PROJECT_EXISTING_PROJECT_NOT_APPLICABLE}}`
+- Public interaction mode: `{{INTERVIEW_ASSISTED_FULL_AUTO_NOT_APPLICABLE}}`
 - Pending interaction mode: `{{MODE_AT_NEXT_SAFE_TRANSITION_OR_NONE}}`
 - Execution profile: `{{SPEED_BALANCED_QUALITY}}`
-- Autonomy mode: `{{MANAGED_LOCAL_EXTENDED}}`
+- Internal controller autonomy: `{{MANAGED_LOCAL_EXTENDED}}`
 - Effective permissions: {{EFFECTIVE_PERMISSION_SUMMARY}}
 - Current stage gate: `{{GATE}}`
 - Decision-map state: `{{NOT_REQUIRED_REQUIRED_READY_OR_BLOCKED}}`
