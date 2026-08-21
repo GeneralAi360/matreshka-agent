@@ -1,0 +1,42 @@
+{
+  "version": "0.5-development",
+  "measurement": "utf8_bytes",
+  "note": "Budgets are deterministic package-load guardrails, not runtime token counts. Runtime token telemetry remains host-reported EXACT/PARTIAL/UNAVAILABLE only.",
+  "single_file_max_bytes": 32000,
+  "surfaces": [
+    {
+      "id": "build-entry-core",
+      "max_bytes": 50000,
+      "files": [
+        "skills/building-end-to-end/SKILL.md",
+        "skills/building-end-to-end/references/interaction-modes.md",
+        "skills/building-end-to-end/references/launch-scenarios.md",
+        "skills/building-end-to-end/references/brief-traceability.md",
+        "skills/building-end-to-end/references/context-and-decisions.md"
+      ]
+    },
+    {
+      "id": "controller-preflight-core",
+      "max_bytes": 110000,
+      "files": [
+        "skills/orchestrating-subagent-work/SKILL.md",
+        "skills/orchestrating-subagent-work/references/controller-contract.md",
+        "skills/orchestrating-subagent-work/references/profiles-and-budgets.md",
+        "skills/orchestrating-subagent-work/references/permission-handoff-ledger.md",
+        "skills/orchestrating-subagent-work/references/project-profile.md",
+        "skills/orchestrating-subagent-work/references/project-intelligence.md"
+      ]
+    },
+    {
+      "id": "ui-design-increment",
+      "max_bytes": 65000,
+      "files": [
+        "skills/designing-product-experience/SKILL.md",
+        "skills/designing-product-experience/references/design-core.md",
+        "skills/designing-product-experience/references/design-intelligence.md",
+        "skills/designing-product-experience/references/prototype-exploration.md",
+        "skills/orchestrating-subagent-work/references/design-intelligence.md"
+      ]
+    }
+  ]
+}
