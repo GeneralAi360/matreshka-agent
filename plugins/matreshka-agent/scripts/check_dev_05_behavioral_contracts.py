@@ -31,6 +31,18 @@ REQUIRED_CASES = {
         "visual-design-uncheckable-without-renderer",
         "g4-contaminated-by-design-artifacts",
     },
+    "evals/security-hardening-evals.json": {
+        "security-auth-hardening-spec",
+        "security-auth-hardening-review",
+        "security-file-execution-spec",
+        "security-file-execution-verify",
+        "security-atomic-effect-implementation",
+        "security-atomic-effect-review",
+        "security-baas-authz-spec",
+        "security-baas-authz-verify",
+        "security-paid-api-budget-spec",
+        "security-paid-api-budget-verify",
+    },
 }
 
 REQUIRED_PROFILE_MARKERS = (
@@ -45,6 +57,11 @@ REQUIRED_CI_MARKERS = (
     "validate_dev_05.py",
     "check_dev_05.py",
     "check_dev_05_behavioral_contracts.py",
+    "check_security_hardening.py",
+    "sync_run_state.py --self-test",
+    "check_context_budget.py",
+    "evaluate_native_repeatability.py",
+    "check_autopilot_regressions.py",
     "doctor_dev_05.py",
     "python-version: '3.11'",
 )
@@ -141,8 +158,9 @@ def main() -> int:
     print("- implementation preserves area/IC/design context and stops on design identity change")
     print("- independent review detects design drift and refuses fabricated visual confidence")
     print("- verification separates E2E, visual design, and G4 contamination")
+    print("- five automatic security-hardening families have required cross-skill eval cases")
     print("- design reviewer fits existing balanced/maximum-quality budgets")
-    print("- CI explicitly runs package, component, behavioral-contract and doctor checks")
+    print("- CI explicitly keeps package/component/behavior/security/state/context/repeatability/doctor gates")
     print("This confirms contract/eval coverage exists; native model behavior still needs acceptance execution.")
     return 0
 
