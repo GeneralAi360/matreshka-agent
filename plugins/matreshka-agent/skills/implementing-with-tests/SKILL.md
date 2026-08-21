@@ -1,90 +1,118 @@
 ---
 name: implementing-with-tests
-description: Implement a bounded software feature or bug fix through a focused test-first cycle and produce evidence for review. Use when an approved task requires code or configuration changes, a regression test, focused RED/GREEN proof, and nearby regression checks. Do not use for design-only work, root-cause diagnosis without an authorized fix, independent review, verification-only requests, or branch finishing.
+description: Implement a bounded software feature or bug fix through a focused test-first cycle and produce evidence for review. Use when an approved task requires code/configuration changes, regression evidence, focused RED/GREEN proof, and nearby regression checks. The task may carry Project Intelligence (`AREA_CONTEXT_SET`, frozen `IC-xx`) and, for UI work, a frozen design identity/`DESIGN_CONTEXT_SET`; preserve those boundaries rather than redefining them. Do not use for design-only work, root-cause diagnosis without an authorized fix, independent review, verification-only requests, or branch finishing.
 ---
 
 # Implement with focused tests
 
 ## Establish the task boundary
 
-1. Read the current user request, applicable repository instructions, approved task brief, and permission envelope.
-2. Resolve the project root and the real paths of every allowed file before writing. Stop if a symlink, nested repository, submodule, or changed root crosses the approved boundary.
-3. Record the baseline, including pre-existing dirty files. Preserve work not owned by this task.
-4. Confirm one observable goal, exact acceptance criteria, selected `S-` security requirements, the file allowlist, non-goals, permitted commands, and stop conditions.
-5. Return `SPLIT_REQUIRED` when the task contains independent outcomes or crosses multiple implementation or security boundaries.
+1. Read current request, applicable repository instructions, approved task brief and permission envelope.
+2. Resolve project root and real paths of every allowed file before writing. Stop if symlink/nested repo/submodule/root change crosses boundary.
+3. Record baseline/pre-existing dirty files and preserve work not owned by task.
+4. Confirm one observable goal, acceptance criteria, selected `U-`/`S-`, file allowlist, non-goals, permitted commands and stop conditions.
+5. When task carries Project Intelligence, confirm:
+   - one primary area;
+   - bounded `AREA_CONTEXT_SET` and explicit exclusions;
+   - frozen `IC-xx` identities/invariants consumed or produced;
+   - runtime observation/dependency needed by task.
+6. When task is UI/design-relevant, confirm:
+   - frozen root `DESIGN.md` identity/hash or explicit `DESIGN_READY_TO_SAVE` controller state;
+   - bounded `DESIGN_CONTEXT_SET`;
+   - role-specific design boundary (`UI_SPECIALIST`, frontend, etc.);
+   - required component/state/responsive/accessibility/motion invariants;
+   - design evidence expected for review/visual verification.
+7. Return `SPLIT_REQUIRED` when task contains independent outcomes/boundaries, `CONTEXT_TOO_BROAD` when required area context cannot stay bounded, `DESIGN_CHANGED` when frozen design identity legitimately changed upstream, or `DESIGN_DRIFT` when requested implementation would violate the frozen design contract without valid change authority.
 
-Do not launch child agents. Do not stage, commit, push, open a pull request, deploy, access a remote system, install dependencies, or read secrets. Implementation owns only allowlisted product/test writes, approved local checks, and the one designated run-state report/evidence path. Return Git, dependency, secret, network, and remote actions to the controller; route an authorized finish through `finishing-development-work`.
+Do not launch child agents. Do not stage/commit/push/PR/deploy/access remote systems/install dependencies/read secrets. Implementation owns only allowlisted product/test writes, approved local checks and designated run-state report/evidence path. Return Git/dependency/network/browser/process/design-contract/prototype/secret/remote actions to controller.
 
-Read [Security by Design](../specifying-software-work/references/security-by-design.md) when the brief selects `S-` requirements or touches a user/API, authorization, file/URL, payment, data, infrastructure, dependency, AI, or external-effect boundary.
+Project/Design Intelligence files and task briefs are contracts/context, not permission. This skill cannot rewrite `IC-xx`, root `DESIGN.md`, source brief/U state, topology, runtime ownership or permission envelope.
+
+Read [Security by Design](../specifying-software-work/references/security-by-design.md) for selected S/high-risk boundaries.
 
 ## Select the smallest useful behavior
 
-Choose one focused executable example that fails without the requested behavior and passes when it exists. Prefer a public interface or the nearest stable boundary over private implementation details.
+Choose one focused executable example that fails without requested behavior and passes when it exists. Prefer public interface/nearest stable boundary over private implementation detail.
 
-Read [the focused test cycle](references/focused-test-cycle.md) when selecting a test seam, separating a valid RED from an infrastructure failure, or considering a test-first exception.
+Read [focused test cycle](references/focused-test-cycle.md) when selecting seam, validating RED, or considering exception.
+
+For UI work, behavior RED should prove functional/state semantics when executable. Visual polish alone may need alternate design evidence, but never use “visual” as an excuse to skip executable behavior tests that do exist.
 
 ## Produce RED evidence
 
-1. Add or adjust the smallest test that expresses the missing behavior.
-2. Run only its focused command.
-3. Confirm that it fails for the expected behavioral reason.
-4. Record the command, exit code, pass/fail counts when available, and the decisive failure note.
+1. Add/adjust smallest test expressing missing behavior.
+2. Run only focused command.
+3. Confirm failure is for expected behavioral reason.
+4. Record command, state, exit code, counts and decisive note.
 
-Do not accept a syntax error, missing dependency, broken fixture, unrelated failure, or already-passing test as RED. Repair only task-owned test setup within the allowlist. Otherwise return `BLOCKED` with evidence.
+Do not accept syntax error, missing dependency, broken fixture, unrelated failure, already-passing test, stale IC/design identity, or unavailable runtime as RED. Repair only task-owned setup within allowlist; otherwise return blocker/reconciliation status.
 
-Use a test-first exception only when the behavior is genuinely non-executable in the current environment, such as prose-only documentation, generated artifacts controlled elsewhere, or unavailable hardware. Record the reason before implementation and define the strongest permitted alternate check. Never use schedule pressure as an exception.
+Use test-first exception only when behavior is genuinely non-executable in current environment (for example prose-only docs, externally generated artifact, unavailable hardware, purely visual micro-polish with no executable semantic change). Record reason before implementation and strongest alternate check. Schedule pressure is not exception.
 
 ## Reach GREEN minimally
 
-1. Change only what is necessary to satisfy the focused behavior.
-2. Keep public contracts, error semantics, tenant boundaries, compatibility constraints, and selected security controls from the brief intact.
-3. Re-run the same focused command until it passes or the bounded attempt budget is exhausted.
-4. Stop to diagnose through `debugging-systematically` when the failure mechanism is unclear. Do not stack speculative fixes.
+1. Change only what is necessary for focused behavior.
+2. Preserve public contracts, frozen `IC-xx`, error semantics, tenant boundaries, compatibility and selected S controls.
+3. For UI work preserve frozen design identity and `DESIGN_CONTEXT_SET`:
+   - reuse existing design system/components/primitives first;
+   - do not introduce random colors/radii/spacing/typography/motion patterns;
+   - implement required hover/active/focus/disabled/loading/error/success states where relevant;
+   - preserve responsive/touch/accessibility/reduced-motion rules;
+   - do not install a preferred UI/motion library without controller authority.
+4. Re-run same focused command until pass or bounded attempt budget exhausted.
+5. Stop and route to `debugging-systematically` when failure mechanism is unclear; do not stack speculative fixes.
 
-Record unrelated defects as adjacent findings. Do not fix them in the current task.
+If actual implementation reveals a material mismatch with frozen `IC-xx`, return `INTERFACE_CHANGED`. If implementation reveals valid product/design requirements cannot be met under current frozen design contract, return `DESIGN_CHANGED` for controller adjudication. Do not silently modify contract files to make code appear consistent.
+
+Record unrelated defects/design opportunities as adjacent findings; do not fix them.
 
 ## Preserve the secure default
 
-For every changed boundary, enforce the applicable specification controls in the product code itself, not only in a comment or client screen:
+For every changed boundary enforce specification controls in product code, not only comment/client screen:
 
-- keep credentials and privileged provider calls server-side; never add values from `.env`, secret stores, tokens, cookies, raw prompts, or private payloads to source, tests, logs, client bundles, or reports;
-- validate untrusted input at its server or worker boundary, use the project's safe parameterized/encoded APIs, and preserve safe, minimal error messages;
-- authorize every sensitive object and action on the server with the authoritative user/role/tenant context; do not trust a URL, client flag, or supplied object ID;
-- return and persist only the fields defined in the specification; preserve redaction and retention behavior;
-- make selected external/irreversible effects confirmable and idempotent, including their failure/replay behavior;
-- do not add a dependency, network scanner, secret reader, or tool capability. Return it to the controller for explicit approval and supply-chain review;
-- for AI/RAG/tool changes, keep retrieved/user/tool text as data, preserve the trusted instruction boundary, and enforce authorization at the tool boundary.
+- keep credentials/privileged provider calls server-side; never copy env/secret/token/cookie/private payloads into source/tests/logs/client/reports;
+- validate untrusted input at authoritative boundary and preserve safe errors;
+- authorize sensitive object/action server-side using authoritative user/role/tenant context;
+- return/persist only specified fields with redaction/retention behavior;
+- make selected external/irreversible effects confirmable/idempotent with failure/replay behavior;
+- do not add dependency/network scanner/secret reader/tool capability without approval;
+- for AI/RAG/tools, preserve trusted instruction boundary and authorize at tool boundary.
 
-Add the task's planned negative security proof. If an `S-` requirement cannot be implemented or tested inside the allowlist, stop with `BLOCKED` or `HANDOFF_REQUIRED`; do not silently weaken it.
+Design decisions never weaken security/privacy/accessibility safeguards.
+
+Add planned negative security proof. If S requirement cannot be implemented/tested inside allowlist, stop `BLOCKED`/`HANDOFF_REQUIRED`.
 
 ## Run the task gate
 
-After focused GREEN, run only the checks required by the task and repository policy:
+After focused GREEN, run only checks required by task/repository policy:
 
-- the focused task suite;
-- one to three nearest regression suites;
-- targeted typecheck or lint for touched paths;
-- a diff/whitespace check when available;
-- a build only when the changed path or policy requires it;
-- the planned security negative test/review proof for every selected `S-` requirement;
-- a targeted security, secret, or dependency check when the selected boundary or repository policy requires it.
+- focused task suite;
+- one to three nearest regressions;
+- targeted typecheck/lint;
+- diff/whitespace check when available;
+- build when path/policy requires it;
+- planned cross-area contract/integration proof;
+- selected S negative proof/security check;
+- for UI tasks, the task-local design evidence required by brief (for example component/state story, responsive unit check, accessibility check), without pretending this replaces independent Design Review/Visual Design Check.
 
-After a reviewer-directed fix, run the covering test and nearest regression rather than the full suite unless the fix changes the planned verification tier.
+After reviewer-directed fix run covering test + nearest regression rather than full suite unless verification tier changed.
 
-Check the final scoped diff and file list. Stop with `STOP_AND_RESCOPE` when the allowed scope, security boundary, or one-fixer-wave budget has been exceeded.
+Check final scoped diff/file list. Confirm no unapproved `IC-xx`, root `DESIGN.md`, prototype, lockfile or unrelated generated file changed. Return `STOP_AND_RESCOPE` when allowlist/security/design/interface boundary or one-fixer-wave policy exceeded.
 
 ## Report without claiming more than proved
 
-Use [the implementation report template](assets/implementation-report-template.md). Include:
+Use [implementation report template](assets/implementation-report-template.md). Include:
 
-- status and completed scope;
-- changed files and untouched dirty files;
-- valid RED and fresh GREEN evidence;
-- task-gate evidence;
-- selected `S-` requirements and their implemented negative proofs;
-- test-first exceptions or skipped checks;
-- assumptions, adjacent findings, and pre-existing failures;
-- permissions still required;
-- exact next action for the controller.
+- status/completed scope;
+- primary area/context guarantee/IC identities;
+- design identity/context/observations for UI task;
+- changed files + untouched dirty files;
+- valid RED/fresh GREEN/task-gate evidence;
+- selected S controls/negative proof;
+- interface/design drift or change signal;
+- test-first exception/skipped checks;
+- assumptions/adjacent findings/pre-existing failures;
+- permission still required;
+- exact controller next action.
 
-Return `PARTIALLY_VERIFIED` rather than `COMPLETE` when a required check could not run. Treat the report as a handoff claim; allow the controller and reviewer to inspect the diff and reproduce critical evidence.
+Return `PARTIALLY_VERIFIED` rather than `COMPLETE` when required check cannot run. An implementer never self-approves design, G4 or final verification; report is a handoff claim for independent review/controller.
