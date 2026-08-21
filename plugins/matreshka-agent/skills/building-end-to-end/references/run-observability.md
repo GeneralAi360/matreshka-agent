@@ -4,7 +4,7 @@ Use this contract to provide a glanceable local view of a Build End-to-End run w
 
 ## Projection, never authority
 
-The authoritative order remains:
+Authoritative order:
 
 ```text
 actual repository/current external/rendered state + fresh evidence
@@ -13,72 +13,134 @@ actual repository/current external/rendered state + fresh evidence
 -> human projections
 ```
 
-The dashboard is a human projection like `docs/runs/<run-id>/progress.md`. It cannot grant permissions, satisfy a quality gate, prove tests/design passed, freeze/change an interface or design identity, establish runtime ownership, resolve design/documentation drift, or override a ledger mismatch.
+Dashboard/progress state cannot grant permissions, prove tests/design, freeze/change an interface or design identity, establish runtime ownership, resolve drift, or advance completion by itself.
 
 ## Human language
 
-Use the user's active conversation language for all human-facing dashboard labels, stage/task display titles, checkpoint summaries, next-action text, progress projections, and final human reports unless an applicable repository convention explicitly requires another language.
+Use the user's active conversation language for dashboard labels, stage/task titles, checkpoint summaries, next action and final human reports unless repository convention requires another language. Stable machine IDs/enums/commands/paths/hashes/U-/S-/IC-/design identities stay unchanged internally.
 
-For a Russian-language run, dashboard must render in Russian. Keep stable machine IDs, enum values, commands, paths, hashes, area/`IC-`/`U-`/`S-` IDs, design identity and protocol field names unchanged internally; translate their display labels rather than changing machine contract.
-
-Do not mix English/Russian in ordinary dashboard prose when a Russian display label exists. Product names, commands, code identifiers, framework names, paths, area/interface IDs, DESIGN.md, design hashes and G1–G4 may remain unchanged where they are protocol/project terms.
+For a Russian run, ordinary dashboard prose is Russian. Product/framework names, protocol IDs, `DESIGN.md` and G1-G4 may remain literal.
 
 ## Files
 
-Only when exact Matreshka run-state paths are writable, controller may create:
+Only when exact run-state paths are writable may controller create:
 
 ```text
 .matreshka/runs/<run-id>/dashboard-state.js
 .matreshka/runs/<run-id>/dashboard.html
 ```
 
-Copy [dashboard template](../assets/dashboard-template.html) once. Initialize state from [dashboard-state template](../assets/dashboard-state-template.js). Do not continuously rewrite HTML; update only state.
+Copy the packaged HTML and initialize state from the packaged state template. The HTML body/layout is immutable after copy **except** the machine-owned snapshot block delimited by:
 
-If local state writes unavailable, keep same information in progress projection/inline. Do not claim live dashboard exists.
+```text
+/*MATRESHKA_SNAPSHOT_START*/
+/*MATRESHKA_SNAPSHOT_END*/
+```
+
+Do not hand-edit that block. It is maintained only by the packaged run-state synchronizer or an equivalent controller-owned atomic operation.
+
+If run-state writes are unavailable, keep the same information inline/progress and state that the dashboard is unavailable.
+
+## A1 — embedded last-known-good snapshot
+
+The dashboard must remain useful when sibling `dashboard-state.js` cannot be loaded by the host viewer (`data:`/preview/file restrictions, missing sibling resource, temporary read error).
+
+Therefore:
+
+1. `dashboard-state.js` remains the fresh projection when reachable;
+2. `dashboard.html` carries the last-known-good synchronized snapshot inside the marked block;
+3. the page renders the embedded snapshot immediately, then overlays live state when the sibling script loads;
+4. when live loading fails, the page visibly labels the data as a snapshot/stale-capable projection rather than going blank;
+5. a render exception must not permanently kill future polling;
+6. a broken new state must never overwrite the last valid embedded snapshot.
+
+Snapshot state is still projection only. It cannot supersede ledger/current evidence.
+
+## A2 — atomic run-state synchronizer
+
+When the current host exposes the active Matreshka package path and local command execution for authorized run-state writes, prefer:
+
+```text
+python3 -B <plugin-root>/scripts/sync_run_state.py \
+  .matreshka/runs/<run-id>
+```
+
+Run it after a meaningful dashboard-state update and before relying on the projection for handoff/recovery.
+
+The helper is intentionally narrow:
+
+- parses/validates `dashboard-state.js`;
+- checks deterministic stage/projection invariants;
+- derives only non-semantic exact timestamps that are mechanically provable;
+- atomically rewrites normalized dashboard state;
+- atomically refreshes the embedded HTML snapshot;
+- leaves the previous last-known-good dashboard untouched on validation failure.
+
+It **does not** start a server, bind a port, open a browser, install anything, kill processes, modify product code/tests/ledger/`DESIGN.md`, use Git/network/secrets/remotes, or grant authority.
+
+The command itself requires the same run-state write + local-command authority already needed for those changes. If executing the helper is unavailable, use an equivalent host-native atomic write/validation path and record the weaker guarantee; never pretend synchronization ran.
+
+## A3 — stage transition invariants
+
+`stageOrder` is explicit state, not model memory. Default development order:
+
+```text
+source -> g1 -> spec -> g2 -> plan -> implementation -> review -> technical -> g4 -> finish
+```
+
+Rules:
+
+1. duplicate stage IDs are invalid;
+2. a stage with `ACTIVE`/`IN_PROGRESS` needs an exact `startedAt`;
+3. two active stages are invalid unless the exact pair appears in `stateIntegrity.allowedConcurrentStagePairs`;
+4. an earlier stage may not remain active after a later sequential stage has started;
+5. the synchronizer may fill a missing `finishedAt` **only** when the stage is already semantically terminal and an exact later `startedAt` (or exact run `finishedAt`) proves the timestamp;
+6. the synchronizer must never convert `ACTIVE`, `PARTIAL`, `BLOCKED`, `FAILED`, etc. into `PASS` merely because work moved forward;
+7. contradictions block snapshot refresh and return to controller reconciliation.
+
+This distinction is intentional: mechanical time/state consistency may be derived; semantic success may not.
+
+## State integrity metadata
+
+Project compact integrity state:
+
+```text
+stateIntegrity.status                  PASS | PARTIAL | PENDING
+stateIntegrity.findingsCount
+stateIntegrity.lastSyncedAt
+stateIntegrity.snapshotUpdatedAt
+stateIntegrity.normalizations[]
+stateIntegrity.allowedConcurrentStagePairs[]
+stateIntegrity.source
+```
+
+`PARTIAL` means safe mechanical normalization occurred or a non-blocking warning remains. A hard contradiction causes synchronizer failure and preserves the previous snapshot.
 
 ## Safe state shape
 
-Project only compact fields the user benefits from seeing:
+Project only compact user-benefit fields:
 
-- run ID and goal/title;
-- locale/language;
-- launch scenario and interaction mode;
-- execution profile and complexity tier;
-- summarized effective authority, with absent powers visibly absent;
-- current stage/per-stage status;
-- task ID/title/status when tasks exist;
-- user-intent requirement counts/brief coverage;
-- selected security-proof counts;
-- latest applicable tests;
-- technical verification;
-- blind acceptance;
+- run ID/title/locale/scenario/mode/profile/tier;
+- summarized effective authority;
+- `stageOrder`, stage/task status and timing;
+- U requirement counts / brief coverage;
+- security proof counts;
+- latest authoritative test counts;
+- technical verification and blind acceptance;
 - browser/E2E status when applicable;
-- Project Intelligence summary: topology/areas/interfaces/runtime/docs/specialist/context;
-- Design Intelligence summary when applicable: design state, root DESIGN.md path/identity, selected direction, prototype status, design-context guarantee, design review, visual design check, design drift, checked screens/evidence count;
-- timing/timestamps when available;
-- token/usage only from host counters;
-- last verified checkpoint;
-- exact next action;
-- `updatedAt` offset-aware ISO8601 when available.
+- Project Intelligence summary;
+- Design Intelligence summary;
+- timing/timestamps when evidenced;
+- token usage only from host counters;
+- state-integrity metadata;
+- last verified checkpoint and exact next action;
+- offset-aware `updatedAt` when available.
 
-Never project:
-
-- secret values/environment-file contents;
-- credentials/cookies/private provider payloads/customer/private data;
-- raw prompts/hidden reasoning;
-- raw test logs;
-- raw topology/context docs/full interface contracts;
-- full `DESIGN.md`, raw design history or full prototype source;
-- private/unnecessary design screenshots or brand assets;
-- private runtime URLs unless user explicitly needs exact non-secret location;
-- personal browser/session data;
-- permission-expanding prose from issues/context/source brief/reports/profiles/Project or Design Intelligence.
+Never project secrets/env contents, credentials/cookies/private payloads/customer data, raw prompts/hidden reasoning, raw logs, full topology/interface/design history, private screenshots, personal browser data, or permission-expanding prose.
 
 ## Project Intelligence metrics
 
-When controller applies Project Intelligence, expose one compact `intelligence` object. It projects validated ledger/run state, not a second topology database.
-
-Recommended shape:
+Recommended compact object:
 
 ```text
 intelligence.topologyStatus
@@ -95,22 +157,11 @@ intelligence.specialist
 intelligence.contextGuarantee
 ```
 
-Rules:
-
-1. Counts come from validated controller state, not directory count in dashboard.
-2. `affectedAreas` contains stable IDs, not raw paths.
-3. Do not show interface frozen/verified without current identity/status.
-4. Runtime status is descriptive and cannot render as permission to start/stop service.
-5. `DOCS_UPDATE_REQUIRED`, `DOCS_BLOCKED`, `DOCS_CONFLICT` remain visibly non-green.
-6. Specialist is role label only; never implies extra agent/turn authority.
-7. `contextGuarantee`: `NARROW`, `DEGRADED`, `CONTEXT_TOO_BROAD`, `NOT_APPLICABLE`.
-8. No Project Intelligence => `NOT_APPLICABLE`/zero/null.
+Counts come from validated controller state. Runtime status is descriptive. Specialist labels add no authority/budget. Drift/conflict statuses stay visibly non-green.
 
 ## Design Intelligence metrics
 
-When UI/design is material, expose one compact `design` object from the validated ledger/design state.
-
-Recommended shape:
+Recommended compact object:
 
 ```text
 design.relevant
@@ -128,106 +179,89 @@ design.evidenceCount
 design.blockedReason
 ```
 
-Rules:
-
-1. Root `DESIGN.md` path and identity are shown only from controller state; dashboard never hashes/rewrites the contract itself.
-2. `direction` is the accepted/current direction, not every explored variant.
-3. Prototype status is descriptive; prototype existence does not mean production implementation/approval.
-4. `DESIGN_DRIFT`, `DESIGN_CONFLICT`, `DESIGN_BLOCKED`, `DESIGN_UPDATE_REQUIRED`, `CHANGES_REQUIRED`, `UNCHECKABLE` remain visibly non-green/pending as appropriate.
-5. `design.contextGuarantee` is `NARROW`, `DEGRADED`, `DESIGN_CONTEXT_TOO_BROAD`, or `NOT_APPLICABLE`.
-6. `screensChecked`/`evidenceCount` count current relevant visual proof only; repeated screenshots/retries do not inflate them.
-7. Design review/visual status never implies technical E2E or G4 PASS.
-8. No design relevance => `DESIGN_NOT_APPLICABLE`, null identity/direction, zero evidence.
-9. Apple-inspired design core is not rendered as an “Apple style” badge; it is an internal quality framework, not a visual theme.
+Root `DESIGN.md` path/identity come only from controller state. Prototype existence is not production approval. Design review/visual state never implies E2E or G4 PASS. Apple-inspired design core is never shown as an Apple visual-style badge.
 
 ## Timing metrics
 
-Record timing as evidence-backed observability, not model memory.
+Timing is evidence-backed observability, not model memory.
 
-At minimum, when host exposes a clock:
+When host exposes a trustworthy clock:
 
-1. record `timing.startedAt` at run initialization before first state-changing action;
-2. record exact stage start/end at meaningful transitions where practical;
-3. record `timing.finishedAt` only at terminal local status/handoff;
-4. derive `timing.elapsedSeconds` from timestamps, not conversation length;
-5. derive `timing.implementationSeconds` from implementation/fix/reverify intervals when known.
+1. record run start before first state-changing action;
+2. record meaningful stage/task transition timestamps when they actually occur;
+3. record finish only at terminal local status/handoff;
+4. derive wall-clock from exact timestamps;
+5. derive implementation/fix/reverify time only from known intervals.
 
-Use `EXACT`, `PARTIAL`, or `UNAVAILABLE`. Never invent durations. Live wall-clock may derive from exact start until finish. If waiting time cannot be separated, call it wall-clock, not active compute time.
+Use `EXACT`, `PARTIAL`, `UNAVAILABLE`. Never call wall-clock active compute time. Do not use an arbitrary idle-gap heuristic as exact development time; if active intervals are not known, report wall-clock and the limitation.
 
-## Token and usage metrics
+## Token/usage metrics
 
-Token counts are optional host telemetry and useful only when truthful.
+Runtime token counts remain host telemetry only:
+
+- `EXACT` — all relevant compatible counters are available and aggregate without double count;
+- `PARTIAL` — exact observed subset only;
+- `UNAVAILABLE` — no authoritative compatible counter.
+
+Never estimate runtime tokens from characters, byte budgets, time, message count or model family. Static context-budget tooling measures package bytes only and must not be displayed as runtime token usage.
+
+## A4 — context-cost guardrail
+
+Package instruction growth is a separate engineering metric from runtime usage.
 
 Use:
 
-- `EXACT` — all relevant contexts expose compatible counters and can aggregate without double count;
-- `PARTIAL` — only subset exposed; record exact observed subset as `observedTokens`, never total;
-- `UNAVAILABLE` — no authoritative compatible counter.
+```text
+python3 -B <plugin-root>/scripts/check_context_budget.py <plugin-root>
+```
 
-Rules:
+against `evals/context-budget.json`.
 
-1. Never estimate tokens from characters/time/message count/model family/hidden reasoning.
-2. Never fabricate total for dashboard completeness.
-3. Prefer host-reported input/output/reasoning/cached/total; absent categories null.
-4. `turnsUsed` separate from tokens.
-5. Aggregate cumulative resumed counters according to host semantics; avoid double counting.
-6. Record source/guarantee in ledger; ambiguous semantics => PARTIAL/UNAVAILABLE.
-7. Dashboard: `Недоступно` if no total; `Учтено <N>` for exact observed partial subset.
+This gate measures exact UTF-8 bytes for declared hot-path surfaces (`build-entry-core`, `controller-preflight-core`, `ui-design-increment`) plus a single-file ceiling. It intentionally does **not** estimate model tokens.
 
-For Codex, do not assume counters exist because agent IDs/tool results exist. Detect active-version capability.
+Budget changes require an explicit reviewed config change. Do not solve a budget failure by deleting safety/acceptance requirements; prefer deduplication, progressive disclosure, moving human rationale out of hot-path instructions, or narrowing mandatory reads.
 
 ## Test metrics
 
-Show latest authoritative applicable gate counts, not cumulative RED/GREEN/retry sum. Re-running suite must not inflate tests. Keep detailed history in reports/ledger.
+Show latest authoritative applicable gate counts, not cumulative RED/GREEN/retry sums. Re-running a suite must not inflate counts.
 
-## Visual and layout requirements
+## Visual/layout requirements
 
-Dashboard must remain readable at common desktop/mobile widths without overlap.
+Dashboard must remain readable at desktop/mobile widths without overlap:
 
-- Use `minmax(0, 1fr)` or equivalent shrink-safe grids.
-- Permit long statuses, hashes, paths, task titles, design directions, area/interface labels, next actions to wrap.
-- Do not use giant fixed font for long statuses.
-- Keep machine enums out of prominent UI when localized label exists.
-- Prefer hierarchy: overall progress -> key metrics -> stages -> Project Intelligence -> Design/UX -> task flow -> verification/authority -> checkpoint/next action.
-- Dashboard remains dependency-free and usable from local `file://` URL.
+- shrink-safe `minmax(0,1fr)` grids;
+- long statuses/hashes/paths/task titles/design directions may wrap;
+- no giant fixed text for long states;
+- localized prominent labels when available;
+- hierarchy: progress -> metrics -> stages -> Project Intelligence -> Design/UX -> task flow -> verification/authority -> checkpoint/next action.
+
+Dashboard remains dependency-free.
 
 ## Update events
 
-Update state after meaningful controller transitions, not every thought:
+Update projection after meaningful controller transitions, not every thought:
 
 - mode/envelope/ledger init;
-- Project Intelligence topology/runtime init/material refresh;
-- design relevance/recon, root DESIGN.md creation/reconciliation, direction/prototype selection, or design identity change;
-- source brief/requirement init;
-- G1;
-- specification/G2;
-- plan, interface freeze, area/design context routing, specialist selection, G3;
-- task launch/return/review/fix only when task/area/interface/design state changes;
+- Project Intelligence init/material refresh;
+- design relevance/recon/`DESIGN.md`/direction/identity changes;
+- source brief/requirements/G1;
+- spec/G2;
+- plan/interface freeze/context routing/G3;
+- task launch/return/review/fix when state materially changes;
 - technical verification;
-- design review/visual design verification;
+- Design Review/Visual Design Check;
 - G4;
 - Design Drift Gate;
 - Documentation Drift Gate;
 - blocker/stop/rescope/handoff/finish.
 
-At each update refresh timing/usage only from current evidence. Never invent precise timing/tokens/topology/interface/runtime/design identity/design status from memory.
+After writing `dashboard-state.js`, perform the atomic synchronization step when that mechanism is available/authorized. A synchronization failure is an observability blocker to reconcile, not proof that product work failed.
 
 ## Opening/serving policy
 
-Packaged HTML has no external dependencies and may poll sibling `dashboard-state.js`. Whether host can display local HTML is runtime capability, not package guarantee.
+Dashboard display is runtime capability, not package guarantee.
 
-Dashboard creation alone does not authorize:
-
-- starting HTTP server/listener;
-- binding port;
-- network;
-- installing preview extension/dependency;
-- launching browser/GUI;
-- starting/stopping project runtime;
-- creating design prototypes outside authorized state/write scope;
-- changing host config.
-
-If already-authorized host capability can open file safely, use it. Otherwise give exact local path and continue. Engineering/design run never depends on dashboard display success.
+Dashboard creation never authorizes HTTP server/listener, port bind, network, preview dependency, browser launch, runtime start/stop or host configuration. If an already-authorized host viewer can open the local file safely, use it. Otherwise give the exact path and continue. Engineering/design success never depends on dashboard display.
 
 ## Reconciliation
 
@@ -235,11 +269,12 @@ On resume/mismatch:
 
 1. inspect actual state/fresh evidence;
 2. reconcile controller ledger;
-3. reconcile requirements/G1–G4;
-4. reconcile Project Intelligence from repository evidence;
-5. reconcile root `DESIGN.md` path/identity, current accepted design, task design context, design-review/visual/drift state;
+3. reconcile source requirements/G1-G4;
+4. reconcile Project Intelligence;
+5. reconcile current `DESIGN.md` identity/design evidence/drift;
 6. reconcile timing/usage only from trustworthy records;
-7. correct dashboard state only when authorized;
-8. record mismatch + exact next action.
+7. validate stage/projection invariants;
+8. refresh dashboard state/snapshot only when authorized;
+9. record mismatch + exact next action.
 
-A stale screen is observability defect, not proof product/design is complete or incomplete.
+A stale or broken screen is an observability defect, never proof that product/design is complete or incomplete.
