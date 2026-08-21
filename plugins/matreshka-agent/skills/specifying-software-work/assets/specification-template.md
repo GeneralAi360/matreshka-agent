@@ -72,7 +72,7 @@ Do not copy the full typography/color/spacing/component/motion catalog here. Pla
 - Shape: {{SUMMARY_OR_NA}}
 - Advantages: {{ADVANTAGES_OR_NA}}
 - Costs/risks: {{COSTS_OR_NA}}
-- Migration/rollback: {{IMPLICATIONS_OR_NA}}
+- Migration/rollback: {{IMPLICATIONS}}
 - Fit with frozen interfaces/design identity: {{FIT_OR_NA}}
 
 ## Decision
@@ -117,16 +117,30 @@ Do not copy the full typography/color/spacing/component/motion catalog here. Pla
 | --- | --- | --- | --- | --- |
 | {{ASSET_OR_NA}} | {{ACTOR}} | {{BOUNDARY}} | {{ABUSE_CASE}} | {{CONTROL}} |
 
+### Automatic hardening-family selection
+
+Every specification records all five families. Use `N/A` only with a concrete reason that the trigger is absent. A `REQUIRED` family must map to one or more normal `S-xx` rows below.
+
+| Family | Selection | Trigger/evidence | Planned negative proof |
+| --- | --- | --- | --- |
+| `S-AUTH-HARDENING` | `{{REQUIRED_NA_HANDOFF}}` | {{PASSWORD_PRIVILEGED_AUTH_TRIGGER_OR_REASON}} | {{RATE_ENUMERATION_MFA_NEGATIVE_PROOF_OR_NA}} |
+| `S-FILE-EXECUTION` | `{{REQUIRED_NA_HANDOFF}}` | {{UPLOAD_STORAGE_TRIGGER_OR_REASON}} | {{TYPE_PATH_NONEXECUTION_NEGATIVE_PROOF_OR_NA}} |
+| `S-ATOMIC-EFFECT` | `{{REQUIRED_NA_HANDOFF}}` | {{RACE_SENSITIVE_EFFECT_TRIGGER_OR_REASON}} | {{CONCURRENT_DUPLICATE_NEGATIVE_PROOF_OR_NA}} |
+| `S-BAAS-AUTHZ` | `{{REQUIRED_NA_HANDOFF}}` | {{CLIENT_ADDRESSABLE_BAAS_TRIGGER_OR_REASON}} | {{ANON_WRONG_USER_TENANT_READ_WRITE_PROOF_OR_NA}} |
+| `S-PAID-API-BUDGET` | `{{REQUIRED_NA_HANDOFF}}` | {{METERED_PROVIDER_TRIGGER_OR_REASON}} | {{PER_USER_GLOBAL_CONCURRENT_BUDGET_PROOF_OR_NA}} |
+
 ### Security requirements
 
-| ID | Requirement/control | Owner | Negative proof |
-| --- | --- | --- | --- |
-| `S-01` | {{SECURITY_REQUIREMENT}} | {{OWNER}} | {{NEGATIVE_TEST_OR_REVIEW}} |
+| ID | Requirement/control | Family/source | Owner | Negative proof |
+| --- | --- | --- | --- | --- |
+| `S-01` | {{SECURITY_REQUIREMENT}} | {{BASELINE_OR_HARDENING_FAMILY}} | {{OWNER}} | {{NEGATIVE_TEST_OR_REVIEW}} |
 
 - Secret handling: {{SECRET_POLICY_OR_NA}}
 - Data exposure/redaction: {{EXPOSURE_POLICY_OR_NA}}
 - Dependency/supply-chain evidence: {{DEPENDENCY_EVIDENCE_OR_NA}}
 - AI-input/tool-use boundary: {{AI_BOUNDARY_OR_NA}}
+- BaaS policy inventory/RLS/rules evidence: {{BAAS_POLICY_EVIDENCE_OR_NA}}
+- Paid-provider quota/circuit-breaker model: {{PAID_API_BUDGET_MODEL_OR_NA}}
 
 ## Migration, rollout, and rollback
 
@@ -140,6 +154,7 @@ Do not copy the full typography/color/spacing/component/motion catalog here. Pla
 
 - Metrics/logs/traces: {{SIGNALS}}
 - Sensitive-data exclusions: {{REDACTION}}
+- Security/abuse/budget alerts: {{SECURITY_AND_BUDGET_ALERTS_OR_NA}}
 - Owner/response: {{OWNER}}
 
 ## Testing and verification strategy
@@ -165,7 +180,12 @@ Do not copy the full typography/color/spacing/component/motion catalog here. Pla
 - [ ] `DESIGN.md` detail is not duplicated into this software specification.
 - [ ] Remote actions and permissions are explicit.
 - [ ] Failure and rollback behavior are defined.
+- [ ] All five automatic security hardening families are `REQUIRED`, `N/A(reason)`, or `HANDOFF`.
+- [ ] Every `REQUIRED` hardening family materializes as one or more `S-xx` rows.
 - [ ] Security requirements have owner and negative proof.
+- [ ] Race-sensitive effects include concurrent/replay proof, not sequential-only evidence.
+- [ ] Client-addressable BaaS includes policy/RLS/rules inventory and cross-user/tenant negative proof when applicable.
+- [ ] Metered APIs include quota/circuit-breaker/accounting evidence when applicable.
 - [ ] Each acceptance outcome has verification path.
 - [ ] Design-critical outcomes have a review/visual evidence path or explicit capability gap.
 - [ ] Scope can be decomposed into independently reviewable tasks.
