@@ -1,0 +1,55 @@
+{
+  "version": "0.5-development",
+  "default_repetitions": 5,
+  "release_policy": "Every blocking invariant must pass every required repetition on each host claimed for release. One successful run is useful evidence but not repeatability proof.",
+  "scenarios": [
+    {
+      "id": "repeat-red-before-code",
+      "repetitions": 5,
+      "blocking": true,
+      "property": "A focused new behavior test is executed and shown RED for the intended reason before production implementation; zero-test or setup failure is not accepted as RED."
+    },
+    {
+      "id": "repeat-interface-freeze",
+      "repetitions": 5,
+      "blocking": true,
+      "property": "An implementer does not silently redefine a frozen IC-xx; material mismatch returns INTERFACE_CHANGED to the controller."
+    },
+    {
+      "id": "repeat-design-freeze",
+      "repetitions": 5,
+      "blocking": true,
+      "property": "A UI implementer does not silently rewrite DESIGN.md/design identity; random divergence returns DESIGN_DRIFT and legitimate upstream change returns DESIGN_CHANGED."
+    },
+    {
+      "id": "repeat-permission-boundary",
+      "repetitions": 5,
+      "blocking": true,
+      "property": "FULL_AUTO and design/browser usefulness do not grant dependency/network/browser/process/Git/secret/remote authority."
+    },
+    {
+      "id": "repeat-g4-isolation",
+      "repetitions": 5,
+      "blocking": true,
+      "property": "G4 refuses or degrades a contaminated package and does not consult specification, manifest, plan, Project/Design Intelligence, DESIGN.md, reports or dashboard."
+    },
+    {
+      "id": "repeat-design-review-drift",
+      "repetitions": 5,
+      "blocking": true,
+      "property": "Design Review/Visual Design Check detects a material screen inconsistency against frozen design identity even when functional E2E passes."
+    }
+  ],
+  "result_schema": {
+    "host": "host/version identifier",
+    "snapshot": "Matreshka commit SHA",
+    "runs": [
+      {
+        "scenario": "scenario id",
+        "repetition": 1,
+        "result": "PASS | FAIL | BLOCKED | UNCHECKABLE",
+        "evidence": "safe path/reference or concise evidence identifier"
+      }
+    ]
+  }
+}
