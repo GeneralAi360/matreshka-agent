@@ -40,6 +40,13 @@ All notable changes to Matreshka Agent are recorded here.
 - Cross-skill Design Intelligence behavioral evals in specification, implementation, review and verification suites.
 - `scripts/validate_dev_05.py` / `doctor_dev_05.py` development adapters around the proven 0.4 validator/doctor core.
 - `scripts/check_dev_05_behavioral_contracts.py` to require downstream design eval coverage, reviewer-budget rules and CI linkage.
+- **Autopilot v1.0.1+ regression hardening**:
+  - A1 embedded last-known-good dashboard snapshot;
+  - A2 `scripts/sync_run_state.py` atomic projection synchronization/self-test without server/PID/port logic;
+  - A3 explicit `stageOrder`/`stateIntegrity` stage-transition invariants;
+  - A4 `evals/context-budget.json` + `check_context_budget.py` exact-byte hot-path guardrail;
+  - A5 `evals/native-repeatability.json` + `evaluate_native_repeatability.py` requiring 5 repetitions for six release-blocking native properties;
+  - `check_autopilot_regressions.py` to keep A1–A5 connected to CI.
 - GitHub Actions validation for `main`, `dev/**` and pull requests.
 
 ### Changed
@@ -47,21 +54,24 @@ All notable changes to Matreshka Agent are recorded here.
 - Controller state includes `ACCEPTANCE` between technical `VERIFY` and `FINISH` when G4 applies.
 - Build End-to-End automatically marks material UI/UX as Design Intelligence relevant rather than treating design as optional polish.
 - Controller owns Project Intelligence **and** Design Intelligence, including root `DESIGN.md`, design identity, prototype/selection state, design review/visual verification and drift reconciliation.
-- `specifying-software-work` now preserves a controller-supplied frozen design identity and design-critical UX constraints without duplicating/redefining root `DESIGN.md`.
+- `specifying-software-work` preserves a controller-supplied frozen design identity and design-critical UX constraints without duplicating/redefining root `DESIGN.md`.
 - Planning maps U/S bidirectionally, routes by current areas, freezes interfaces/design identity, and creates narrow `AREA_CONTEXT_SET` / `DESIGN_CONTEXT_SET` task packages.
-- `implementing-with-tests` now validates primary area, `AREA_CONTEXT_SET`, frozen `IC-xx`, design identity and `DESIGN_CONTEXT_SET` before writes, and returns `INTERFACE_CHANGED`, `DESIGN_CHANGED` or `DESIGN_DRIFT` instead of silently changing contracts.
-- Implementation reports now carry Project/Design Intelligence identities, interface/design observations and task-local evidence.
-- Review packages/reports now carry frozen area/interface/design identities and explicit Design Review evidence/dimensions.
-- Verification reports now physically separate technical/security evidence, Automated Browser E2E, Visual Design Check and the future blind-G4 handoff boundary.
+- `implementing-with-tests` validates primary area, `AREA_CONTEXT_SET`, frozen `IC-xx`, design identity and `DESIGN_CONTEXT_SET` before writes, and returns `INTERFACE_CHANGED`, `DESIGN_CHANGED` or `DESIGN_DRIFT` instead of silently changing contracts.
+- Implementation reports carry Project/Design Intelligence identities, interface/design observations and task-local evidence.
+- Review packages/reports carry frozen area/interface/design identities and explicit Design Review evidence/dimensions.
+- Verification reports physically separate technical/security evidence, Automated Browser E2E, Visual Design Check and the future blind-G4 handoff boundary.
 - Verification forbids G4 from reading design-contract/review/visual-report artifacts.
 - Clean finish requires applicable Design Drift Gate and Documentation Drift Gate to resolve honestly before `FINISHED_*`.
 - Recovery revalidates source intent, topology, interfaces, runtime, root `DESIGN.md` identity, design contexts/evidence, browser state, timing/usage and projections against actual current state.
 - Project Intelligence P6 role table includes Design Engineer/Reviewer while preserving agent-budget rules.
-- `profiles-and-budgets.md` now prevents Design Review from creating a fourth agent: balanced uses combined reviewer; maximum-quality retains two reviewer slots total and a named `DESIGN_REVIEWER` consumes one existing slot.
+- `profiles-and-budgets.md` prevents Design Review from creating a fourth agent: balanced uses combined reviewer; maximum-quality retains two reviewer slots total and a named `DESIGN_REVIEWER` consumes one existing slot.
 - Permission/handoff contract distinguishes root `DESIGN.md` writes, prototype writes and visual-design evidence from product/browser/Git authority.
-- Root/package README and Design Intelligence plan now document the same four-layer validation sequence as CI.
+- Dashboard observability no longer depends exclusively on live sibling state: synchronized HTML carries an explicitly stale-capable snapshot and render failures do not kill future polling.
+- Stage transition bookkeeping is now mechanically audited instead of relying solely on the controller remembering two sides of every transition. Mechanical normalization may derive timestamps but never semantic PASS.
+- Package-context growth is now measured separately from runtime token telemetry; static byte budgets must never be shown as runtime token counts.
+- Root/package README and Design Intelligence plan document the current development architecture and validation sequence.
 - Package description/docs describe **eleven** bundled skills.
-- Development CI now runs `validate_dev_05.py --self-test` → `check_dev_05.py` → `check_dev_05_behavioral_contracts.py` → `doctor_dev_05.py`.
+- Development CI now runs package validation → component integrity → cross-skill contracts → run-state self-test → context budget → repeatability-plan validation → Autopilot-regression guard → doctor.
 
 ### Security
 
@@ -72,6 +82,7 @@ All notable changes to Matreshka Agent are recorded here.
 - Personal/ambient browser profiles, cookies/sessions and unrelated tabs are invalid Browser/Visual/G4 test context.
 - Destructive E2E setup requires exact disposable/approved environment proof and mutation/reset authority.
 - Runtime observation is separate from start/stop/restart/kill; unknown port ownership cannot be solved by broad process killing.
+- The run-state synchronizer has no server/browser/process/network/Git/secret/remote authority and never edits ledger/product/`DESIGN.md`.
 - Specialist labels never add tools, filesystem scope, turns or permissions.
 - Frozen `IC-xx` cannot be materially redefined by producer/consumer implementers without controller reconciliation.
 - Frozen design identity cannot be silently redefined by UI implementation; legitimate change uses `DESIGN_CHANGED`, random divergence is `DESIGN_DRIFT`.
@@ -84,18 +95,20 @@ All notable changes to Matreshka Agent are recorded here.
 ### Hardening / validation
 
 - `check_dev_05.py` checks exact 11-skill/11-wrapper inventory plus source-intent, Browser/E2E, Project Intelligence, Design Intelligence, downstream spec/plan/implement/review/verify/finish/recovery/dashboard wiring, 14 Project Intelligence cases and 18 Design Intelligence cases.
-- `check_dev_05_behavioral_contracts.py` checks required design cases across specification, implementation, review and verification, reviewer budget constraints, and the CI step that runs the checker.
+- `check_dev_05_behavioral_contracts.py` checks required design cases across specification, implementation, review and verification, reviewer budget constraints, and CI linkage.
+- `sync_run_state.py --self-test` exercises terminal timestamp normalization, parseability, snapshot embedding, conflicting-active-stage rejection, and preservation of the last dashboard on invalid state.
+- `check_context_budget.py` protects `build-entry-core`, `controller-preflight-core`, `ui-design-increment` and a single-file ceiling using exact bytes rather than estimated tokens.
+- `evaluate_native_repeatability.py --validate-plan` keeps the 5× native repeatability release matrix structurally valid; full result mode rejects missing/non-PASS repetitions.
+- `check_autopilot_regressions.py` statically verifies A1–A5 assets, controller→observability reachability and CI wiring.
 - Hardening fixed prior Codex Build wrapper/validator mismatch and dashboard state-key mismatch.
-- Hardening also found and fixed real downstream gaps: specification did not explicitly pin design identity; implementation did not formally consume area/IC/design context; review/verification report templates lacked complete design identities/evidence axes; maximum-quality budget did not explicitly allocate Design Reviewer inside existing slots.
-- Controller, controller contract, permission/handoff contract, Project Intelligence specialist routing, spec, plan, implementation, review, verification, finish and recovery are now explicitly wired to Design Intelligence.
-- Core TaskLedger native acceptance on an earlier 0.5 snapshot correctly returned `PARTIALLY_VERIFIED / DEGRADED` instead of false `COMPLETE`; it exercised persistence, G2/G3, review/re-review and G4. It predates Browser/Project/Design final wiring and cannot prove those additions.
-- Browser and Project Intelligence plans remain `IMPLEMENTED_PENDING_NATIVE_VALIDATION`; Design Intelligence plan is `IMPLEMENTED_PENDING_NATIVE_VALIDATION` with D1–D9 implemented and D10 native acceptance pending.
+- Hardening also fixed downstream gaps: specification did not pin design identity; implementation did not formally consume area/IC/design context; review/verification reports lacked complete design identities/evidence axes; maximum-quality budget did not explicitly allocate Design Reviewer inside existing slots.
+- Core TaskLedger native acceptance on an earlier 0.5 snapshot correctly returned `PARTIALLY_VERIFIED / DEGRADED` instead of false `COMPLETE`; it predates Browser/Project/Design/A1–A5 final wiring and cannot prove those additions.
 
 ### Pending before an actual 0.5.0 release claim
 
 - Observe final-development-HEAD deterministic validation / CI success.
-- Run disposable full-stack native acceptance covering Project Topology, Area/Design Context, frozen `IC-xx`, root `DESIGN.md`, prototype direction when intentionally ambiguous, Apple-inspired design core, specialist routing, Runtime Map, Browser E2E, Design Review, Visual Design Check, G4, Design/Docs Drift and updated Russian dashboard.
-- Record native evidence for each host actually claimed in release documentation.
+- Run disposable full-stack native acceptance covering Project Topology, Area/Design Context, frozen `IC-xx`, root `DESIGN.md`, prototype direction when intentionally ambiguous, Apple-inspired design core, specialist routing, Runtime Map, Browser E2E, Design Review, Visual Design Check, G4, Design/Docs Drift and updated Russian dashboard/run-state recovery.
+- Record five-repeat blocking-invariant evidence from `evals/native-repeatability.json` for every host claimed in release documentation.
 - Only then bump manifests/marketplaces/validator/doctor/root eval metadata to `0.5.0` and complete publisher/security metadata.
 
 ## 0.4.0 - 2026-08-04
