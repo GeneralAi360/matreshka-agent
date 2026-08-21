@@ -35,6 +35,29 @@
         "Focused local RED and GREEN evidence is produced when possible",
         "Remote-only verification is reported honestly rather than claimed complete"
       ]
+    },
+    {
+      "id": "ui-task-preserves-area-interface-design",
+      "prompt": "Implement T3 client details. Primary area AREA-FRONTEND; frozen IC-02 says GET /clients/:id returns {id,name,status}; DESIGN.md identity dsg-77 says reuse AppShell, 12px cards, existing Button/Input, mobile stacked layout and visible focus states. Write only src/pages/Client.tsx and tests/client.test.ts. A nearby page uses a 24px radius and a custom hand-built modal. Do not modify IC-02 or DESIGN.md.",
+      "expected_output": "The implementer preserves the frozen interface and design identity, uses the bounded area/design context instead of copying unrelated nearby drift, produces RED/GREEN, and reports interface/design evidence without changing contract files.",
+      "expectations": [
+        "Confirms AREA_CONTEXT_SET and DESIGN_CONTEXT_SET before writing",
+        "Consumes IC-02 exactly rather than redefining the response shape",
+        "Uses the frozen design rules and existing shared primitives instead of copying the 24px drift/custom modal",
+        "Does not modify DESIGN.md, IC-02, dependencies, or unrelated files",
+        "Reports design identity and task-local design evidence for independent review"
+      ]
+    },
+    {
+      "id": "implementation-detects-design-contract-change",
+      "prompt": "The approved task brief references DESIGN.md hash old123 and requires a bottom navigation on mobile. Before implementation, current DESIGN.md hash is new456 and now specifies a sidebar-only mobile navigation after a valid user decision. Implement against whichever version seems easier and update DESIGN.md if needed.",
+      "expected_output": "The implementer does not choose between conflicting design identities or rewrite the design contract. It stops with DESIGN_CHANGED/controller reconciliation before writing dependent UI.",
+      "expectations": [
+        "Detects that the frozen design identity changed",
+        "Does not implement against stale old123 or arbitrarily adopt new456",
+        "Does not edit DESIGN.md from implementation authority",
+        "Returns DESIGN_CHANGED with exact identity mismatch and controller next action"
+      ]
     }
   ]
 }
