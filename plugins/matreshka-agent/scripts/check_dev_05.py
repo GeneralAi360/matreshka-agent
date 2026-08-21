@@ -3,8 +3,9 @@
 
 Read-only and offline. This proves that intended development contracts/assets
 exist and that the major source-intent, Project Intelligence, Design
-Intelligence, Browser/E2E, planning, dispatch, review, verification, finish,
-recovery and observability seams remain statically connected.
+Intelligence, Browser/E2E, specification, planning, implementation, review,
+verification, finish, recovery and observability seams remain statically
+connected.
 
 It deliberately does NOT claim native host behavior.
 """
@@ -67,8 +68,21 @@ PLUGIN_REQUIRED_FILES = (
     "skills/designing-product-experience/assets/design-contract-template.md",
     "skills/designing-product-experience/evals/evals.json",
     "skills/designing-product-experience/evals/trigger-evals.json",
+    "skills/specifying-software-work/SKILL.md",
+    "skills/specifying-software-work/assets/specification-template.md",
+    "skills/planning-software-work/SKILL.md",
+    "skills/planning-software-work/assets/implementation-plan-template.md",
     "skills/planning-software-work/references/complexity-tiers.md",
+    "skills/implementing-with-tests/SKILL.md",
+    "skills/implementing-with-tests/assets/implementation-report-template.md",
+    "skills/reviewing-agent-work/SKILL.md",
+    "skills/reviewing-agent-work/assets/review-report-template.md",
+    "skills/verifying-development-work/SKILL.md",
+    "skills/verifying-development-work/assets/verification-report-template.md",
     "skills/verifying-development-work/references/browser-e2e.md",
+    "skills/finishing-development-work/SKILL.md",
+    "skills/finishing-development-work/assets/finish-handoff-template.md",
+    "skills/orchestrating-subagent-work/SKILL.md",
     "skills/orchestrating-subagent-work/references/controller-contract.md",
     "skills/orchestrating-subagent-work/references/permission-handoff-ledger.md",
     "skills/orchestrating-subagent-work/references/project-intelligence.md",
@@ -79,10 +93,10 @@ PLUGIN_REQUIRED_FILES = (
     "skills/orchestrating-subagent-work/assets/task-brief-template.md",
     "skills/orchestrating-subagent-work/assets/dispatch-templates.md",
     "skills/orchestrating-subagent-work/assets/agent-report-template.md",
+    "skills/orchestrating-subagent-work/assets/review-package-template.md",
     "skills/orchestrating-subagent-work/assets/ledger-template.md",
     "skills/orchestrating-subagent-work/assets/project-profile-template.md",
     "skills/orchestrating-subagent-work/evals/project-intelligence-evals.json",
-    "skills/finishing-development-work/assets/finish-handoff-template.md",
     "codex-prompts/matreshka-design.md",
     "scripts/validate_dev_05.py",
     "scripts/doctor_dev_05.py",
@@ -174,6 +188,23 @@ PLUGIN_MARKERS = {
         "Design invariants",
         "Apple-inspired core reminder",
     ),
+    "skills/specifying-software-work/SKILL.md": (
+        "Design Intelligence",
+        "frozen design identity",
+        "DESIGN_READY_TO_SAVE",
+        "DESIGN_CHANGED",
+        "DESIGN_CONTEXT_SET",
+        "DESIGN.md",
+        "Security by Design",
+    ),
+    "skills/specifying-software-work/assets/specification-template.md": (
+        "Design Intelligence reference",
+        "Design identity/hash",
+        "User-experience outcomes",
+        "Design-critical constraints",
+        "Visual Design Check",
+        "DESIGN_CONTEXT_SET",
+    ),
     "skills/orchestrating-subagent-work/SKILL.md": (
         "Project Intelligence",
         "Design Intelligence",
@@ -263,6 +294,33 @@ PLUGIN_MARKERS = {
         "Design impact candidates",
         "DESIGN_CONTEXT_SET",
     ),
+    "skills/implementing-with-tests/SKILL.md": (
+        "AREA_CONTEXT_SET",
+        "IC-xx",
+        "DESIGN_CONTEXT_SET",
+        "DESIGN_CHANGED",
+        "DESIGN_DRIFT",
+        "DESIGN.md",
+        "existing design system/components/primitives first",
+    ),
+    "skills/implementing-with-tests/assets/implementation-report-template.md": (
+        "Project Intelligence boundary",
+        "Design Intelligence boundary",
+        "Design identity/hash used",
+        "DESIGN_CONTEXT_SET",
+        "Interface mismatch",
+        "Design / documentation impact candidates",
+        "Independent Design Review / Visual Design Check",
+    ),
+    "skills/orchestrating-subagent-work/assets/review-package-template.md": (
+        "Project Intelligence boundary",
+        "Design Intelligence boundary",
+        "DESIGN_CONTEXT_SET",
+        "DESIGN_REVIEWER",
+        "Apple-inspired core",
+        "DESIGN_CHANGED",
+        "DESIGN_DRIFT",
+    ),
     "skills/reviewing-agent-work/SKILL.md": (
         "frozen cross-area",
         "IC-",
@@ -270,6 +328,16 @@ PLUGIN_MARKERS = {
         "Design Intelligence",
         "Apple-inspired",
         "DESIGN.md",
+        "UNCHECKABLE",
+    ),
+    "skills/reviewing-agent-work/assets/review-report-template.md": (
+        "Project Intelligence reviewed",
+        "Design Intelligence reviewed",
+        "Frozen design identity/hash",
+        "Design consistency verdict",
+        "DESIGN_CHANGED",
+        "DESIGN_DRIFT",
+        "Apple-inspired core principles",
         "UNCHECKABLE",
     ),
     "skills/verifying-development-work/SKILL.md": (
@@ -281,6 +349,16 @@ PLUGIN_MARKERS = {
         "DESIGN.md",
         "G4 must not",
         "browser",
+    ),
+    "skills/verifying-development-work/assets/verification-report-template.md": (
+        "Technical/security status",
+        "Project Intelligence evidence",
+        "Automated Browser E2E",
+        "Visual Design Check",
+        "DESIGN_VERIFICATION",
+        "Blind G4 handoff boundary",
+        "DESIGN_CHANGED",
+        "DESIGN_DRIFT",
     ),
     "skills/finishing-development-work/SKILL.md": (
         "Design Intelligence",
@@ -555,9 +633,7 @@ def check_inventory(plugin_root: Path, failures: list[str]) -> None:
 
     prompts_root = plugin_root / "codex-prompts"
     actual_wrappers = {
-        path.name
-        for path in prompts_root.glob("*.md")
-        if path.name != "README.md"
+        path.name for path in prompts_root.glob("*.md") if path.name != "README.md"
     }
     if actual_wrappers != EXPECTED_CODEX_WRAPPERS:
         missing = sorted(EXPECTED_CODEX_WRAPPERS - actual_wrappers)
@@ -753,12 +829,13 @@ def main() -> int:
 
     print("Matreshka 0.5 development integrity: PASS")
     print("- exact 11-skill development inventory + 11 Codex wrappers: present")
-    print("- launch modes/scenarios + source brief/U/S/G1-G4: wired")
-    print("- Project Intelligence P1-P6: controller→plan→task→review→finish→recovery wired")
-    print("- Design Intelligence D1-D9: controller→DESIGN.md/prototype→plan→task→review→visual verify→drift→finish/recovery wired")
-    print("- Apple-inspired design core is a required design-quality contract")
+    print("- Build→Controller→Source/U/S/G1-G4: wired")
+    print("- Project Intelligence P1-P6: controller→spec/plan→task→implement→review→verify→finish→recovery wired")
+    print("- Design Intelligence D1-D9: controller→design→spec→plan→task→implement→review→visual verify→drift→finish/recovery wired")
+    print("- Apple-inspired design core is a required UX-quality contract, not a visual preset")
     print("- Browser E2E, Visual Design Check and G4 remain independent evidence axes")
     print("- permission contract separates design-doc/prototype/visual authority")
+    print("- implementation/review/verification reports carry interface/design identities and evidence boundaries")
     print("- Russian dashboard state↔HTML includes Project + Design Intelligence, timing/tokens and authority")
     print("- Project Intelligence adversarial coverage: 14 required cases present")
     print("- Design Intelligence adversarial coverage: 18 required cases present")
