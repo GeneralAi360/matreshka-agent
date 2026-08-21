@@ -31,6 +31,11 @@ jobs:
       - name: Matreshka 0.5 development component integrity
         run: >-
           python3 -B plugins/matreshka-agent/scripts/check_dev_05.py
+          plugins/matreshka-agent --marketplace-root .
+
+      - name: Cross-skill behavioral contract coverage
+        run: >-
+          python3 -B plugins/matreshka-agent/scripts/check_dev_05_behavioral_contracts.py
           plugins/matreshka-agent
 
       - name: Read-only 0.5 development package doctor
