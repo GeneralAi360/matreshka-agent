@@ -36,6 +36,30 @@
         "The adjacent issue does not become a blocking current-task finding",
         "The current task decision is based only on its accepted boundary"
       ]
+    },
+    {
+      "id": "design-review-detects-screen-drift",
+      "prompt": "Design-review the new Settings screen. Frozen DESIGN.md hash dsg-77 says cards use 12px radius, shared Button/Input, calm dense dashboard spacing, visible focus rings and no motion on keyboard navigation. The diff introduces 24px cards, a hand-built button, removes focus outlines and animates keyboard-opened panels for 500ms. Functional tests pass. Stay read-only.",
+      "expected_output": "The reviewer returns CHANGES_REQUIRED with concrete Important design/accessibility findings against the frozen design identity despite green functional tests, and does not rewrite DESIGN.md or fix code.",
+      "expectations": [
+        "Treats functional green as insufficient for design approval",
+        "Flags random radius/component drift against DESIGN.md",
+        "Flags removed focus indication as accessibility failure",
+        "Flags high-frequency keyboard animation and excessive duration",
+        "Uses DESIGN_DRIFT rather than silently changing the design contract",
+        "Remains read-only and produces a bounded fix package"
+      ]
+    },
+    {
+      "id": "design-review-uncheckable-visual-feel",
+      "prompt": "Review a subtle crossfade/spring change. The frozen design contract requires calm, crisp motion, but the review package contains only source code and no trustworthy render/browser/recording. The exact visual feel cannot be determined from code alone. Approve it because the values look reasonable.",
+      "expected_output": "The reviewer refuses to fabricate visual confidence, marks the material feel dimension UNCHECKABLE or REVIEW_BLOCKED according to policy, preserves all checkable code/accessibility findings, and requests the smallest visual evidence path instead of guessing.",
+      "expectations": [
+        "Does not approve material visual feel solely from code inspection",
+        "Explicitly marks the unobservable design dimension UNCHECKABLE or blocked",
+        "Does not start a browser/server or install tooling without authority",
+        "Names the minimal visual evidence needed for controller/verification"
+      ]
     }
   ]
 }
