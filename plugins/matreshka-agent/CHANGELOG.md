@@ -47,6 +47,14 @@ All notable changes to Matreshka Agent are recorded here.
   - A4 `evals/context-budget.json` + `check_context_budget.py` exact-byte hot-path guardrail;
   - A5 `evals/native-repeatability.json` + `evaluate_native_repeatability.py` requiring 5 repetitions for six release-blocking native properties;
   - `check_autopilot_regressions.py` to keep A1–A5 connected to CI.
+- **Automatic Security-by-Design hardening families** selected by boundary even when the user did not explicitly ask for them:
+  - `S-AUTH-HARDENING` for password/login/recovery and privileged/admin authentication;
+  - `S-FILE-EXECUTION` for stored uploads and non-executable storage/serving boundaries;
+  - `S-ATOMIC-EFFECT` for balances/credits/promo/inventory/withdrawals/one-time effects with concurrent/replay proof;
+  - `S-BAAS-AUTHZ` for Supabase/Firebase/Appwrite/equivalent client-addressable data/storage policies including RLS/rules where applicable;
+  - `S-PAID-API-BUDGET` for metered provider calls with per-caller quotas, global fail-closed ceiling/circuit breaker and concurrency-safe accounting.
+- `evals/security-hardening-evals.json` with ten cross-skill security scenarios spanning specification, implementation, review and verification.
+- `scripts/check_security_hardening.py` to require family definitions, specification selection, reviewer coverage, normal `S-xx` delivery mechanics, eval matrix and CI linkage.
 - GitHub Actions validation for `main`, `dev/**` and pull requests.
 
 ### Changed
@@ -55,10 +63,12 @@ All notable changes to Matreshka Agent are recorded here.
 - Build End-to-End automatically marks material UI/UX as Design Intelligence relevant rather than treating design as optional polish.
 - Controller owns Project Intelligence **and** Design Intelligence, including root `DESIGN.md`, design identity, prototype/selection state, design review/visual verification and drift reconciliation.
 - `specifying-software-work` preserves a controller-supplied frozen design identity and design-critical UX constraints without duplicating/redefining root `DESIGN.md`.
+- Security specifications now explicitly classify all five automatic hardening families as `REQUIRED`, `N/A(reason)`, or `HANDOFF`; every `REQUIRED` family must materialize as normal `S-xx` rows with owner + negative proof.
 - Planning maps U/S bidirectionally, routes by current areas, freezes interfaces/design identity, and creates narrow `AREA_CONTEXT_SET` / `DESIGN_CONTEXT_SET` task packages.
 - `implementing-with-tests` validates primary area, `AREA_CONTEXT_SET`, frozen `IC-xx`, design identity and `DESIGN_CONTEXT_SET` before writes, and returns `INTERFACE_CHANGED`, `DESIGN_CHANGED` or `DESIGN_DRIFT` instead of silently changing contracts.
 - Implementation reports carry Project/Design Intelligence identities, interface/design observations and task-local evidence.
 - Review packages/reports carry frozen area/interface/design identities and explicit Design Review evidence/dimensions.
+- Security review checklist now treats missing applicable hardening-family selection, client-only auth throttling, executable upload paths, sequential-only race tests, frontend-only BaaS authorization and provider-alert-only API budgets as explicit security failures.
 - Verification reports physically separate technical/security evidence, Automated Browser E2E, Visual Design Check and the future blind-G4 handoff boundary.
 - Verification forbids G4 from reading design-contract/review/visual-report artifacts.
 - Clean finish requires applicable Design Drift Gate and Documentation Drift Gate to resolve honestly before `FINISHED_*`.
@@ -71,7 +81,7 @@ All notable changes to Matreshka Agent are recorded here.
 - Package-context growth is now measured separately from runtime token telemetry; static byte budgets must never be shown as runtime token counts.
 - Root/package README and Design Intelligence plan document the current development architecture and validation sequence.
 - Package description/docs describe **eleven** bundled skills.
-- Development CI now runs package validation → component integrity → cross-skill contracts → run-state self-test → context budget → repeatability-plan validation → Autopilot-regression guard → doctor.
+- Development CI now runs package validation → component integrity → cross-skill contracts → security hardening → run-state self-test → context budget → repeatability-plan validation → Autopilot-regression guard → doctor.
 
 ### Security
 
@@ -83,6 +93,11 @@ All notable changes to Matreshka Agent are recorded here.
 - Destructive E2E setup requires exact disposable/approved environment proof and mutation/reset authority.
 - Runtime observation is separate from start/stop/restart/kill; unknown port ownership cannot be solved by broad process killing.
 - The run-state synchronizer has no server/browser/process/network/Git/secret/remote authority and never edits ledger/product/`DESIGN.md`.
+- `S-AUTH-HARDENING` requires authoritative abuse controls on source + account dimensions, non-enumerating auth/recovery, application-owned password policy and privileged MFA/step-up where applicable; frontend countdowns/hidden controls are not security enforcement.
+- `S-FILE-EXECUTION` requires actual content/type validation, generated storage keys and a non-executable storage/serving boundary; extension/browser MIME alone is not proof.
+- `S-ATOMIC-EFFECT` requires a datastore-appropriate atomicity primitive and concurrent/replay negative evidence; sequential-only green tests cannot prove race safety.
+- `S-BAAS-AUTHZ` requires provider-side deny-by-default authorization/RLS/rules for client-addressable BaaS surfaces and cross-user/tenant read/write evidence; public anon client keys are not automatically treated as secrets.
+- `S-PAID-API-BUDGET` requires application-side per-caller quota, global fail-closed ceiling/circuit breaker where meterable, authoritative/concurrency-safe accounting and safe exhausted-budget behavior; provider alerts alone are not sufficient.
 - Specialist labels never add tools, filesystem scope, turns or permissions.
 - Frozen `IC-xx` cannot be materially redefined by producer/consumer implementers without controller reconciliation.
 - Frozen design identity cannot be silently redefined by UI implementation; legitimate change uses `DESIGN_CHANGED`, random divergence is `DESIGN_DRIFT`.
@@ -96,18 +111,19 @@ All notable changes to Matreshka Agent are recorded here.
 
 - `check_dev_05.py` checks exact 11-skill/11-wrapper inventory plus source-intent, Browser/E2E, Project Intelligence, Design Intelligence, downstream spec/plan/implement/review/verify/finish/recovery/dashboard wiring, 14 Project Intelligence cases and 18 Design Intelligence cases.
 - `check_dev_05_behavioral_contracts.py` checks required design cases across specification, implementation, review and verification, reviewer budget constraints, and CI linkage.
+- `check_security_hardening.py` checks all five automatic security families in the baseline/spec template/review checklist, confirms they still flow through the existing selected-`S-xx` implementation/review/verification machinery, validates ten security-hardening eval cases, and requires its own CI step.
 - `sync_run_state.py --self-test` exercises terminal timestamp normalization, parseability, snapshot embedding, conflicting-active-stage rejection, and preservation of the last dashboard on invalid state.
 - `check_context_budget.py` protects `build-entry-core`, `controller-preflight-core`, `ui-design-increment` and a single-file ceiling using exact bytes rather than estimated tokens.
 - `evaluate_native_repeatability.py --validate-plan` keeps the 5× native repeatability release matrix structurally valid; full result mode rejects missing/non-PASS repetitions.
 - `check_autopilot_regressions.py` statically verifies A1–A5 assets, controller→observability reachability and CI wiring.
 - Hardening fixed prior Codex Build wrapper/validator mismatch and dashboard state-key mismatch.
 - Hardening also fixed downstream gaps: specification did not pin design identity; implementation did not formally consume area/IC/design context; review/verification reports lacked complete design identities/evidence axes; maximum-quality budget did not explicitly allocate Design Reviewer inside existing slots.
-- Core TaskLedger native acceptance on an earlier 0.5 snapshot correctly returned `PARTIALLY_VERIFIED / DEGRADED` instead of false `COMPLETE`; it predates Browser/Project/Design/A1–A5 final wiring and cannot prove those additions.
+- Core TaskLedger native acceptance on an earlier 0.5 snapshot correctly returned `PARTIALLY_VERIFIED / DEGRADED` instead of false `COMPLETE`; it predates Browser/Project/Design/A1–A5/security-family final wiring and cannot prove those additions.
 
 ### Pending before an actual 0.5.0 release claim
 
 - Observe final-development-HEAD deterministic validation / CI success.
-- Run disposable full-stack native acceptance covering Project Topology, Area/Design Context, frozen `IC-xx`, root `DESIGN.md`, prototype direction when intentionally ambiguous, Apple-inspired design core, specialist routing, Runtime Map, Browser E2E, Design Review, Visual Design Check, G4, Design/Docs Drift and updated Russian dashboard/run-state recovery.
+- Run disposable full-stack native acceptance covering Project Topology, Area/Design Context, frozen `IC-xx`, root `DESIGN.md`, prototype direction when intentionally ambiguous, Apple-inspired design core, Security hardening families, specialist routing, Runtime Map, Browser E2E, Design Review, Visual Design Check, G4, Design/Docs Drift and updated Russian dashboard/run-state recovery.
 - Record five-repeat blocking-invariant evidence from `evals/native-repeatability.json` for every host claimed in release documentation.
 - Only then bump manifests/marketplaces/validator/doctor/root eval metadata to `0.5.0` and complete publisher/security metadata.
 
