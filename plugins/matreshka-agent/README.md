@@ -1,155 +1,197 @@
 # Matreshka Agent
 
-Matreshka Agent — переносимый набор из десяти skills для разработки с coding agents. Главная точка входа `building-end-to-end` принимает обычное описание проекта и передаёт его permission-aware controller-у, который сохраняет исходный замысел, изучает проект, строит спецификацию и план, организует реализацию/ревью/проверку и завершает работу только на основании свежих доказательств.
+Matreshka Agent — переносимый permission-aware набор из **одиннадцати bundled skills** для разработки с coding agents. Главная точка входа `building-end-to-end` принимает обычное описание проекта и передаёт его controller-у, который сохраняет исходный замысел, изучает реальную структуру проекта, ведёт UX/UI-контракт для пользовательских интерфейсов, строит specification/plan, организует RED→GREEN реализацию, независимые review/verification и завершает работу только на основании свежих доказательств.
 
-> **Статус ветки:** `0.5 development track`. Функциональный scope 0.5 находится в `dev/0.5-brief-traceability-observability`. Versioned plugin manifests пока намеренно остаются `0.4.0`, поэтому установленный development snapshot может отображаться как `0.4.0`. Это не означает отсутствие 0.5-функций. Версия будет повышена только после native acceptance и release-hardening.
+> **Статус ветки:** `0.5 development track` в `dev/0.5-brief-traceability-observability`. Versioned plugin manifests намеренно остаются `0.4.0`, поэтому development snapshot может показываться как `0.4.0`. Это не release claim.
 
 ## Самый простой запуск
-
-Для проекта целиком используйте `building-end-to-end`.
 
 | Платформа | Явный вызов |
 | --- | --- |
 | Claude Code | `/matreshka-agent:building-end-to-end` |
 | Cursor | `/building-end-to-end` |
-| Antigravity | Наберите `/` и выберите `building-end-to-end` |
-| Codex | `$matreshka-agent:building-end-to-end`, `/skills`, либо optional `/prompts:matreshka-build` |
+| Antigravity | `/` → `building-end-to-end` |
+| Codex | `$matreshka-agent:building-end-to-end`, `/skills`, optional `/prompts:matreshka-build` |
 
-### Пользовательские режимы
+Пользовательские режимы:
 
-- `interview` / `INTERVIEW` — сначала подробно опросить по продукту; вопросы только по решениям, которые нельзя безопасно получить из проекта.
-- `assisted` / `ASSISTED` — режим по умолчанию; спрашивать только о действительно важных решениях.
-- `full-auto` / `FULL_AUTO` — самостоятельно принимать безопасные обратимые локальные технические решения.
+- `interview` — сначала подробно опросить по продукту;
+- `assisted` — задавать только важные вопросы (default);
+- `full-auto` — самостоятельно принимать безопасные обратимые локальные решения.
 
-`FULL_AUTO` — это не «все права». Он не разрешает автоматически Git, сеть, установку зависимостей, browser download/launch, secrets, provider calls, deploy, изменение production/test data или другие внешние эффекты.
+Сценарии проекта:
 
-### Сценарии проекта
+- `NEW_PROJECT`;
+- `CONTINUE_PROJECT`;
+- `EXISTING_PROJECT`.
 
-- `NEW_PROJECT` — новый проект;
-- `CONTINUE_PROJECT` — проект уже вёлся Matreshka; незавершённый run восстанавливается, новая функция получает новый run;
-- `EXISTING_PROJECT` — существующий проект, который раньше не использовал Matreshka; сначала выполняется read-only adoption/orientation.
+`FULL_AUTO` не означает полный доступ. Git/network/dependency/browser/process/port/design-doc/prototype/secrets/test-data/deploy/remote остаются отдельными permissions.
 
-Пользователю обычно не нужно указывать сценарий вручную: controller определяет его по фактическому состоянию репозитория.
-
-## Главный workflow 0.5
+## Workflow 0.5
 
 ```text
 SOURCE_BRIEF
-    ↓
-U-REQUIREMENTS + S-SECURITY
-    ↓
-G1 — полнота уточнений
-    ↓
-SPECIFICATION
-    ↓
-G2 — независимая brief → spec сверка
-    ↓
-PROJECT INTELLIGENCE
-    ↓
-PLAN + G3
-    ↓
-RED → GREEN
-    ↓
-INDEPENDENT REVIEW
-    ↓
-TECHNICAL / SECURITY VERIFY
-    ↓
-BROWSER E2E, если применимо
-    ↓
-G4 BLIND ACCEPTANCE
-    ↓
-DOCUMENTATION DRIFT GATE
-    ↓
-FINISH / HANDOFF
+→ U-REQUIREMENTS + S-SECURITY
+→ G1
+→ PROJECT INTELLIGENCE
+→ DESIGN INTELLIGENCE (если UI/UX материален)
+→ SPECIFICATION
+→ G2
+→ PLAN + G3
+   + AREA_CONTEXT_SET
+   + DESIGN_CONTEXT_SET
+   + IC-xx
+→ RED → GREEN
+→ CODE / SECURITY / DESIGN REVIEW
+→ TECHNICAL / SECURITY VERIFY
+→ BROWSER E2E
+→ VISUAL DESIGN CHECK
+→ G4 BLIND ACCEPTANCE
+→ DESIGN DRIFT GATE
+→ DOCUMENTATION DRIFT GATE
+→ FINISH / HANDOFF
 ```
 
-## Исходный замысел и G1–G4
+## Source Intent: G1–G4
 
-Matreshka 0.5 хранит три разных слоя требований:
+- `SOURCE_BRIEF` хранит исходный запрос отдельно от последующей интерпретации;
+- `U-xx` — пользовательские outcomes;
+- `S-xx` — Security by Design controls.
 
-- `SOURCE_BRIEF` — исходный запрос пользователя после безопасной редактуры credential values; исходное содержание не переписывается задним числом;
-- `U-01`, `U-02`, ... — наблюдаемые пользовательские результаты;
-- `S-01`, `S-02`, ... — требования Security by Design и negative proofs.
+Gates:
 
-Четыре gates:
+- **G1** — честная полнота уточнений;
+- **G2** — fresh brief→spec coverage;
+- **G3** — requirement↔task↔evidence в обе стороны;
+- **G4** — blind acceptance против фактического продукта.
 
-- **G1** — все материальные пользовательские требования имеют честный статус до завершения спецификации;
-- **G2** — свежий независимый checker получает только source brief + candidate specification и ищет потерянные/суженные требования;
-- **G3** — каждый живой `U-`/`S-` связан с task/proof, а каждая product-task имеет источник;
-- **G4** — свежая blind acceptance получает исходный brief + фактический продукт и запрещено читать spec/manifest/plan/reports/dashboard. Материальный `PARTIAL`, `MISSING` или acceptance-critical `UNCHECKABLE` блокирует `COMPLETE`.
+G4 не читает spec/manifest/plan/reports/Project Intelligence/`DESIGN.md`/design reports/dashboard.
 
 ## Project Intelligence Layer
 
-0.5 добавляет шесть coordination capabilities, не создавая шесть новых skills.
-
-### P1 — Project Topology
-
-Controller в read-only режиме определяет реальные архитектурные области, например:
-
 ```text
-AREA-FRONTEND
-AREA-BACKEND
-AREA-DATA
-AREA-E2E
+P1 PROJECT_TOPOLOGY
+P2 AREA_CONTEXT_SET
+P3 CROSS_AREA_INTERFACE_CONTRACT (IC-xx)
+P4 RUNTIME_MAP
+P5 DOCUMENTATION_DRIFT_GATE
+P6 SPECIALIST_ROLE_ROUTING
 ```
 
-или для CLI:
+Project Intelligence отвечает, **из каких областей состоит проект и кто чем владеет**.
+
+- frontend/backend не выдумываются автоматически;
+- каждый task получает узкий area-context;
+- producer/consumer используют один frozen `IC-xx`;
+- runtime observation отделён от start/stop/kill permission;
+- docs обновляются только при реальном verified drift;
+- specialists не увеличивают agent budget автоматически.
+
+## Design Intelligence Layer
+
+Design Intelligence отвечает, **как пользовательский продукт должен ощущаться, выглядеть и оставаться цельным**.
+
+### D1 — Design relevance & recon
+
+Controller определяет:
 
 ```text
-AREA-CLI
-AREA-PERSISTENCE
+DESIGN_NOT_APPLICABLE
+DESIGN_CURRENT
+DESIGN_RECON_REQUIRED
+DESIGN_DIRECTION_REQUIRED
+DESIGN_BLOCKED
 ```
 
-Frontend/backend не выдумываются по типу продукта. Код/config и применимые repository instructions важнее устаревшей документации.
+Существующий UI/токены/components/screens сначала исследуются read-only. `EXISTING_PROJECT` не получает произвольный редизайн.
 
-### P2 — Area Context Router
+### D2 — Design direction / prototype exploration
 
-Каждая task получает минимальный `AREA_CONTEXT_SET`: task brief, релевантные U/S, primary area, необходимые соседние interface contracts, scoped paths/commands и security/data/runtime invariants. Unrelated UI/deploy/history/raw logs/full branch diff исключаются.
+Если пользователь сам не понимает, чего хочет, Matreshka может сделать 3 реально разных направления (maximum 5), различающихся layout/density/personality/hierarchy/motion/interaction model.
 
-Если корректность нельзя сохранить в узком контексте — `CONTEXT_TOO_BROAD` или split, а не скрытая потеря зависимостей.
+Прототипы изолированы от production до выбора. Fake divergence типа «три одинаковых экрана разных цветов» не принимается.
 
-### P3 — Cross-Area Interface Contract
+### D3 — единый root `DESIGN.md`
 
-Для producer/consumer seam создаётся один `IC-xx`, например frontend ↔ backend API. Он фиксирует input/output, errors, auth/data boundary, compatibility и integration proof. Producer и consumer используют одну identity/hash. Материальное изменение после freeze требует controller reconciliation (`INTERFACE_CHANGED`).
-
-Run-local путь по умолчанию:
+Материальный UI-проект использует один:
 
 ```text
-.matreshka/runs/<run-id>/interfaces/IC-xx-<slug>.md
+DESIGN.md
 ```
 
-### P4 — Runtime Map
+Если файл отсутствует и exact design-doc write разрешён — Matreshka создаёт его. Иначе возвращает `DESIGN_READY_TO_SAVE` и не притворяется, что контракт существует.
 
-Matreshka отдельно знает, как наблюдать и как мутировать runtime:
+Контракт содержит personality, UX principles, app shell/layout, spacing/density, typography, colors/surfaces/depth/radii, components/primitives/states, responsive/touch, accessibility, motion, approved direction, invariants и history of material design decisions.
+
+### Apple-inspired design core
+
+В ядро дизайна входят как обязательная reasoning vocabulary:
 
 ```text
-service / owner area
-start / stop / status / logs
-port/socket when evidenced
-environment class
-process ownership
-mutation implications
+Purpose
+Agency
+Responsibility
+Familiarity
+Flexibility
+Simplicity
+Craft
+Delight
 ```
 
-Наличие status/log command не разрешает start/restart/kill. Неизвестный процесс на нужном порту нельзя массово убивать без доказанного ownership и permission.
+Плюс wayfinding, feedback, grouping/mapping, direct manipulation, spatial consistency, typography hierarchy, touch/focus/contrast/reduced motion/accessibility.
 
-### P5 — Documentation Drift Gate
+Это **не Apple visual preset**. Matreshka не добавляет iOS/glass стиль без продуктовой причины.
 
-После свежей проверки controller классифицирует:
+### D4 — DESIGN_CONTEXT_SET
+
+UI task получает current design identity/hash и только нужные разделы design contract. Backend-only task не получает UI design context без реальной UX-зависимости.
+
+### D5 — existing-first primitive policy
+
+1. existing design system/component library;
+2. existing compatible shared component;
+3. repository-approved accessible primitive;
+4. hand-roll только при реальной необходимости.
+
+Новая UI/motion dependency всё равно требует dependency/network authority.
+
+### D6 — independent Design Review
+
+Проверяет UX flow/wayfinding, hierarchy, layout/spacing/density, typography, color/contrast/depth, component consistency/states, responsive/touch, accessibility, motion/perceived performance, cross-screen consistency и compliance с frozen `DESIGN.md`.
+
+`DESIGN_REVIEWER` read-only и не добавляется автоматически при каждой задаче; balanced может использовать combined reviewer.
+
+### D7 — Visual Design Check
+
+При доступном безопасном browser/native visual tooling проверяет реальные экраны/состояния/viewports против design identity.
 
 ```text
-DOCS_NOT_REQUIRED
-DOCS_CURRENT
-DOCS_UPDATE_REQUIRED
-DOCS_BLOCKED
-DOCS_CONFLICT
+DESIGN_VERIFICATION:
+PASS | PARTIAL | FAIL | BLOCKED | UNCHECKABLE
 ```
 
-Public API/interface, topology, runtime, persistence, auth/security, env semantics, durable test/deploy procedures и документированные user flows считаются durable truth. Private helper refactor обычно не требует docs update.
+Visual Design Check ≠ Browser E2E ≠ G4.
 
-### P6 — Specialist Role Routing
+### D8 — Design Drift Gate
 
-Это role archetypes поверх существующих Matreshka skills, а не новые skills и не дополнительный agent budget:
+Перед чистым finish:
+
+```text
+DESIGN_NOT_APPLICABLE
+DESIGN_CURRENT
+DESIGN_UPDATE_REQUIRED
+DESIGN_DRIFT
+DESIGN_CONFLICT
+DESIGN_BLOCKED
+```
+
+Legitimate contract change → `DESIGN_CHANGED` + controller reconciliation + refreshed design identity.
+
+Random new radius/color/component/layout on one screen → `DESIGN_DRIFT`, а не автоматическое изменение `DESIGN.md`.
+
+## Specialist roles
+
+Project + Design Intelligence могут маршрутизировать:
 
 ```text
 GENERAL_IMPLEMENTER
@@ -157,6 +199,8 @@ FRONTEND_IMPLEMENTER
 BACKEND_IMPLEMENTER
 DATA_MIGRATION_IMPLEMENTER
 UI_SPECIALIST
+DESIGN_ENGINEER
+DESIGN_REVIEWER
 TEST_E2E_SPECIALIST
 DOCUMENTATION_MAINTAINER
 BROWSER_CHECKER
@@ -164,133 +208,111 @@ REMOTE_OPERATOR
 FILE_TRANSFER_OPERATOR
 ```
 
-Например `UI_SPECIALIST` не может самовольно изменить backend API/business logic. Количество areas не создаёт по одному implementer на каждую область.
+`DESIGN_ENGINEER` использует bundled `designing-product-experience`; `DESIGN_REVIEWER` остаётся read-only. Roles не дают новые permissions и не увеличивают execution-profile budget автоматически.
 
-## Browser/E2E и Browser G4
+## Browser/E2E
 
-Для web-проектов Matreshka сначала ищет существующую E2E-инфраструктуру. Playwright, Cypress, Selenium, WebdriverIO или другой repository-native seam имеют приоритет над установкой нового framework.
+Для web сначала используется repository-native E2E. Не устанавливать Playwright поверх существующего Cypress/Selenium/WebdriverIO без причины/permission.
 
-Раздельно фиксируются:
+Отдельно:
 
-1. **Automated E2E** — техническая проверка существующим test runner;
-2. **Browser G4** — независимая пользовательская приёмка в свежем контексте.
+1. Automated Browser E2E — техническое доказательство;
+2. Visual Design Check — дизайн-согласованность;
+3. Browser G4 — blind user-intent acceptance.
 
-`E2E PASS` не означает `G4 PASS`.
-
-Без отдельного разрешения Matreshka не устанавливает browser/framework, не скачивает Chromium/Chrome, не запускает server, не bind-ит port и не reset-ит test database. Personal Chrome profile, ambient cookies/session и чужие вкладки не являются доверенным test context.
+Personal browser profile/ambient cookies/session не считаются безопасным test context. Destructive E2E требует exact disposable/approved environment proof.
 
 ## Dashboard, время и токены
 
-При разрешённом run-state Matreshka может создать:
+При разрешённом run-state:
 
 ```text
 .matreshka/runs/<run-id>/dashboard.html
 .matreshka/runs/<run-id>/dashboard-state.js
 ```
 
-Dashboard — только projection. Он не даёт authority и не доказывает completion.
+Русский dashboard показывает:
 
-Русскоязычный run показывает по-русски:
-
-- общий прогресс;
-- покрытие brief;
-- текущий этап;
-- задачи/тесты/требования/security;
-- Project Topology, interfaces, Runtime Map, docs drift и specialist;
-- Browser/E2E;
+- progress/brief coverage/stages/tasks;
+- tests/security;
+- Project Topology / IC / Runtime / docs;
+- `DESIGN.md`, design identity, direction, prototypes, design review, visual check, Design Drift Gate;
+- Browser E2E/G4;
 - permissions;
-- последнюю проверенную точку и следующее действие;
-- wall-clock и implementation time, если есть точные timestamps;
-- token usage только из host counters.
+- exact/partial timing;
+- token telemetry только из host counters (`EXACT | PARTIAL | UNAVAILABLE`).
 
-Token status:
+Dashboard — projection, не authority/evidence.
 
-- `EXACT` — доступен полный совместимый счётчик;
-- `PARTIAL` — видна только точная наблюдаемая часть;
-- `UNAVAILABLE` — host не отдаёт надёжный counter.
-
-Matreshka не оценивает токены по символам, времени или числу сообщений.
-
-## Профиль качества, автономность и permissions — разные измерения
-
-Execution profile:
-
-- **maximum speed** — только ясная low-risk механика;
-- **balanced** — рекомендуется большинству задач;
-- **maximum quality** — auth/isolation/migrations/secrets/persistence/production-boundaries.
-
-Internal controller autonomy:
-
-- managed;
-- autonomous local;
-- extended autonomous — только явно перечисленные Git/network/browser/runtime/remote операции.
-
-Permission envelope отдельно ограничивает filesystem, commands, browser/process/port, Git workspace/history/remote, dependencies/network, secrets, test-data mutation, remote/production/destructive actions и срок действия.
-
-## Десять bundled skills
+## Одиннадцать bundled skills
 
 | Skill | Назначение |
 | --- | --- |
-| `building-end-to-end` | одна plain-language точка входа для нового/существующего проекта |
-| `orchestrating-subagent-work` | controller, recovery, audit, Project Intelligence, permissions и dispatch |
+| `building-end-to-end` | end-to-end entry для new/continue/existing project |
+| `orchestrating-subagent-work` | controller, permissions, recovery, Project + Design Intelligence |
+| `designing-product-experience` | UX/UI recon, prototypes, Apple-inspired core, `DESIGN.md` |
 | `specifying-software-work` | security-by-design specification |
-| `planning-software-work` | U/S coverage, topology/interfaces/context и executable task plan |
-| `writing-portable-agent-prompt` | переносимый prompt без выполнения |
-| `implementing-with-tests` | scoped RED → GREEN implementation |
-| `debugging-systematically` | root-cause investigation |
-| `reviewing-agent-work` | independent scoped code/security/interface review |
-| `verifying-development-work` | fresh technical/security/E2E/G4 evidence |
-| `finishing-development-work` | docs gate, разрешённый Git/remote action или точный handoff |
+| `planning-software-work` | U/S, area/design contexts, interfaces, plan |
+| `writing-portable-agent-prompt` | portable prompt |
+| `implementing-with-tests` | scoped RED→GREEN |
+| `debugging-systematically` | root-cause debugging |
+| `reviewing-agent-work` | code/security/interface/design review |
+| `verifying-development-work` | technical/security/E2E/visual/G4 evidence |
+| `finishing-development-work` | Design/Docs Drift + authorized Git/remote/handoff |
 
-## Бюджеты и независимость
+Design skill explicit calls:
 
-- balanced task: максимум два уникальных основных subagent roles и четыре started agent turns;
-- maximum quality: максимум три основных роли и шесть turns;
-- только одна consolidated fixer wave;
-- fix и targeted re-review продолжают исходные threads, когда host поддерживает resume;
-- повторный Critical/Important после fixer wave → `STOP_AND_RESCOPE`;
-- только один writer в checkout одновременно;
-- parallel по умолчанию только для независимых read-only roles;
-- specialist routing не увеличивает budget автоматически.
+| Platform | Design skill |
+| --- | --- |
+| Claude Code | `/matreshka-agent:designing-product-experience` |
+| Cursor/Antigravity | registered `designing-product-experience` skill |
+| Codex | `$matreshka-agent:designing-product-experience`, `/skills`, optional `/prompts:matreshka-design` |
 
-## Локальная проверка development-пакета
+## Budgets and independence
+
+- balanced: обычно максимум 2 main roles / 4 started turns;
+- maximum quality: до 3 main roles / 6 turns;
+- one consolidated fixer wave;
+- same-thread fixer/re-review when host supports resume;
+- one writer per checkout;
+- parallel by default only for independent read-only work;
+- specialist/design routing does not inflate budget automatically.
+
+## Проверка 0.5 development package
 
 Из корня репозитория:
 
 ```bash
-python3 -B plugins/matreshka-agent/scripts/validate_package.py \
+python3 -B plugins/matreshka-agent/scripts/validate_dev_05.py \
   plugins/matreshka-agent --marketplace-root . --self-test
 
 python3 -B plugins/matreshka-agent/scripts/check_dev_05.py \
-  plugins/matreshka-agent
+  plugins/matreshka-agent --marketplace-root .
 
-python3 -B plugins/matreshka-agent/scripts/doctor.py \
+python3 -B plugins/matreshka-agent/scripts/doctor_dev_05.py \
   plugins/matreshka-agent --marketplace-root .
 ```
 
-`validate_package.py`, `check_dev_05.py` и `doctor.py` работают read-only/offline. GitHub Actions на `main` и `dev/**` выполняет эти проверки на Python 3.11.
+- `validate_dev_05.py` переиспользует строгий release-line validator, но расширяет development package inventory до 11 skills и design wrapper;
+- `check_dev_05.py` проверяет 0.5 cross-component wiring, включая Project/Design Intelligence и eval coverage;
+- `doctor_dev_05.py` выполняет development-aware read-only diagnostics.
 
-## Что 0.5 не добавляет автоматически
+GitHub Actions запускает development validation на Python 3.11.
 
-- Pi `.pi/mcp.json` или обязательный MCP-server;
-- hooks;
-- telemetry/analytics;
-- dependency installation;
-- browser download;
+## Что не появляется автоматически
+
+- Pi `.pi/mcp.json`/обязательный MCP;
+- hooks/telemetry;
+- dependency/browser installation;
 - secret access;
-- Git/remote/deploy authority;
-- production database mutation;
-- автоматическую глобальную память/самоизменение Matreshka.
+- Git/push/deploy authority;
+- process/port/data reset;
+- `DESIGN.md`/prototype writes без explicit permission;
+- personal browser profile;
+- автоматическая глобальная память/самоизменение Matreshka.
 
 ## До release 0.5.0
 
-Development scope может считаться release-ready только после:
+Нужно получить deterministic final-head validation и disposable native full-stack acceptance, который одновременно проверит Project Intelligence, Design Intelligence, Browser E2E, Visual Design Check, G4, Design/Docs Drift, русский dashboard и recovery. Затем — native evidence по заявляемым hosts, version bump и publisher/security metadata.
 
-- deterministic package/self-test + 0.5 integrity + doctor PASS;
-- native acceptance core workflow;
-- disposable full-stack web acceptance для Browser/E2E + Project Intelligence;
-- проверенных native claims для реально заявляемых hosts;
-- version bump manifests/marketplaces/validator/doctor/evals;
-- финальной publisher/security metadata проверки.
-
-До этого ветка остаётся development preview и не должна называться опубликованным `0.5.0`.
+До этого development branch не должна называться released `0.5.0`.
