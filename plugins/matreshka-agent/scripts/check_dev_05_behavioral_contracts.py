@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Check that 0.5 cross-skill behavioral eval coverage exists.
+"""Check that 0.5 cross-skill behavioral eval coverage exists and stays in CI.
 
-Read-only/offline. This validates test-case presence, not model behavior.
+Read-only/offline. This validates contract/eval coverage, not model behavior.
 """
 
 from __future__ import annotations
@@ -41,6 +41,14 @@ REQUIRED_PROFILE_MARKERS = (
     "Visual Design Check",
 )
 
+REQUIRED_CI_MARKERS = (
+    "validate_dev_05.py",
+    "check_dev_05.py",
+    "check_dev_05_behavioral_contracts.py",
+    "doctor_dev_05.py",
+    "python-version: '3.11'",
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -51,7 +59,17 @@ def parse_args() -> argparse.Namespace:
         nargs="?",
         default=str(Path(__file__).resolve().parent.parent),
     )
+    parser.add_argument(
+        "--marketplace-root",
+        help="Repository root; inferred from plugins/<name> when omitted.",
+    )
     return parser.parse_args()
+
+
+def infer_marketplace_root(plugin_root: Path) -> Path:
+    if plugin_root.parent.name == "plugins":
+        return plugin_root.parent.parent.resolve()
+    return plugin_root.resolve()
 
 
 def load_cases(path: Path) -> set[str]:
@@ -66,7 +84,13 @@ def load_cases(path: Path) -> set[str]:
 
 
 def main() -> int:
-    plugin_root = Path(parse_args().plugin_path).expanduser().resolve()
+    args = parse_args()
+    plugin_root = Path(args.plugin_path).expanduser().resolve()
+    marketplace_root = (
+        Path(args.marketplace_root).expanduser().resolve()
+        if args.marketplace_root
+        else infer_marketplace_root(plugin_root)
+    )
     failures: list[str] = []
 
     for relative, required in REQUIRED_CASES.items():
@@ -93,6 +117,16 @@ def main() -> int:
         if marker.casefold() not in profile:
             failures.append(f"profiles-and-budgets.md missing {marker!r}")
 
+    workflow_path = marketplace_root / ".github/workflows/package-validation.yml"
+    try:
+        workflow = workflow_path.read_text(encoding="utf-8").casefold()
+    except (OSError, UnicodeError) as exc:
+        failures.append(f"package-validation.yml unreadable: {exc}")
+        workflow = ""
+    for marker in REQUIRED_CI_MARKERS:
+        if marker.casefold() not in workflow:
+            failures.append(f"package-validation.yml missing CI step marker {marker!r}")
+
     if failures:
         print(
             "Matreshka 0.5 behavioral-contract coverage: "
@@ -108,7 +142,8 @@ def main() -> int:
     print("- independent review detects design drift and refuses fabricated visual confidence")
     print("- verification separates E2E, visual design, and G4 contamination")
     print("- design reviewer fits existing balanced/maximum-quality budgets")
-    print("This confirms eval coverage exists; native model behavior still needs acceptance execution.")
+    print("- CI explicitly runs package, component, behavioral-contract and doctor checks")
+    print("This confirms contract/eval coverage exists; native model behavior still needs acceptance execution.")
     return 0
 
 
