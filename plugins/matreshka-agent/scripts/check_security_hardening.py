@@ -110,7 +110,7 @@ def main() -> int:
         "concurrent/replayed requests",
         "browser-accessible tables",
         "RLS",
-        "cross-user/wrong-tenant",
+        "wrong-user/wrong-tenant",
         "global emergency usage/spend ceiling",
         "concurrency-safe reservation/accounting",
         "REQUIRED | N/A(reason) | HANDOFF",
