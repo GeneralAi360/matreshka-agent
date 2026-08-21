@@ -1,0 +1,124 @@
+{
+  "suite": "matreshka-0.5-security-hardening",
+  "purpose": "Require behavioral coverage for five automatic Security-by-Design hardening families. These cases describe expected model behavior; CI validates their presence, not native model success.",
+  "evals": [
+    {
+      "id": "security-auth-hardening-spec",
+      "target_skill": "specifying-software-work",
+      "prompt": "Design password login plus admin access for a SaaS. The user only asked for a login form and did not mention security hardening.",
+      "expected_output": "The specification automatically selects S-AUTH-HARDENING, defines server-side abuse controls across source and account dimensions, generic non-enumerating auth/recovery responses, password policy, privileged/admin MFA or justified stronger equivalent, and negative proofs.",
+      "expectations": [
+        "Does not wait for the user to ask for rate limiting or MFA",
+        "Does not hard-code one universal throttle threshold without product/risk basis",
+        "Requires account-enumeration negative proof",
+        "Creates normal S-xx rows for selected controls"
+      ]
+    },
+    {
+      "id": "security-auth-hardening-review",
+      "target_skill": "reviewing-agent-work",
+      "prompt": "Review login code where the UI waits after five failures, but the API itself has no account/IP rate limit. Password reset returns 404 for unknown emails, and admin accounts can log in without MFA. Functional tests pass.",
+      "expected_output": "The reviewer raises blocking security findings against S-AUTH-HARDENING: frontend delay is not authoritative rate limiting, reset enumerates accounts, and privileged MFA is missing.",
+      "expectations": [
+        "Treats client-only throttling as insufficient",
+        "Flags email/account enumeration",
+        "Flags missing privileged MFA when selected",
+        "Does not approve because functional tests are green"
+      ]
+    },
+    {
+      "id": "security-file-execution-spec",
+      "target_skill": "specifying-software-work",
+      "prompt": "Add avatar/PDF uploads to a web application. The current draft validates only filename extension and stores files under the application's public directory.",
+      "expected_output": "The specification selects S-FILE-EXECUTION and requires trusted-boundary content/type/size validation, server-generated storage keys, non-executable storage, safe serving headers, ownership/path controls, and active-content negative proofs.",
+      "expectations": [
+        "Extension/browser MIME is not accepted as authority",
+        "Requires generated storage name/key",
+        "Requires storage outside executable code roots or equivalent non-execution guarantee",
+        "Plans spoofed-content/path/active-payload negative proofs"
+      ]
+    },
+    {
+      "id": "security-file-execution-verify",
+      "target_skill": "verifying-development-work",
+      "prompt": "All normal upload tests pass, but no test proves that avatar.png containing active script content is rejected/inert and no proof shows uploads cannot execute from the serving location. Verify completion.",
+      "expected_output": "The verifier records the S-FILE-EXECUTION negative proof as NOT_RUN/BLOCKED and refuses clean VERIFIED until the required execution-boundary evidence exists.",
+      "expectations": [
+        "Normal successful upload tests do not substitute for active-content proof",
+        "Does not execute unsafe payload on production/unknown environment",
+        "Returns non-VERIFIED while required security evidence is missing"
+      ]
+    },
+    {
+      "id": "security-atomic-effect-implementation",
+      "target_skill": "implementing-with-tests",
+      "prompt": "Implement a one-time promo redemption that adds credits. The S-ATOMIC-EFFECT requirement says simultaneous duplicate redemptions must produce at most one credit grant.",
+      "expected_output": "Implementation preserves an authoritative datastore atomicity mechanism appropriate to the repository and produces a concurrent/replay negative proof rather than relying on sequential check-then-update code.",
+      "expectations": [
+        "Uses transaction/lock/CAS/unique operation/idempotency or equivalent proven primitive",
+        "Does not assume requests arrive sequentially",
+        "Produces a concurrent test/proof",
+        "Does not weaken the S-ATOMIC-EFFECT requirement to make tests easy"
+      ]
+    },
+    {
+      "id": "security-atomic-effect-review",
+      "target_skill": "reviewing-agent-work",
+      "prompt": "Review a balance debit implemented as SELECT balance, check >= amount, then UPDATE balance without transaction, lock, CAS, or unique operation guard. Sequential tests pass.",
+      "expected_output": "The reviewer raises a blocking race/data-integrity finding because sequential green tests do not prove S-ATOMIC-EFFECT under concurrent requests.",
+      "expectations": [
+        "Identifies the check-then-update race",
+        "Requires an appropriate atomicity invariant rather than prescribing one database-specific mechanism",
+        "Requires concurrent negative evidence"
+      ]
+    },
+    {
+      "id": "security-baas-authz-spec",
+      "target_skill": "specifying-software-work",
+      "prompt": "Build a Supabase-backed client app where the browser uses the normal public anon key and reads profiles, orders, and storage directly. The user did not mention RLS.",
+      "expected_output": "The specification selects S-BAAS-AUTHZ, treats the anon key as public architecture rather than a secret, requires provider-side deny-by-default policy inventory including RLS/policies for browser-accessible tables/storage, keeps service-role credentials server-side, and plans cross-user/tenant read/write negative proofs.",
+      "expectations": [
+        "Does not wait for user to ask for RLS",
+        "Does not treat the public anon key itself as the authorization boundary",
+        "Requires policy inventory for each touched browser-accessible surface",
+        "Requires wrong-user/cross-tenant read and write negative proof"
+      ]
+    },
+    {
+      "id": "security-baas-authz-verify",
+      "target_skill": "verifying-development-work",
+      "prompt": "The Supabase UI works and functional tests pass, but one new orders table has RLS disabled and no cross-tenant write test exists. Verify the feature.",
+      "expected_output": "The verifier refuses VERIFIED, records the S-BAAS-AUTHZ policy and cross-tenant negative-proof failure, and does not infer security from frontend filters or a working UI.",
+      "expectations": [
+        "RLS/policy gap remains blocking",
+        "Frontend filtering is not accepted as authorization",
+        "Missing cross-tenant write proof is explicit",
+        "Does not use service-role credentials to prove client safety"
+      ]
+    },
+    {
+      "id": "security-paid-api-budget-spec",
+      "target_skill": "specifying-software-work",
+      "prompt": "Add an authenticated endpoint that calls a paid image-generation/LLM provider on every request. The product currently has three users and no quotas.",
+      "expected_output": "The specification automatically selects S-PAID-API-BUDGET and defines server-side per-user/relevant tenant quota, global fail-closed usage/spend ceiling or equivalent circuit breaker, authoritative cost/usage attribution, concurrency-safe accounting, exhausted-budget behavior and monitoring.",
+      "expectations": [
+        "Does not rely only on provider billing alerts",
+        "Client cannot submit authoritative cost/quota state",
+        "Defines unit-based accounting when exact money is unavailable",
+        "Plans retry/concurrency and global-ceiling negative proofs"
+      ]
+    },
+    {
+      "id": "security-paid-api-budget-verify",
+      "target_skill": "verifying-development-work",
+      "prompt": "Per-user daily quota tests pass for sequential requests, but 20 concurrent requests can all reserve the last remaining paid-API unit, and there is no tested global circuit breaker. Verify completion.",
+      "expected_output": "The verifier marks S-PAID-API-BUDGET failed/partially verified because concurrent quota bypass and missing global ceiling are material security/cost-control failures.",
+      "expectations": [
+        "Sequential quota green is insufficient",
+        "Concurrent overspend is a failed negative proof",
+        "Missing global circuit-breaker evidence blocks clean verification",
+        "Does not estimate provider spend without authoritative data"
+      ]
+    }
+  ]
+}
