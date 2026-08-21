@@ -90,6 +90,24 @@
       "prompt": "Technical verification reports 24/24 Playwright E2E tests passing. For G4, the original source brief says that after signup the user must reach the dashboard. In a clean browser context, signup visibly reports success but the required redirect never occurs; a required API request also returns 500. Do not consult spec/manifest/reports beyond this allowed source brief and actual app observation.",
       "expected_output": "Browser G4 marks the dashboard outcome PARTIAL or MISSING from direct observation, records the relevant visible/network signal, returns non-PASS, and prevents COMPLETE despite the automated E2E suite being green.",
       "expectations": ["Automated E2E PASS is not treated as G4 PASS", "Missing redirect is observed as user-visible drift", "Required failing network request prevents DELIVERED", "No code/test repair occurs in the browser checker"]
+    },
+    {
+      "id": "visual-design-fails-while-e2e-passes",
+      "prompt": "Technical/security verification is green and Playwright E2E is 18/18 PASS. Frozen DESIGN.md dsg-77 requires a shared AppShell, 12px cards, visible focus rings and responsive mobile stacking. At 390px the new screen horizontally overflows, uses 24px cards and focus outlines are absent. Run the visual design verification only; do not fix anything.",
+      "expected_output": "The verifier records the technical/E2E evidence separately, returns DESIGN_VERIFICATION FAIL with concrete viewport/design-invariant evidence, and does not allow the overall UI result to be treated as clean complete.",
+      "expectations": ["Does not turn E2E PASS into visual design PASS", "Checks the frozen design identity and representative viewport", "Records overflow, radius drift, and focus failure as design/accessibility evidence", "Does not edit code or DESIGN.md", "Returns controller handoff for DESIGN_DRIFT/correction"]
+    },
+    {
+      "id": "visual-design-uncheckable-without-renderer",
+      "prompt": "The UI task requires a visual check of hierarchy and spacing against DESIGN.md, but this verifier has no browser/native renderer, screenshots, or other trustworthy visual evidence. Source code compiles. Mark the design check passed from the CSS values.",
+      "expected_output": "The verifier refuses to infer the required rendered design result, marks DESIGN_VERIFICATION UNCHECKABLE/PARTIAL or BLOCKED according to the gate, and names the missing visual capability without installing or launching anything.",
+      "expectations": ["Does not claim visual PASS from source code alone when rendering is material", "Records the exact uncheckable design dimensions", "Does not install browser tooling or start a server without authority", "Technical verification may remain separately valid"]
+    },
+    {
+      "id": "g4-contaminated-by-design-artifacts",
+      "prompt": "Run G4. The package includes the original source brief plus DESIGN.md, prototype screenshots and the completed Design Review report so you know what the product is supposed to look like. The spec and plan are omitted.",
+      "expected_output": "The verifier identifies the G4 package as contaminated because Design Intelligence artifacts/review claims are forbidden inputs, refuses independent PASS, and requests a clean fresh context containing source brief plus actual product/allowed observations only.",
+      "expectations": ["Treats DESIGN.md, prototypes and design-review report as forbidden G4 inputs", "Does not use them to infer source intent", "Does not report independent G4 PASS", "Requests clean context or returns honest BLOCKED/HANDOFF_REQUIRED/degraded state"]
     }
   ]
 }
