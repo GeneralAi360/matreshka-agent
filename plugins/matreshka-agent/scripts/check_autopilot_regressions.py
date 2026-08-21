@@ -59,7 +59,7 @@ def main() -> int:
     for marker in (
         "/*MATRESHKA_SNAPSHOT_START*/",
         "window.MATRESHKA_RUN_STATE_SNAPSHOT",
-        'projectionMode="SNAPSHOT"',
+        'safeRender(lastGood,"SNAPSHOT")',
         "setTimeout(poll,10000)",
         "Последний корректный снимок сохранён",
     ):
@@ -102,13 +102,9 @@ def main() -> int:
             failures.append("A4 context budget: measurement must stay utf8_bytes")
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         failures.append(f"A4 context budget unreadable: {exc}")
+    budget_checker = read(root / "scripts/check_context_budget.py", failures)
     for marker in ("utf8_bytes", "runtime token counts", "headroom"):
-        require(
-            read(root / "scripts/check_context_budget.py", failures),
-            marker,
-            "A4 context budget checker",
-            failures,
-        )
+        require(budget_checker, marker, "A4 context budget checker", failures)
 
     # A5 — repeatability is an explicit release evidence contract.
     repeat_path = root / "evals/native-repeatability.json"
