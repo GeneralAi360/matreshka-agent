@@ -27,7 +27,7 @@ PROJECT INTELLIGENCE
 ↓
 DESIGN INTELLIGENCE (если UI/UX материален)
 ↓
-SPECIFICATION
+SPECIFICATION + SECURITY HARDENING ROUTING
 ↓ G2
 PLAN + G3
   ├─ AREA_CONTEXT_SET
@@ -64,6 +64,41 @@ FINISH / HANDOFF
 - G4 — blind acceptance по фактическому продукту.
 
 Материальный `PARTIAL`, `MISSING` или acceptance-critical `UNCHECKABLE` блокирует `COMPLETE`.
+
+## Security by Design + automatic hardening
+
+Security не ждёт, пока пользователь сам вспомнит назвать конкретную уязвимость. Во время specification Matreshka проверяет пять стабильных boundary families и для каждой фиксирует `REQUIRED`, `N/A(reason)` или `HANDOFF`. Каждая `REQUIRED` family превращается в обычные `S-xx` requirements с owner + negative proof, а затем проходит через implementation → independent review → fresh verification.
+
+```text
+S-AUTH-HARDENING
+→ password / login / recovery / privileged-admin auth
+→ abuse throttling по source + account, non-enumerating errors,
+  password policy, privileged MFA/step-up when applicable
+
+S-FILE-EXECUTION
+→ stored uploads
+→ trusted content/type checks, generated storage keys,
+  non-executable storage + safe serving boundary
+
+S-ATOMIC-EFFECT
+→ balances / credits / promo / inventory / withdrawals / one-time effects
+→ transaction/lock/CAS/unique/idempotency equivalent
+  + concurrent/replay negative proof
+
+S-BAAS-AUTHZ
+→ Supabase / Firebase / Appwrite / client-addressable BaaS
+→ provider-side deny-by-default policies, RLS/rules where applicable,
+  cross-user/cross-tenant read + write proof
+
+S-PAID-API-BUDGET
+→ LLM / image / SMS / voice / other metered APIs
+→ per-user/tenant quotas + global fail-closed ceiling/circuit breaker,
+  authoritative/concurrency-safe usage accounting
+```
+
+Это routing labels, а не замена `S-01`, `S-02`, ... . Например `S-BAAS-AUTHZ: REQUIRED` может материализоваться как несколько отдельных `S-xx`: RLS на таблицах, storage policies и cross-tenant negative tests.
+
+Функционально зелёные тесты не могут автоматически закрыть security row. `VERIFIED` запрещён, пока выбранный `S-xx` не имеет свежего negative evidence.
 
 ## Project Intelligence Layer
 
@@ -172,6 +207,9 @@ python3 -B plugins/matreshka-agent/scripts/check_dev_05.py \
 python3 -B plugins/matreshka-agent/scripts/check_dev_05_behavioral_contracts.py \
   plugins/matreshka-agent
 
+python3 -B plugins/matreshka-agent/scripts/check_security_hardening.py \
+  plugins/matreshka-agent --marketplace-root .
+
 python3 -B plugins/matreshka-agent/scripts/sync_run_state.py --self-test
 
 python3 -B plugins/matreshka-agent/scripts/check_context_budget.py \
@@ -190,6 +228,7 @@ python3 -B plugins/matreshka-agent/scripts/doctor_dev_05.py \
 - `validate_dev_05.py` — strict package/negative self-tests for 11 skills;
 - `check_dev_05.py` — static cross-component wiring;
 - `check_dev_05_behavioral_contracts.py` — cross-skill behavioral coverage;
+- `check_security_hardening.py` — five automatic security families + spec/review/S- flow + security eval matrix;
 - `sync_run_state.py --self-test` — atomic snapshot/state invariant mechanics;
 - `check_context_budget.py` — exact byte-budget regression guard;
 - `evaluate_native_repeatability.py --validate-plan` — repeatability release matrix contract;
@@ -203,7 +242,7 @@ Static budget bytes **не** являются runtime token usage и никог�
 Нужно получить:
 
 1. final-development-HEAD deterministic validation/CI PASS;
-2. disposable native full-stack acceptance для Project Intelligence + Design Intelligence + Browser E2E + Visual Design Check + G4 + Design/Docs Drift + dashboard/recovery;
+2. disposable native full-stack acceptance для Project Intelligence + Design Intelligence + Security hardening + Browser E2E + Visual Design Check + G4 + Design/Docs Drift + dashboard/recovery;
 3. repeatability evidence по `evals/native-repeatability.json` для каждого host, который будет заявлен в release;
 4. затем version bump manifests/marketplaces/validators/evals до `0.5.0` и финальная publisher/security metadata проверка.
 
