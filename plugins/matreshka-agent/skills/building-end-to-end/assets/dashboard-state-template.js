@@ -7,6 +7,27 @@ window.MATRESHKA_RUN_STATE = {
   "mode": "{{INTERACTION_MODE}}",
   "profile": "{{EXECUTION_PROFILE}}",
   "complexityTier": "{{COMPLEXITY_TIER}}",
+  "stageOrder": [
+    "source",
+    "g1",
+    "spec",
+    "g2",
+    "plan",
+    "implementation",
+    "review",
+    "technical",
+    "g4",
+    "finish"
+  ],
+  "stateIntegrity": {
+    "status": "PENDING",
+    "findingsCount": 0,
+    "lastSyncedAt": null,
+    "snapshotUpdatedAt": null,
+    "normalizations": [],
+    "allowedConcurrentStagePairs": [],
+    "source": null
+  },
   "authority": {
     "localWrites": false,
     "designDocWrite": false,
