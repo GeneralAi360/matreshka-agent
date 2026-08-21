@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "У нас SaaS с организациями. Нужно добавить приглашения сотрудников, но пока непонятно, кто может приглашать, как долго живёт ссылка и что делать с повторным приглашением. Сначала продумай решение без кода.",
-      "expected_output": "A repository-grounded specification workflow that asks one material product/authority question at a time, compares two or three approaches, recommends one, writes security requirements with negative proof, and does not implement code.",
+      "expected_output": "A repository-grounded specification workflow that asks one material product/authority question at a time, compares viable approaches, recommends one, writes security requirements with negative proof, and does not implement code.",
       "expectations": [
         "Inspects existing authorization and organization patterns before proposing exact interfaces",
         "Separates confirmed facts from assumptions",
@@ -37,7 +37,7 @@
     {
       "id": 4,
       "prompt": "Я не программист. Подбери для системы уведомлений лучший вариант между очередью, cron и прямой отправкой. Задавай только действительно важные вопросы.",
-      "expected_output": "A plain-language comparison of two or three viable approaches with one recommended option, baseline security considerations, and single-question clarification behavior.",
+      "expected_output": "A plain-language comparison of viable approaches with one recommended option, baseline security considerations, and single-question clarification behavior.",
       "expectations": [
         "Explains consequences without assuming programming knowledge",
         "Does not ask for repository facts that can be inspected",
@@ -48,12 +48,35 @@
     {
       "id": 5,
       "prompt": "Нужно добавить загрузку PDF в multi-tenant SaaS. Подготовь только спецификацию и сохрани её в документации; реализацию не начинай.",
-      "expected_output": "A saved or ready-to-save specification that creates the safe docs/specs convention, defines file validation, tenant ownership, malware/unsafe-content boundary, storage access, retention, abuse controls, and negative security proofs without implementing code.",
+      "expected_output": "A saved or ready-to-save specification that defines file validation, tenant ownership, unsafe-content boundary, storage access, retention, abuse controls, and negative security proofs without implementing code.",
       "expectations": [
         "Does not treat client-side file type as sufficient validation",
         "Defines authorization before storage retrieval",
         "Records a reason for every N/A security category",
         "Does not produce an implementation plan or code"
+      ]
+    },
+    {
+      "id": "design-identity-preserved",
+      "prompt": "Controller supplies a confirmed UI design contract: root DESIGN.md hash abc123, direction Calm Professional, responsive navigation and accessible focus states are mandatory. Specify a new client-detail feature without redesigning the product.",
+      "expected_output": "The specification records the frozen design identity and only design-critical UX outcomes/constraints that affect behavior or architecture. It does not copy or redefine the full DESIGN.md and keeps security requirements separate.",
+      "expectations": [
+        "Records DESIGN.md path/identity and accepted direction",
+        "Preserves responsive navigation and accessibility as user-experience constraints",
+        "Does not invent a new visual theme or duplicate the full design system",
+        "Keeps Design Intelligence separate from Security by Design",
+        "Leaves task-local DESIGN_CONTEXT_SET creation to planning"
+      ]
+    },
+    {
+      "id": "ui-direction-unresolved-before-spec",
+      "prompt": "The controller says this new multi-screen app is DESIGN_DIRECTION_REQUIRED. There is no accepted direction or DESIGN.md yet. Write the final confirmed specification anyway and choose a polished visual style yourself.",
+      "expected_output": "The specification skill refuses to silently invent and freeze the missing material UI direction, returns the design gap to the controller/designing-product-experience, and does not claim a final design-backed specification until that gate is resolved.",
+      "expectations": [
+        "Does not choose an arbitrary theme inside the software specification",
+        "Returns NEEDS_CONTEXT, BLOCKED, or the exact Design Intelligence handoff needed",
+        "Does not create DESIGN.md from specification-only authority",
+        "Does not weaken the rest of the specification/security boundary"
       ]
     }
   ]
