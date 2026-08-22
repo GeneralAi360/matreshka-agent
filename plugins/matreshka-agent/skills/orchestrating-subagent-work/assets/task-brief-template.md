@@ -10,6 +10,7 @@
 - Primary area: `{{AREA_ID}}`
 - Adjacent areas required for correctness: {{AREA_IDS_OR_NONE}}
 - Cross-area interface contracts: {{IC_IDS_AND_HASHES_OR_NONE}}
+- Area context package: `AREA_CONTEXT_SET`
 - Context guarantee: `{{NARROW_DEGRADED_CONTEXT_TOO_BROAD}}`
 - Included context sources: {{MINIMAL_AREA_CONTEXT_SOURCES}}
 - Explicitly excluded areas/sources: {{EXCLUDED_UNRELATED_CONTEXT}}
