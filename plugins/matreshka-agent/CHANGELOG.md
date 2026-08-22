@@ -4,7 +4,7 @@ All notable changes to Matreshka Agent are recorded here.
 
 ## Unreleased — 0.5 development track
 
-> Versioned plugin manifests intentionally remain `0.4.0` until native/release gates pass. The development branch already contains the 0.5 feature scope.
+> Development status: `IMPLEMENTED_PENDING_NATIVE_VALIDATION`. Versioned plugin manifests intentionally remain `0.4.0` until native/release gates pass. The development branch already contains the 0.5 feature scope.
 
 ### Added
 
