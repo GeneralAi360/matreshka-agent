@@ -13,7 +13,7 @@ This skill supports three evidence axes with different inputs/purposes:
 2. **Visual design verification** — when UI-bearing work and Design Intelligence apply, proves observable rendered/layout/state claims against the frozen design identity using scoped design context plus trustworthy rendering/browser evidence when available. It is part of normal verification, not G4.
 3. **Blind brief acceptance (G4)** — optional later Build End-to-End mode. It starts in a fresh context after normal verification is sufficient, receives the source brief plus actual result, and is intentionally denied the specification/manifest/plan/reports/design interpretation so it can detect requirements lost during translation.
 
-Never merge G4 with technical/design inputs. A checker that sees the specification or `DESIGN.md` during blind acceptance inherits those interpretations and is no longer blind.
+G4 must not consume specification, manifest, plan/tasks, Project/Design Intelligence interpretation, implementation/review/verification reports, progress/dashboard, or completion claims. Never merge G4 with technical/design inputs. A checker that sees the specification or `DESIGN.md` during blind acceptance inherits those interpretations and is no longer blind.
 
 ## Define what must be proved
 
