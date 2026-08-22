@@ -120,6 +120,47 @@ Do not:
 
 A failing E2E command is current technical evidence, not an instruction to repair from the verifier role.
 
+## Layered-control open-state verification
+
+For UI work, a closed screenshot is not enough to prove a select/menu/popover/dropdown/dialog/date-picker/combobox. When a layered control is affected or materially visible in the accepted design, browser verification should exercise its open/expanded state.
+
+Representative checks:
+
+```text
+LAYERED_CONTROL_CHECK
+control: <select|menu|combobox|date-picker|popover|dialog|sheet|other>
+trigger_state: PASS | FAIL | UNCHECKABLE
+open_state: PASS | FAIL | UNCHECKABLE
+keyboard: PASS | FAIL | UNCHECKABLE
+focus_return: PASS | FAIL | UNCHECKABLE
+viewport_collision: PASS | FAIL | UNCHECKABLE
+portal_z_index: PASS | FAIL | UNCHECKABLE
+scroll_long_content: PASS | FAIL | NOT_APPLICABLE | UNCHECKABLE
+mobile_touch: PASS | FAIL | NOT_APPLICABLE | UNCHECKABLE
+visual_language: PASS | FAIL | UNCHECKABLE
+evidence: <safe refs>
+```
+
+When applicable, verify:
+
+- open surface visually belongs to the frozen design identity;
+- width/min-width/wrapping are intentional;
+- surface does not clip at viewport/container edges;
+- portal/z-index does not place it behind unrelated content;
+- selected/hover/focus states are readable;
+- keyboard arrows/typeahead/tab/enter/escape work as appropriate;
+- focus returns after close when expected;
+- mobile/touch target and scrolling behavior are usable;
+- reduced-motion/theme state remains coherent.
+
+A native platform `<select>` may intentionally use platform UI. If the frozen design contract expects a custom art-directed primitive and the open native system popup visibly breaks that contract, record design evidence as FAIL rather than approving from the trigger alone.
+
+A control that looks interactive but cannot be operated is a failure. Do not preserve dead prototype behavior into production.
+
+## Product-locale visual evidence
+
+When product UI language/locale is part of the design contract, browser/visual evidence should use the resolved product copy rather than framework/example English. Check materially relevant wrapping, dates/numbers, labels, form widths and truncation. Matreshka's dashboard/test chrome may use the conversation language; that is separate from product copy.
+
 ## Destructive E2E firewall
 
 Before a browser command/global setup may reset, truncate, recreate, migrate, seed, or otherwise mutate data, prove and record:
