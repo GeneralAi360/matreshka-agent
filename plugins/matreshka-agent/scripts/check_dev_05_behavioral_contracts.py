@@ -24,6 +24,11 @@ REQUIRED_CASES = {
         "dropdown-open-state-quality",
         "prototype-write-requires-run-state",
     },
+    "skills/designing-product-experience/evals/preselection-evals.json": {
+        "prototype-preselection-blocks-known-bad-set",
+        "prototype-preselection-repairs-before-choice",
+        "prototype-preselection-uncheckable-render",
+    },
     "skills/implementing-with-tests/evals/evals.json": {
         "ui-task-preserves-area-interface-design",
         "implementation-detects-design-contract-change",
@@ -92,7 +97,10 @@ STATIC_MARKERS = {
         "Resolve product UI locale first",
         "Run-state before prototype writes",
         "Layered/open control fidelity",
-        "Anti-slop verification before user choice",
+        "PROTOTYPE_PRESELECTION_GATE",
+        "Dead-control rule",
+        "Internal repair loop",
+        "generate -> user choice -> audit later",
     ),
     "skills/designing-product-experience/assets/design-contract-template.md": (
         "Product UI locale",
@@ -106,6 +114,14 @@ STATIC_MARKERS = {
         "PRODUCT_UI_LOCALE",
         "Never infer `PRODUCT_UI_LOCALE`",
         "before comparison prototypes",
+    ),
+    "skills/orchestrating-subagent-work/references/design-intelligence.md": (
+        "Mandatory prototype preselection gate",
+        "PROTOTYPE_PRESELECTION_GATE",
+        "DIRECTION GENERATION",
+        "BOUNDED PROTOTYPE REPAIR",
+        "DESIGN_PROTOTYPE_BLOCKED",
+        "static parseability",
     ),
     "skills/reviewing-agent-work/references/review-checklist.md": (
         "Design, anti-slop, and interaction craft",
@@ -229,6 +245,7 @@ def main() -> int:
     print("- specification preserves/blocks on design identity")
     print("- Design Intelligence separates product UI locale from conversation language")
     print("- prototype/design flow enforces anti-slop, open-state controls and pre-write run state")
+    print("- prototype user-choice handoff requires PROTOTYPE_PRESELECTION_GATE and bounded repair")
     print("- implementation preserves area/IC/design context and stops on design identity change")
     print("- independent review detects design drift/slop/open-state defects and refuses fabricated visual confidence")
     print("- verification separates E2E, layered-control/open-state evidence, visual design, and G4 contamination")
