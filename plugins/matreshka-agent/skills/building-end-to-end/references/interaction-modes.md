@@ -14,6 +14,29 @@ Default to `ASSISTED`.
 
 These are the canonical public names. Do not show `AUTONOMOUS_LOCAL` as an interaction-mode label to ordinary users.
 
+## Conversation language vs product UI language
+
+Matreshka's user-facing narration/dashboard language and the product's interface language are separate dimensions.
+
+Use:
+
+```text
+CONVERSATION_LANGUAGE = language used to talk to the user and explain the run
+PRODUCT_UI_LOCALE = language/locale used by the product interface itself
+```
+
+Rules:
+
+1. Never infer `PRODUCT_UI_LOCALE` only because the conversation is in that language.
+2. Reuse an established existing product locale/content convention when repository evidence is clear and the requested change does not challenge it.
+3. In `INTERVIEW` or `ASSISTED`, if a new UI needs meaningful product copy and `PRODUCT_UI_LOCALE` is not explicit or established, ask one material language question before comparison prototypes or production UI copy are authored.
+4. Do not silently default a new product to English because examples/framework defaults are English.
+5. In `FULL_AUTO`, prefer an established repository locale. A brand-new product with no locale evidence may use only an explicitly recorded provisional reversible assumption; it must not become invisible product truth.
+6. Product prototype copy follows `PRODUCT_UI_LOCALE`; test chrome, Matreshka status labels and explanations may follow `CONVERSATION_LANGUAGE`.
+7. Pass the resolved locale/assumption into source decisions/design context so specification, design, implementation and visual verification use the same product language.
+
+Language choice is material when it changes actual interface copy, terminology, layout/wrapping, date/number formatting, accessibility labels or acceptance. Do not ask it for backend-only work with no user-visible text.
+
 ## Compatibility aliases
 
 For compatibility with older Matreshka prompts only:
@@ -67,6 +90,7 @@ The interview is not a fixed questionnaire. Ask one question at a time and stop 
 Ask only questions whose answers materially affect at least one of:
 
 - user-visible behavior or acceptance;
+- product UI language/locale when user-visible copy is required;
 - business rules or actors;
 - data ownership or lifecycle;
 - security/privacy boundary;
@@ -75,6 +99,12 @@ Ask only questions whose answers materially affect at least one of:
 - scope inclusion/exclusion.
 
 Recommend a default with the question when a safe recommendation is possible. Inspect repository facts instead of asking for them. Do not manufacture questions to reach a target count.
+
+## ASSISTED behavior
+
+Ask only material unknowns that cannot be safely resolved by inspection/current decisions. A new product's interface language is one of those material unknowns when real UI copy/prototypes are about to be authored and no locale evidence exists.
+
+If the user says they do not know the visual style, prefer bounded visual exploration after the product UI locale and other acceptance-critical facts are resolved rather than a long taste questionnaire.
 
 ## FULL_AUTO behavior
 
