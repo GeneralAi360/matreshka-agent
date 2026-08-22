@@ -22,6 +22,7 @@ Return `REVIEW_BLOCKED` when missing information could materially change the dec
 - Check boundary inputs, outputs, error states, defaults, and compatibility.
 - Look for behavior that passes the focused example but violates the broader contract.
 - Confirm non-goals remain untouched.
+- For user-facing work, confirm product copy uses the resolved product UI locale/terminology rather than silently inheriting framework/example English.
 
 ### Security and isolation
 
@@ -72,6 +73,8 @@ For balances, credits, promo redemption, inventory, withdrawals, one-time grants
 
 Sequential-only tests are insufficient for a concurrency invariant.
 
+Ordinary local CRUD/settings persistence is not automatically `S-ATOMIC-EFFECT`. Use ordinary correctness/transaction testing unless concurrent/replayed execution can multiply money/value, consume a one-time right, oversell inventory, duplicate a grant/payment/redemption, or create another materially irreversible/multiplicative effect.
+
 #### `S-BAAS-AUTHZ`
 
 For browser/mobile-addressable Supabase/Firebase/Appwrite/equivalent data/storage:
@@ -104,6 +107,36 @@ Provider billing alerts alone are not an application abuse boundary.
 - Check migration ordering, compatibility window, rollback assumptions, and existing data.
 - Check persistence ownership and cross-tenant uniqueness.
 
+### Design, anti-slop, and interaction craft
+
+For UI work, review the frozen design identity, task-local `DESIGN_CONTEXT_SET`, and applicable rules from `designing-product-experience/references/anti-slop.md`.
+
+- Confirm the UI keeps a product-specific signature and has not collapsed into a reusable generic AI dashboard/editorial/component-kit template.
+- Challenge generic cream/beige editorial, cool blue-charcoal SaaS dark, UI-kit gray/purple, blue-purple/candy gradients, repeated rounded stat cards, pill-everything, kicker + oversized headline stacks, trendy-font swaps, generic all-around shadows/glows, or other familiar defaults when no product-specific rationale exists.
+- "Clean", "modern", or "premium" is not proof of a distinct direction.
+- Check content-visible-by-default: no text/control can remain missing because an entrance animation/observer/JS reveal failed.
+- Check clipping, edge gutters, centering, contrast, mobile overflow, comparison alignment, focus visibility, and controls that look interactive but are dead.
+
+#### Select / dropdown / menu / popover open-state review
+
+Closed trigger state is not enough. For every affected layered primitive that matters to the task, inspect the open/expanded state:
+
+- select/dropdown/menu/combobox/date picker/popover/tooltip/context menu/dialog/sheet;
+- trigger-to-surface visual coherence;
+- intended width/min-width and wrapping;
+- viewport collision/flip behavior;
+- portal/z-index layering and clipping;
+- scrolling for long content;
+- selected/hover/focus/active states;
+- keyboard arrows/typeahead/tab/enter/escape as applicable;
+- focus return after close;
+- touch/mobile behavior;
+- theme/reduced-motion behavior.
+
+A native `<select>` is acceptable when native platform appearance is a deliberate product choice. If the surrounding interface is custom-art-directed and the open system popup visibly breaks the design language, raise a design consistency finding rather than approving from the closed field alone.
+
+A control that looks interactive but does not work is a blocking craft/correctness defect, not a style preference.
+
 ### Tests and evidence
 
 - Confirm RED failed for the intended missing behavior.
@@ -112,11 +145,12 @@ Provider billing alerts alone are not an application abuse boundary.
 - Reject assertions tied only to private implementation details unless required.
 - Identify skipped acceptance criteria and contradictory evidence.
 - For selected security families, confirm the negative proof actually attacks the invariant: enumeration/abuse, active upload/path, concurrent duplicate effect, cross-tenant BaaS read/write, or quota/global-budget bypass as applicable.
+- For layered UI controls, closed-state screenshots alone cannot prove the component; require open-state browser/interaction evidence when appearance/behavior is acceptance-relevant.
 
 ### Maintainability and user impact
 
 - Check repository patterns, public naming, error messages, accessibility, and observability only where relevant.
-- Raise complexity only when it creates a concrete correctness, security, or support risk.
+- Raise complexity only when it creates a concrete correctness, security, design, or support risk.
 
 ## Assign severity consistently
 
@@ -126,11 +160,11 @@ Use when progression could cause unauthorized access, cross-tenant exposure, sec
 
 ### Important
 
-Use when the task fails an acceptance criterion, introduces a likely regression, violates a public contract, lacks necessary error handling, or leaves a material security/test gap. State the user-visible or operational consequence.
+Use when the task fails an acceptance criterion, introduces a likely regression, violates a public/frozen design contract, lacks necessary error handling, leaves a material security/test gap, materially violates applicable anti-slop/craft invariants, or ships a broken layered/open-state control. State the user-visible or operational consequence.
 
 ### Minor
 
-Use for a concrete improvement that is safe to defer and does not violate acceptance criteria. Do not block approval for Minor-only findings; list them separately.
+Use for a concrete improvement that is safe to defer and does not violate acceptance/security/design criteria. Do not block approval for Minor-only findings; list them separately.
 
 ## Require finding quality
 
@@ -145,4 +179,4 @@ Reject a proposed finding when it lacks a demonstrable location, impact, or rela
 
 ## Re-review narrowly
 
-For each confirmed finding, inspect the original location, fix diff, covering test, and one nearest regression when relevant. Preserve the original severity unless new evidence changes the impact. Do not turn re-review into a fresh whole-diff review.
+For each confirmed finding, inspect the original location, fix diff, covering test/evidence, and one nearest regression when relevant. Preserve the original severity unless new evidence changes the impact. For UI/open-state findings, re-check the exact rendered state that failed. Do not turn re-review into a fresh whole-diff review.
