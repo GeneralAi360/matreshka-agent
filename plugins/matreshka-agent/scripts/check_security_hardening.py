@@ -31,6 +31,7 @@ REQUIRED_EVAL_IDS = {
     "security-file-execution-verify",
     "security-atomic-effect-implementation",
     "security-atomic-effect-review",
+    "security-atomic-effect-ordinary-crud-na",
     "security-baas-authz-spec",
     "security-baas-authz-verify",
     "security-paid-api-budget-spec",
@@ -196,7 +197,7 @@ def main() -> int:
     print("Matreshka security hardening: PASS")
     print("- S-AUTH-HARDENING: auto-selected for password/privileged auth")
     print("- S-FILE-EXECUTION: upload storage cannot become executable code")
-    print("- S-ATOMIC-EFFECT: concurrent/replay value effects require atomic proof")
+    print("- S-ATOMIC-EFFECT: concurrent/replay value effects require atomic proof without over-triggering ordinary CRUD")
     print("- S-BAAS-AUTHZ: client-addressable BaaS requires provider-side policies")
     print("- S-PAID-API-BUDGET: metered APIs require per-caller + global guardrails")
     print("- all selected families flow through normal S- implementation/review/verification")
