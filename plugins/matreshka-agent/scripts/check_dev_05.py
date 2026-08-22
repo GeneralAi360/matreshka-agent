@@ -65,6 +65,7 @@ PLUGIN_REQUIRED_FILES = (
     "skills/designing-product-experience/references/design-core.md",
     "skills/designing-product-experience/references/design-intelligence.md",
     "skills/designing-product-experience/references/prototype-exploration.md",
+    "skills/designing-product-experience/references/anti-slop.md",
     "skills/designing-product-experience/assets/design-contract-template.md",
     "skills/designing-product-experience/evals/evals.json",
     "skills/designing-product-experience/evals/trigger-evals.json",
@@ -102,6 +103,8 @@ PLUGIN_REQUIRED_FILES = (
     "scripts/doctor_dev_05.py",
 )
 
+# NOTE: this map intentionally contains stable semantic marker strings instead of
+# line numbers, so small wording/layout changes do not disable the contract gate.
 PLUGIN_MARKERS = {
     "README.md": (
         "Design Intelligence Layer",
@@ -145,6 +148,9 @@ PLUGIN_MARKERS = {
         "DESIGN_CHANGED",
         "DESIGN_DRIFT",
         "DESIGN_CONTEXT_SET",
+        "PRODUCT_UI_LOCALE",
+        "anti-slop",
+        "open/expanded state",
         "DESIGN.md",
         "Apple-inspired",
     ),
@@ -174,18 +180,30 @@ PLUGIN_MARKERS = {
         "Default to **3** directions",
         "Real divergence",
         "Prototype isolation",
+        "PRODUCT_UI_LOCALE",
+        "anti-slop",
+        "Layered/open control fidelity",
+        "run ledger/state",
         "Picker behavior",
         "Promotion",
     ),
+    "skills/designing-product-experience/references/anti-slop.md": (
+        "Product-specific point of view",
+        "Product UI language",
+        "Dropdown / select / popover quality gate",
+        "Content visible by default",
+        "Prototype anti-slop pass",
+        "Final review",
+    ),
     "skills/designing-product-experience/assets/design-contract-template.md": (
         "# Product Design Contract",
-        "Product personality",
-        "UX principles",
-        "Typography",
-        "Components and primitives",
-        "Accessibility",
-        "Motion system",
-        "Design invariants",
+        "Product UI locale",
+        "Product personality and signature",
+        "Product language and localization",
+        "Select/Menu/Popover",
+        "Open/expanded layered-control states",
+        "Product copy follows the resolved `PRODUCT_UI_LOCALE`",
+        "Anti-slop reminder",
         "Apple-inspired core reminder",
     ),
     "skills/specifying-software-work/SKILL.md": (
@@ -450,58 +468,23 @@ PLUGIN_MARKERS = {
         "s.design",
     ),
     "skills/building-end-to-end/assets/dashboard-state-template.js": (
-        '"timing"',
-        '"usage"',
         '"intelligence"',
         '"design"',
-        '"tests"',
-        '"browser"',
         '"designDocWrite"',
         '"prototypeWrite"',
-    ),
-    "codex-prompts/matreshka-design.md": (
-        'argument-hint: "[TASK]"',
-        "$$matreshka-agent:designing-product-experience",
-        "$ARGUMENTS",
-        "DESIGN.md",
-        "Purpose",
-        "Delight",
-    ),
-    "scripts/validate_dev_05.py": (
-        "designing-product-experience",
-        "matreshka-design.md",
-        "validate_package.py",
-    ),
-    "scripts/doctor_dev_05.py": (
-        "designing-product-experience",
-        "matreshka-design.md",
-        "doctor.py",
+        '"browser"',
     ),
 }
-
-JSON_FILES = (
-    "skills/building-end-to-end/evals/evals.json",
-    "skills/building-end-to-end/evals/trigger-evals.json",
-    "skills/designing-product-experience/evals/evals.json",
-    "skills/designing-product-experience/evals/trigger-evals.json",
-    "skills/orchestrating-subagent-work/evals/evals.json",
-    "skills/orchestrating-subagent-work/evals/trigger-evals.json",
-    "skills/orchestrating-subagent-work/evals/project-intelligence-evals.json",
-    "skills/planning-software-work/evals/evals.json",
-    "skills/verifying-development-work/evals/evals.json",
-    "evals/package-validation.json",
-    "evals/workflow-evals.json",
-)
 
 MARKETPLACE_REQUIRED_FILES = (
     "README.md",
     ".github/workflows/package-validation.yml",
     "docs/specs/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-spec.md",
     "docs/plans/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-plan.md",
-    "docs/specs/2026-08-20-matreshka-agent-0.5-browser-e2e-spec.md",
-    "docs/plans/2026-08-20-matreshka-agent-0.5-browser-e2e-plan.md",
     "docs/specs/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-spec.md",
     "docs/plans/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-plan.md",
+    "docs/specs/2026-08-20-matreshka-agent-0.5-browser-e2e-spec.md",
+    "docs/plans/2026-08-20-matreshka-agent-0.5-browser-e2e-plan.md",
     "docs/specs/2026-08-20-matreshka-agent-0.5-design-intelligence-spec.md",
     "docs/plans/2026-08-20-matreshka-agent-0.5-design-intelligence-plan.md",
 )
@@ -509,12 +492,14 @@ MARKETPLACE_REQUIRED_FILES = (
 MARKETPLACE_MARKERS = {
     "README.md": (
         "0.5 development track",
-        "FULL_AUTO",
+        "Source Intent Traceability",
         "Project Intelligence Layer",
         "Design Intelligence Layer",
-        "Browser E2E + Browser G4",
-        "Одиннадцать bundled skills",
         "Apple-inspired design core",
+        "DESIGN.md",
+        "Browser E2E",
+        "Visual Design Check",
+        "Одиннадцать bundled skills",
         "validate_dev_05.py",
         "check_dev_05.py",
         "doctor_dev_05.py",
@@ -522,57 +507,76 @@ MARKETPLACE_MARKERS = {
     ".github/workflows/package-validation.yml": (
         "validate_dev_05.py",
         "check_dev_05.py",
+        "check_dev_05_behavioral_contracts.py",
         "doctor_dev_05.py",
         "python-version: '3.11'",
     ),
-    "docs/plans/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-plan.md": (
-        "IMPLEMENTED_PENDING_NATIVE_RELEASE_VALIDATION",
-        "T5",
-        "STATIC_HARDENING_IMPLEMENTED",
+    "docs/specs/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-spec.md": (
+        "SOURCE_BRIEF",
+        "U-",
+        "G2",
+        "G3",
+        "G4",
     ),
-    "docs/plans/2026-08-20-matreshka-agent-0.5-browser-e2e-plan.md": (
-        "IMPLEMENTED_PENDING_NATIVE_VALIDATION",
-        "B1",
-        "B7",
-        "B8",
-        "PENDING_NATIVE",
+    "docs/plans/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-plan.md": (
+        "Task 1",
+        "Task 8",
+        "G4",
+    ),
+    "docs/specs/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-spec.md": (
+        "PROJECT_TOPOLOGY",
+        "AREA_CONTEXT_SET",
+        "CROSS_AREA_INTERFACE_CONTRACT",
+        "RUNTIME_MAP",
+        "DOCUMENTATION_DRIFT_GATE",
+        "SPECIALIST_ROLE_ROUTING",
     ),
     "docs/plans/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-plan.md": (
-        "IMPLEMENTED_PENDING_NATIVE_VALIDATION",
         "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
         "P6",
-        "P7",
-        "P8",
+    ),
+    "docs/specs/2026-08-20-matreshka-agent-0.5-browser-e2e-spec.md": (
+        "PLAYWRIGHT_MANAGED",
+        "CHROME_CDP",
+        "HOST_BROWSER_TOOL",
+        "Browser G4",
+        "Destructive",
+    ),
+    "docs/plans/2026-08-20-matreshka-agent-0.5-browser-e2e-plan.md": (
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
     ),
     "docs/specs/2026-08-20-matreshka-agent-0.5-design-intelligence-spec.md": (
-        "DESIGN INTELLIGENCE",
-        "D1",
-        "D8",
         "DESIGN.md",
         "Apple-inspired",
-        "designing-product-experience",
+        "DESIGN_CONTEXT_SET",
+        "VISUAL_DESIGN_CHECK",
+        "DESIGN_DRIFT",
     ),
     "docs/plans/2026-08-20-matreshka-agent-0.5-design-intelligence-plan.md": (
-        "IMPLEMENTED_PENDING_NATIVE_VALIDATION",
         "D1",
+        "D5",
         "D9",
         "D10",
-        "PENDING_NATIVE",
-        "DESIGN.md",
-        "Apple-inspired",
     ),
 }
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Check Matreshka Agent 0.5 development-track integrity."
+        description="Check Matreshka Agent 0.5 development wiring."
     )
     parser.add_argument(
         "plugin_path",
         nargs="?",
         default=str(Path(__file__).resolve().parent.parent),
-        help="Plugin root; defaults to the parent of this scripts directory.",
     )
     parser.add_argument(
         "--marketplace-root",
@@ -595,65 +599,50 @@ def read(path: Path, failures: list[str]) -> str:
         return ""
 
 
-def require_files(
-    root: Path, files: tuple[str, ...], prefix: str, failures: list[str]
-) -> None:
-    for relative in files:
-        if not (root / relative).is_file():
-            failures.append(f"MISSING {prefix}{relative}")
+def require_files(root: Path, relatives: tuple[str, ...], label: str, failures: list[str]) -> None:
+    for relative in relatives:
+        path = root / relative
+        if not path.is_file():
+            failures.append(f"MISSING {label}{relative}")
 
 
-def require_markers(
-    root: Path,
-    mapping: dict[str, tuple[str, ...]],
-    prefix: str,
-    failures: list[str],
-) -> None:
+def require_markers(root: Path, mapping: dict[str, tuple[str, ...]], label: str, failures: list[str]) -> None:
     for relative, markers in mapping.items():
         text = read(root / relative, failures)
+        if not text:
+            continue
+        folded = text.casefold()
         for marker in markers:
-            if marker.casefold() not in text.casefold():
-                failures.append(f"MARKER {prefix}{relative}: missing {marker!r}")
+            if marker.casefold() not in folded:
+                failures.append(f"MARKER {label}{relative}: missing {marker!r}")
 
 
 def check_inventory(plugin_root: Path, failures: list[str]) -> None:
     skills_root = plugin_root / "skills"
-    actual_skills = {
-        path.name
-        for path in skills_root.iterdir()
-        if path.is_dir() and not path.name.startswith(".")
-    }
+    actual_skills = {p.name for p in skills_root.iterdir() if p.is_dir() and (p / "SKILL.md").is_file()}
     if actual_skills != EXPECTED_SKILLS:
         missing = sorted(EXPECTED_SKILLS - actual_skills)
         extra = sorted(actual_skills - EXPECTED_SKILLS)
-        failures.append(
-            "SKILL INVENTORY mismatch; "
-            f"missing={missing or 'none'}; extra={extra or 'none'}"
-        )
+        failures.append(f"SKILL inventory mismatch: missing={missing}, extra={extra}")
 
-    prompts_root = plugin_root / "codex-prompts"
-    actual_wrappers = {
-        path.name for path in prompts_root.glob("*.md") if path.name != "README.md"
-    }
+    wrapper_root = plugin_root / "codex-prompts"
+    actual_wrappers = {p.name for p in wrapper_root.glob("matreshka-*.md") if p.is_file()}
     if actual_wrappers != EXPECTED_CODEX_WRAPPERS:
         missing = sorted(EXPECTED_CODEX_WRAPPERS - actual_wrappers)
         extra = sorted(actual_wrappers - EXPECTED_CODEX_WRAPPERS)
-        failures.append(
-            "CODEX WRAPPER INVENTORY mismatch; "
-            f"missing={missing or 'none'}; extra={extra or 'none'}"
-        )
+        failures.append(f"CODEX wrapper inventory mismatch: missing={missing}, extra={extra}")
 
 
 def check_json_files(plugin_root: Path, failures: list[str]) -> None:
-    for relative in JSON_FILES:
-        text = read(plugin_root / relative, failures)
+    for path in plugin_root.rglob("*.json"):
+        text = read(path, failures)
         if not text:
             continue
         try:
             json.loads(text)
         except json.JSONDecodeError as exc:
             failures.append(
-                f"JSON plugin/{relative}: line {exc.lineno}, column {exc.colno}: {exc.msg}"
+                f"JSON plugin/{path.relative_to(plugin_root)}: line {exc.lineno}, column {exc.colno}: {exc.msg}"
             )
 
 
@@ -732,8 +721,8 @@ def check_design_intelligence_evals(plugin_root: Path, failures: list[str]) -> N
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
         cases = payload.get("evals", []) if isinstance(payload, dict) else []
-        if len(cases) < 18:
-            failures.append("Design Intelligence suite must contain at least 18 cases")
+        if len(cases) < 22:
+            failures.append("Design Intelligence suite must contain at least 22 cases")
         ids = {str(case.get("id")) for case in cases if isinstance(case, dict)}
         required = {
             "ui-project-missing-design-md",
@@ -754,6 +743,10 @@ def check_design_intelligence_evals(plugin_root: Path, failures: list[str]) -> N
             "visual-capability-unavailable",
             "stale-design-contract-conflict",
             "recovery-design-identity-changed",
+            "ui-locale-unresolved-assisted-prototype",
+            "anti-slop-generic-directions",
+            "dropdown-open-state-quality",
+            "prototype-write-requires-run-state",
         }
         missing = sorted(required - ids)
         if missing:
@@ -832,13 +825,13 @@ def main() -> int:
     print("- Build→Controller→Source/U/S/G1-G4: wired")
     print("- Project Intelligence P1-P6: controller→spec/plan→task→implement→review→verify→finish→recovery wired")
     print("- Design Intelligence D1-D9: controller→design→spec→plan→task→implement→review→visual verify→drift→finish/recovery wired")
-    print("- Apple-inspired design core is a required UX-quality contract, not a visual preset")
+    print("- Apple-inspired design core + anti-slop + product-locale + layered-control open-state contracts are required UX-quality gates")
     print("- Browser E2E, Visual Design Check and G4 remain independent evidence axes")
     print("- permission contract separates design-doc/prototype/visual authority")
     print("- implementation/review/verification reports carry interface/design identities and evidence boundaries")
     print("- Russian dashboard state↔HTML includes Project + Design Intelligence, timing/tokens and authority")
     print("- Project Intelligence adversarial coverage: 14 required cases present")
-    print("- Design Intelligence adversarial coverage: 18 required cases present")
+    print("- Design Intelligence adversarial coverage: 22 required cases present")
     print("- plans/READMEs/CHANGELOG/CI development-track markers: synchronized")
     print("Native host behavior is intentionally outside this static check.")
     return 0
