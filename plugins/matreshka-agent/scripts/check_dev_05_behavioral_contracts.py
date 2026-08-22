@@ -100,7 +100,7 @@ STATIC_MARKERS = {
         "PROTOTYPE_PRESELECTION_GATE",
         "Dead-control rule",
         "Internal repair loop",
-        "generate -> user choice -> audit later",
+        "AUDIT LATER",
     ),
     "skills/designing-product-experience/assets/design-contract-template.md": (
         "Product UI locale",
