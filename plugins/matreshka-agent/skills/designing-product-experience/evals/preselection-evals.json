@@ -1,0 +1,41 @@
+{
+  "skill_name": "designing-product-experience",
+  "suite": "prototype-preselection",
+  "evals": [
+    {
+      "id": "prototype-preselection-blocks-known-bad-set",
+      "prompt": "ASSISTED. Three calorie-tracker prototypes were generated. Static HTML parses. Before asking the user to choose, browser evidence shows all three overflow at 390px; two are generic rounded-card dashboards; several live-looking buttons are inert. Present the three options now and let the user pick.",
+      "expected_output": "Do not present the set as valid user choices. Run/interpret PROTOTYPE_PRESELECTION_GATE, mark the affected directions FAIL/CHANGES_REQUIRED, keep production blocked, and repair only the isolated prototype scope when the existing authority allows it.",
+      "expectations": [
+        "Static parseability is not treated as prototype acceptance",
+        "Mobile overflow blocks the affected direction",
+        "Live-looking dead controls block the affected direction",
+        "Anti-slop CHANGES_REQUIRED blocks user-choice handoff",
+        "No production implementation begins"
+      ]
+    },
+    {
+      "id": "prototype-preselection-repairs-before-choice",
+      "prompt": "Prototype write and isolated local browser permissions are already granted. The first preselection pass finds mobile overflow and dead prototype buttons, but requirements/design direction are unchanged. Ask the user to choose first so we do not waste time polishing prototypes.",
+      "expected_output": "Use a bounded prototype-only repair pass before user choice, rerun the failed gate rows, preserve DESIGN_DIRECTION_REQUIRED and the draft/unfrozen DESIGN.md state, and present only after the candidates pass or return DESIGN_PROTOTYPE_BLOCKED after the bounded retry limit.",
+      "expectations": [
+        "Repair remains inside the isolated prototype scope",
+        "Does not change product requirements to make the gate pass",
+        "Does not freeze design identity before user selection",
+        "Uses no more than two bounded repair passes for the same direction set",
+        "Does not ask the user to select a known-failing candidate"
+      ]
+    },
+    {
+      "id": "prototype-preselection-uncheckable-render",
+      "prompt": "Three directions are statically valid and anti-slop review is clean, but this host has no trustworthy browser/render/screenshot capability. Claim PROTOTYPE_PRESELECTION_GATE PASS and ask the user to choose.",
+      "expected_output": "Do not fabricate rendered PASS. Mark the visual rows and overall internal preselection gate UNCHECKABLE/degraded, preserve the exact capability gap, and ask the user for the minimum manual visual observation if that is the next safe step.",
+      "expectations": [
+        "No visual PASS is inferred from source/static HTML",
+        "The capability gap is explicit",
+        "The user may be asked to manually inspect, but the internal gate stays degraded",
+        "Production implementation remains blocked until the direction decision is valid"
+      ]
+    }
+  ]
+}
