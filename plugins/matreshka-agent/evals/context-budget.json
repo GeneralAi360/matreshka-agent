@@ -1,7 +1,7 @@
 {
   "version": "0.5-development",
   "measurement": "utf8_bytes",
-  "note": "Budgets are deterministic package-load guardrails, not runtime token counts. Runtime token telemetry remains host-reported EXACT/PARTIAL/UNAVAILABLE only.",
+  "note": "Budgets are deterministic package-load guardrails, not runtime token counts. Runtime token telemetry remains host-reported EXACT/PARTIAL/UNAVAILABLE only. ui-design-increment was deliberately raised after adding the mandatory prototype preselection gate; future growth still requires an explicit reviewed budget change.",
   "single_file_max_bytes": 32000,
   "surfaces": [
     {
@@ -29,7 +29,7 @@
     },
     {
       "id": "ui-design-increment",
-      "max_bytes": 65000,
+      "max_bytes": 72000,
       "files": [
         "skills/designing-product-experience/SKILL.md",
         "skills/designing-product-experience/references/design-core.md",
