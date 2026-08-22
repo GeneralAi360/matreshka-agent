@@ -2,7 +2,7 @@
 
 Use this reference whenever the current run changes or creates a material user-facing interface. It connects `designing-product-experience` to the existing Matreshka controller without turning design state into permission or adding an unconditional workflow phase.
 
-Read the source-qualified design skill's [design core](../../designing-product-experience/references/design-core.md), [design intelligence contract](../../designing-product-experience/references/design-intelligence.md), and [prototype exploration contract](../../designing-product-experience/references/prototype-exploration.md) when applicable.
+Read the source-qualified design skill's [design core](../../designing-product-experience/references/design-core.md), [anti-slop law](../../designing-product-experience/references/anti-slop.md), [design intelligence contract](../../designing-product-experience/references/design-intelligence.md), and [prototype exploration contract](../../designing-product-experience/references/prototype-exploration.md) when applicable.
 
 ## Lifecycle placement
 
@@ -12,7 +12,7 @@ Design Intelligence is integrated into existing controller states:
 PREFLIGHT
   -> classify design relevance/recon
 SPECIFICATION
-  -> resolve design direction + root DESIGN.md before spec is considered complete when UI direction is material
+  -> resolve product UI locale + design direction + root DESIGN.md before spec is considered complete when UI direction is material
 PLAN
   -> DESIGN_CONTEXT_SET + design identity per UI task
 IMPLEMENT
@@ -38,9 +38,10 @@ During read-only preflight:
 1. decide if current outcome is UI/design relevant;
 2. inspect root `DESIGN.md` if present;
 3. inspect current token/component/layout/motion/accessibility sources needed for the run;
-4. classify `DESIGN_NOT_APPLICABLE`, `DESIGN_CURRENT`, `DESIGN_RECON_REQUIRED`, `DESIGN_DIRECTION_REQUIRED`, or `DESIGN_BLOCKED`;
-5. record whether durable `DESIGN.md` write authority exists or must be requested with other project-document writes;
-6. record browser/visual capability separately from design relevance.
+4. resolve or explicitly mark `PRODUCT_UI_LOCALE` when user-facing copy is material; conversation language is not product UI truth;
+5. classify `DESIGN_NOT_APPLICABLE`, `DESIGN_CURRENT`, `DESIGN_RECON_REQUIRED`, `DESIGN_DIRECTION_REQUIRED`, or `DESIGN_BLOCKED`;
+6. record whether durable `DESIGN.md` write authority exists or must be requested with other project-document writes;
+7. record prototype-write and browser/visual capabilities separately from design relevance.
 
 A website/app does not automatically require redesign. Existing projects should preserve accepted current design unless the user requests/approves change.
 
@@ -52,11 +53,46 @@ Use `matreshka-agent:designing-product-experience` (or source-verified equivalen
 
 For a new UI-bearing project or an existing UI project with no root `DESIGN.md`:
 
-- create root `DESIGN.md` when its exact path is authorized;
+- an authorized draft root `DESIGN.md` may preserve shared invariants while direction remains unresolved, but it must be explicitly draft, have no selected direction, and have no frozen identity;
 - otherwise preserve the complete contract as `DESIGN_READY_TO_SAVE` and treat missing persistence as an explicit limitation;
 - do not create duplicate design constitutions.
 
 When user taste is unresolved, bounded prototype exploration may occur inside the specification phase before the final design direction is frozen.
+
+### Mandatory prototype preselection gate
+
+The controller must not ask the user to choose from browser-renderable directions merely because prototype files exist or static HTML sanity passed.
+
+For `INTERVIEW`/`ASSISTED`, use the source-qualified prototype contract and require this order:
+
+```text
+DIRECTION GENERATION
+-> STATIC SANITY
+-> RENDER / INTERACTION EVIDENCE
+-> ANTI-SLOP REVIEW
+-> BOUNDED PROTOTYPE REPAIR WHEN NEEDED
+-> RECHECK
+-> PROTOTYPE_PRESELECTION_GATE
+-> USER CHOICE
+```
+
+Do not use `generate -> user choice -> audit later`.
+
+Before emitting the design-choice question, the controller must have one `PROTOTYPE_PRESELECTION_GATE` result per candidate with at least:
+
+- resolved product UI locale;
+- desktop render and representative mobile render when browser capability is available/authorized;
+- no material horizontal overflow, clipping, gutter, alignment or contrast defect;
+- no live-looking dead controls;
+- open/expanded evidence for materially present layered controls, or explicit `N/A`/`UNCHECKABLE`;
+- anti-slop `PASS` with a product-specific signature;
+- observable console/runtime state when capability exists.
+
+A candidate with `FAIL`/`CHANGES_REQUIRED` is **not** a valid user choice yet. If prototype writes and local browser actions are already authorized, let the design role repair only the isolated prototype surface and rerun the gate, with at most two bounded repair passes for the same direction set. If material defects remain, return `DESIGN_PROTOTYPE_BLOCKED`/the exact blocker instead of asking the user to choose among known-bad options.
+
+If rendering capability is genuinely unavailable, preserve `UNCHECKABLE` honestly and ask the user to perform the missing visual observation only if that is the smallest safe next step. Never turn static parseability into visual PASS.
+
+This preselection gate is design evidence only. It does not freeze `DESIGN.md`, prove production behavior, or authorize implementation.
 
 The specification may reference the design identity and user-experience requirements, but it must not duplicate the whole design contract.
 
@@ -126,7 +162,7 @@ When UI changed, the normal review phase must include design-contract review pro
 
 Balanced profile may assign these concerns to the same combined reviewer. Maximum-quality or design-critical work may use a design-specialist reviewer only inside the existing profile role/turn budget.
 
-Design review checks relevant UX flow/wayfinding, hierarchy, layout/spacing/density, typography, color/contrast/depth, component reuse/states, responsiveness/touch, accessibility, motion/performance and cross-screen consistency against the frozen design identity.
+Design review checks relevant UX flow/wayfinding, hierarchy, layout/spacing/density, typography, color/contrast/depth, component reuse/states, responsiveness/touch, accessibility, motion/performance, anti-slop/product-specificity, layered-control open states when present, and cross-screen consistency against the frozen design identity.
 
 A design reviewer is read-only and may not repair code or edit `DESIGN.md`.
 
