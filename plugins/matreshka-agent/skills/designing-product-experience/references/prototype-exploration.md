@@ -148,6 +148,15 @@ Each direction should be complete enough to judge the decision:
 
 Do not build an entire product to choose a navigation/card direction.
 
+### Dead-control rule
+
+A prototype may be intentionally partial, but it must never lie about interactivity.
+
+- Any element styled/semantically presented as an actionable button, link, toggle, tab, date control, select, menu trigger or editable control must perform the representative prototype interaction needed to judge it.
+- If the action is intentionally out of prototype scope, render it as clearly non-interactive explanatory chrome rather than a live-looking dead control.
+- `href="#"`, placeholder anchors, inert click handlers, controls that only suppress default behavior, or visual buttons with no representative response are `PROTOTYPE_DEAD_CONTROL` defects.
+- A direction with a material dead control cannot pass the preselection gate merely because layout comparison is the primary purpose.
+
 ### Layered/open control fidelity
 
 A select/menu/popover/dropdown is not judged only by its closed trigger.
@@ -175,27 +184,97 @@ Requirements:
 
 Do not compare postage-stamp screenshots side by side when scale, spacing or interaction matters.
 
+## Mandatory `PROTOTYPE_PRESELECTION_GATE`
+
+Generating directions is not enough. In `INTERVIEW`/`ASSISTED`, do **not** ask the user to choose among browser-renderable prototypes until the set has passed this gate or the exact visual capability is explicitly `UNCHECKABLE` and the user is being asked to perform the missing observation themselves.
+
+The order is normative:
+
+```text
+GENERATE DIRECTIONS
+-> STATIC SANITY
+-> RENDER / INTERACTION CHECK
+-> ANTI-SLOP CHECK
+-> REPAIR INSIDE PROTOTYPE SCOPE WHEN NEEDED
+-> RECHECK
+-> PROTOTYPE_PRESELECTION_GATE
+-> USER CHOICE
+```
+
+Never use:
+
+```text
+GENERATE DIRECTIONS
+-> USER CHOICE
+-> AUDIT LATER
+```
+
+### Required rows
+
+For every direction that will be shown as a valid choice, record:
+
+```text
+PROTOTYPE_PRESELECTION_GATE
+locale: PASS | FAIL
+render_desktop: PASS | FAIL | UNCHECKABLE
+render_mobile: PASS | FAIL | UNCHECKABLE
+compact_tablet: PASS | FAIL | N/A | UNCHECKABLE
+horizontal_overflow: PASS | FAIL | UNCHECKABLE
+clipping_gutters_alignment_contrast: PASS | FAIL | UNCHECKABLE
+focus_touch_basics: PASS | FAIL | UNCHECKABLE
+dead_controls: PASS | FAIL
+layered_controls: PASS | FAIL | N/A | UNCHECKABLE
+anti_slop: PASS | CHANGES_REQUIRED | UNCHECKABLE
+console_runtime: PASS | FAIL | UNCHECKABLE
+signature: <product-specific idea>
+evidence: <safe refs or exact capability gap>
+status: PASS | FAIL | UNCHECKABLE
+```
+
+When browser/render capability is available and authorized, desktop plus a representative mobile viewport around the product's supported narrow width are mandatory before presenting. Check compact/tablet when it materially changes the composition.
+
+### PASS rule
+
+A direction may be presented as an approved candidate only when:
+
+- locale is resolved and applied;
+- available required render rows pass;
+- no material horizontal overflow/clipping/gutter/contrast/alignment defect remains;
+- no live-looking dead control remains;
+- materially present layered controls have acceptable open-state evidence;
+- anti-slop review is `PASS` with a credible product-specific signature;
+- no observable console/runtime defect undermines the prototype.
+
+`static HTML parses`, `links exist`, or `looks fine closed` are not substitutes for these rows.
+
+### Internal repair loop
+
+If prototype writes and required local render/interaction actions are already authorized, a failed candidate should normally be repaired **before** user handoff rather than presented as a choice.
+
+- Keep repair strictly inside the isolated prototype scope.
+- Do not change product requirements, security boundaries or user-authority facts to make a prototype pass.
+- Do not start production implementation.
+- Use at most two bounded prototype repair passes for the same direction set. If material defects remain after the second pass, return `DESIGN_PROTOTYPE_BLOCKED` or ask one exact user/controller question rather than looping indefinitely.
+- Preserve concise evidence of the failed rows and the recheck result in run-owned design evidence when authorized.
+
+If browser capability is unavailable, do not fabricate `PASS`. Return `UNCHECKABLE` with the exact missing observation. The user may still manually inspect the prototype, but the controller must label that the internal preselection gate is degraded.
+
 ## Anti-slop verification before user choice
 
-Before presenting:
+The `anti_slop` row of the preselection gate must verify:
 
-- every direction renders;
-- differentiating interactions work;
-- no obvious console/runtime error in the prototype path when observable;
 - product copy uses resolved `PRODUCT_UI_LOCALE`;
 - direction axes are still genuinely distinct;
 - each direction names a product-specific signature;
 - known generic AI layout/palette/component defaults were challenged rather than accepted automatically;
-- key open states for layered controls were checked when materially present;
 - content remains visible without entrance-animation completion;
-- no obvious clipping, contrast, centering, edge-gutter, horizontal-overflow, focus, dead-control, or overlay-layering defect remains;
 - none violates confirmed security/source-intent/accessibility constraints merely to look different.
 
-If a direction still reads primarily as a reusable cream editorial template, cool-blue SaaS dashboard, gray/purple component-kit dashboard, or other generic composition without product-specific reason, redesign it before presenting.
-
-When browser evidence is available, capture at most one representative screenshot per direction unless more is required to explain a responsive/interaction/open-state difference.
+If a direction still reads primarily as a reusable cream editorial template, cool-blue SaaS dashboard, gray/purple component-kit dashboard, generic rounded-card grid, or other generic composition without product-specific reason, redesign it before presenting.
 
 ## Handoff to user
+
+Present only candidates that satisfy `PROTOTYPE_PRESELECTION_GATE=PASS`, or explicitly label an `UNCHECKABLE` capability gap that the user must observe manually. Do not list a failed direction beside passing ones as if all were valid choices.
 
 Present one compact table:
 
@@ -207,7 +286,7 @@ Present one compact table:
 
 Do not silently select a winner in `INTERVIEW`/`ASSISTED` when the user is explicitly comparing directions. If asked for a recommendation, give one grounded in product personality/frequency, but keep the choice explicit.
 
-In `FULL_AUTO`, the controller may choose a restrained direction only when the decision is reversible and not a missing brand/business truth. Record the selected direction and rationale.
+In `FULL_AUTO`, the controller may choose a restrained direction only when the decision is reversible and not a missing brand/business truth. The chosen direction still needs the same preselection gate before it is frozen as production design truth when rendering capability is available.
 
 ## Promotion
 
