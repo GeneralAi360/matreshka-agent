@@ -59,9 +59,20 @@ Negative proof must include representative spoofing/traversal/active-content cas
 
 ### `S-ATOMIC-EFFECT` — race-sensitive value changes happen at most as intended
 
-Trigger for balances, credits, withdrawals, promo/coupon redemption, inventory decrement, one-time grants, entitlement changes, payment effects, or any operation where concurrent/replayed requests could multiply value or irreversible effect.
+Trigger for balances, credits, withdrawals, promo/coupon redemption, inventory decrement, one-time grants, entitlement changes, payment effects, or another operation where concurrent/replayed requests can **multiply money/value, consume a one-time right more than once, oversell a scarce quantity, or create another materially irreversible/multiplicative effect**.
 
-Require one repository/data-store appropriate atomicity mechanism, such as:
+Do **not** select this family merely because a product uses SQLite/Postgres or because ordinary CRUD/settings writes should be transactionally consistent. Normal create/edit/delete, profile/settings persistence, ordinary form saves, and a local user's editable daily target remain normal correctness/persistence concerns unless the specification identifies a real multiplicative/one-time race invariant.
+
+Examples normally `N/A` for this family:
+
+- create/edit/delete a calorie log entry;
+- save a user's ordinary preference or daily goal;
+- update non-scarce descriptive metadata;
+- CRUD where duplicate requests may be undesirable but do not grant value, consume a one-time right, oversell scarcity, or cause an irreversible external effect.
+
+Those operations still need ordinary transaction/error/retry correctness where appropriate; `N/A` for `S-ATOMIC-EFFECT` does not mean "ignore database consistency".
+
+When triggered, require one repository/data-store appropriate atomicity mechanism, such as:
 
 - transaction + row/key lock;
 - compare-and-set / optimistic concurrency with retry policy;
@@ -69,7 +80,7 @@ Require one repository/data-store appropriate atomicity mechanism, such as:
 - idempotency/operation key tied to the authoritative effect;
 - another mechanism with equivalent proof.
 
-Do not mandate row locks when the actual data store uses a different correct primitive. The invariant is that concurrent/replayed requests cannot create more effects than the specification allows.
+Do not mandate row locks when the actual data store uses a different correct primitive. The invariant is that concurrent/replayed requests cannot create more protected effects than the specification allows.
 
 Negative proof must exercise duplicate/replay **and concurrent** attempts. A single sequential unit test is not sufficient evidence for a race-sensitive invariant.
 
@@ -131,7 +142,7 @@ Negative proof must show that one caller cannot exceed its quota via retries/con
 
 - Put price, entitlement, payment-provider verification, confirmation, idempotency, and refunds/rollback on the server.
 - Define reconciliation, failure/retry, authorization, and human handoff rules.
-- Apply `S-ATOMIC-EFFECT` when concurrent/replayed operations can multiply value/effect.
+- Apply `S-ATOMIC-EFFECT` when concurrent/replayed operations can multiply value/effect or consume a one-time/scarce right more than once.
 
 ### AI, RAG, agents, MCP, or tool use
 
@@ -145,10 +156,11 @@ Negative proof must show that one caller cannot exceed its quota via retries/con
 - Define network exposure, encryption in transit, least-privilege identities, private database/cache access, backup/restore verification, patching, monitoring, and incident ownership.
 - For containers, specify non-root execution, immutable/pinned base images, and minimal runtime permissions.
 - For browser/mobile-accessible BaaS, apply `S-BAAS-AUTHZ` automatically.
+- Do not infer `S-ATOMIC-EFFECT` from the mere presence of a database; identify the protected race-sensitive effect first.
 
 ## Threat model for high-risk work
 
-For high-risk paths, document assets, actors, authority source, entry points, trust boundaries, abuse cases, controls, detection, recovery, and residual risk. At minimum consider broken access control, credential stuffing/enumeration, injection, secret exposure, unsafe file execution, insecure BaaS policy, supply-chain risk, replay/race conditions, paid-API/cost abuse, data leakage, and denial/abuse.
+For high-risk paths, document assets, actors, authority source, entry points, trust boundaries, abuse cases, controls, detection, recovery, and residual risk. At minimum consider broken access control, credential stuffing/enumeration, injection, secret exposure, unsafe file execution, insecure BaaS policy, supply-chain risk, replay/race conditions where a protected effect exists, paid-API/cost abuse, data leakage, and denial/abuse.
 
 Give each selected control an `S-` requirement ID and connect it to a negative proof. A control without a verification path is not an acceptance criterion.
 
