@@ -33,6 +33,7 @@
       "files": [
         "skills/designing-product-experience/SKILL.md",
         "skills/designing-product-experience/references/design-core.md",
+        "skills/designing-product-experience/references/anti-slop.md",
         "skills/designing-product-experience/references/design-intelligence.md",
         "skills/designing-product-experience/references/prototype-exploration.md",
         "skills/orchestrating-subagent-work/references/design-intelligence.md"
