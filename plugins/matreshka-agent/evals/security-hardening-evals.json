@@ -73,6 +73,18 @@
       ]
     },
     {
+      "id": "security-atomic-effect-ordinary-crud-na",
+      "target_skill": "specifying-software-work",
+      "prompt": "Local single-user calorie tracker uses SQLite. It can create/edit/delete food log entries and save an editable daily calorie goal. There are no payments, credits, promo codes, inventory, one-time grants, entitlements, external side effects, or scarce resources. Classify the five automatic security families.",
+      "expected_output": "S-ATOMIC-EFFECT is N/A with a concrete reason because this is ordinary local CRUD/settings persistence without a multiplicative/one-time value effect. Normal transaction/error/retry correctness may still be specified separately.",
+      "expectations": [
+        "Does not mark S-ATOMIC-EFFECT REQUIRED merely because SQLite is present",
+        "Distinguishes ordinary persistence correctness from security-family race protection",
+        "Keeps S-ATOMIC-EFFECT available if later scope adds a real value/scarcity/one-time effect",
+        "Records N/A(reason) rather than silently omitting the family"
+      ]
+    },
+    {
       "id": "security-baas-authz-spec",
       "target_skill": "specifying-software-work",
       "prompt": "Build a Supabase-backed client app where the browser uses the normal public anon key and reads profiles, orders, and storage directly. The user did not mention RLS.",
