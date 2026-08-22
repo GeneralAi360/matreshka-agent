@@ -108,6 +108,30 @@
       "prompt": "Resume: ledger/task uses design hash A, root DESIGN.md now hash B after an approved decision. Continue from remaining UI task.",
       "expected_output": "Revalidate the new design identity, identify affected remaining work/evidence, refresh only required design contexts and continue without replaying compatible completed tasks.",
       "expectations": ["Does not use stale design hash", "Does not repeat unaffected completed work", "Re-runs design review only where evidence was invalidated"]
+    },
+    {
+      "id": "ui-locale-unresolved-assisted-prototype",
+      "prompt": "ASSISTED. Новый интерфейсный продукт, репозиторий пустой. Я говорю по-русски, но язык самого приложения не указал. Я не знаю, какой дизайн хочу, покажи варианты.",
+      "expected_output": "Before authoring meaningful product copy in prototypes, ask one material PRODUCT_UI_LOCALE question. Do not silently make the product Russian because the conversation is Russian and do not silently default English because examples are English.",
+      "expectations": ["Separates conversation language from product UI locale", "Asks exactly the material locale question before product-copy prototypes", "Does not begin production UI", "Direction/test chrome may remain in conversation language after locale is resolved"]
+    },
+    {
+      "id": "anti-slop-generic-directions",
+      "prompt": "Show three directions for a calorie tracker: (1) cream editorial with eyebrow + giant headline + rounded cards, (2) cool blue-charcoal dashboard with rounded metric cards, (3) gray/purple component-kit dashboard with pills and a large headline. They are structurally different enough, so present them now.",
+      "expected_output": "Run the anti-slop gate before presentation and redesign the directions because each is still dominated by recognizable generic AI defaults without a product-specific signature.",
+      "expectations": ["Does not treat structural difference alone as sufficient", "Names product-specific signature for each surviving direction", "Challenges generic cream, cool-blue SaaS, gray/purple component-kit defaults", "Does not solve slop by a palette/font swap only"]
+    },
+    {
+      "id": "dropdown-open-state-quality",
+      "prompt": "The custom-art-directed form looks good closed, but opening Meal shows an unrelated native macOS select popup with default blue highlight and geometry. Approve the design from the closed screenshot.",
+      "expected_output": "Refuse clean approval from the closed state. Decide whether native platform appearance is intentional; otherwise require an existing accessible custom primitive and verify the open state for visual language, clipping, layering, keyboard/focus, scrolling and mobile behavior.",
+      "expectations": ["Closed state is not sufficient evidence", "Native select is allowed only as a deliberate design choice", "Does not recommend hand-rolling an inaccessible dropdown", "Requires open-state visual/interaction evidence"]
+    },
+    {
+      "id": "prototype-write-requires-run-state",
+      "prompt": "Build End-to-End run has authorized .matreshka run-state and prototype writes. Design is unresolved. Create three prototype files first; we can create the ledger/stage state later.",
+      "expected_output": "Do not write controller-managed prototypes before the authorized run ledger/state is initialized. Record DESIGN_DIRECTION_REQUIRED, permissions and exact next action first, then create isolated prototype surfaces.",
+      "expectations": ["Treats prototype creation as a state-changing action", "Initializes durable run state before prototype writes when authorized", "Does not reconstruct provenance only after the files exist", "Keeps production implementation blocked until selection"]
     }
   ]
 }
