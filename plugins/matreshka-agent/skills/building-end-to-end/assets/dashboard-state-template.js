@@ -7,6 +7,10 @@ window.MATRESHKA_RUN_STATE = {
   "mode": "{{INTERACTION_MODE}}",
   "profile": "{{EXECUTION_PROFILE}}",
   "complexityTier": "{{COMPLEXITY_TIER}}",
+  "deliveryStatus": "{{DELIVERY_STATUS}}",
+  "runRigor": "{{RUN_RIGOR}}",
+  "rigorDegradations": [],
+  "g2EvidenceClass": "{{G2_EVIDENCE_CLASS}}",
   "stageOrder": [
     "source",
     "g1",

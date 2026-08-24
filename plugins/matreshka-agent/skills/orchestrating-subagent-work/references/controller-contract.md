@@ -212,6 +212,18 @@ Before specification completion, every material U row has a truthful status. Nev
 
 Before `PLAN`, fresh read-only checker gets source brief + candidate spec only; prohibit manifest/conversation/plan/tasks/Project or Design Intelligence interpretations/reports. Missing/half-covered/material unsourced scope returns to `SPECIFICATION`.
 
+Record the result and independence class separately:
+
+- `CLEAN_FRESH_NATIVE` — clean coverage from a host-native fresh checker;
+- `CLEAN_FRESH_EXTERNAL` — clean coverage from an explicitly separate external fresh checker;
+- `CLEAN_DEGRADED_INLINE` — clean coverage obtained inline while fresh independence was unavailable;
+- `GAP` — `MISSING`, `HALF_COVERED`, or `UNSOURCED` material coverage;
+- `BLOCKED` — no meaningful coverage result.
+
+`CLEAN_DEGRADED_INLINE` remains degraded forever for that historical pre-PLAN
+gate. Later G4, implementation, review, verification, design/docs, or finish
+evidence cannot promote it. A post-hoc G2 audit is labeled audit evidence only.
+
 ### G3 — requirement/task traceability
 
 Before writes:
@@ -284,6 +296,17 @@ A finding needs location, violated requirement/contract, evidence, and minimal c
 | `PARTIALLY_VERIFIED` | material technical/security/browser/design/intent/docs evidence unresolved |
 | `HANDOFF_REQUIRED` | another authorized environment/operator must act |
 | `COMPLETE` | all acceptance/security/interface/runtime/browser/design/docs/applicable G4 gates have fresh evidence |
+
+### Delivery and process-rigor semantics
+
+Keep final product delivery separate from process independence. A run may report
+`DELIVERY_STATUS=COMPLETE` when all applicable delivery gates above are supported,
+while reporting `RUN_RIGOR=DEGRADED` when an applicable fresh-context or other
+capability guarantee was not met. `RUN_RIGOR=FULL` requires every applicable
+independence guarantee for the selected mode, profile, and host contract.
+
+Every degraded terminal handoff records `RIGOR_DEGRADATIONS`, for example
+`G2_INDEPENDENCE`. COMPLETE must never imply `RUN_RIGOR=FULL`.
 
 ## Interrupted-turn / recovery policy
 

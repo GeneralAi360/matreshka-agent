@@ -48,6 +48,16 @@ Keep these dimensions independent:
 8. Project Intelligence state;
 9. Design Intelligence state/identity;
 10. browser/visual verification capability.
+11. delivery status versus process-rigor status.
+
+For a terminal local run, record both `DELIVERY_STATUS` and `RUN_RIGOR`.
+`DELIVERY_STATUS=COMPLETE` means the applicable product/source, security,
+interface, runtime, browser, design, documentation, and G4 delivery gates are
+supported by evidence. `RUN_RIGOR=FULL` is allowed only when every applicable
+independence/capability guarantee required by the selected mode, profile, and
+host contract was actually met. If delivery is complete but an applicable
+guarantee was degraded, keep `DELIVERY_STATUS=COMPLETE`, set
+`RUN_RIGOR=DEGRADED`, and list `RIGOR_DEGRADATIONS` explicitly.
 
 For Build End-to-End default missing public mode to `ASSISTED`. Normalize legacy public `GUIDED`→`INTERVIEW` and legacy public wording `AUTONOMOUS_LOCAL`→`FULL_AUTO` only for compatibility; internal controller autonomy remains separate.
 
@@ -86,7 +96,7 @@ Design is part of the engineering workflow, not post-hoc polish.
 ## Specify and plan before writing
 
 1. Apply `specifying-software-work` for raw/ambiguous/architectural/risky work using relevant `U-`, current topology/interfaces, and the accepted design outcome when UI is material.
-2. Before `PLAN`, run G2 fresh brief→spec coverage. Checker gets exactly source brief + candidate specification and is prohibited from manifest/conversation/plan/tasks/Project/Design Intelligence interpretations/reports when reachable.
+2. Before `PLAN`, run G2 fresh brief→spec coverage. Checker gets exactly source brief + candidate specification and is prohibited from manifest/conversation/plan/tasks/Project/Design Intelligence interpretations/reports when reachable. Record `CLEAN_FRESH_NATIVE`, `CLEAN_FRESH_EXTERNAL`, `CLEAN_DEGRADED_INLINE`, `GAP`, or `BLOCKED`; later gates never rewrite the original G2 evidence class.
 3. Apply `planning-software-work` only after specification is confirmed/delegated. Pass affected area IDs, topology/runtime facts, durable interface definitions, current design identity, and only required design sections.
 4. Require spec + plan + coverage matrix + complexity tier + quality gate + affected areas + task-local routing before product writes.
 5. For drift-prone producer/consumer seams create/freeze one controller-owned `IC-xx` before dependent writer dispatch.
@@ -161,7 +171,7 @@ Resolve every chained skill by Matreshka package identity.
    - `DESIGN_CONFLICT` — current UI, contract, or accepted decision sources disagree materially;
    - `DESIGN_BLOCKED` — required check/update cannot be completed inside authority/capability.
 8. After design state is resolved, run Project Intelligence `DOCUMENTATION_DRIFT_GATE`: `DOCS_NOT_REQUIRED`, `DOCS_CURRENT`, `DOCS_UPDATE_REQUIRED`, `DOCS_BLOCKED`, or `DOCS_CONFLICT`. Docs follow verified behavior and never make failed behavior pass.
-9. Claim `COMPLETE` only when fresh technical/security evidence, required interface/runtime/browser evidence, applicable design review/visual verification, resolved design drift, resolved documentation drift, and applicable G4 all support delivery. Otherwise use `PARTIALLY_VERIFIED`, `BLOCKED`, `STOP_AND_RESCOPE`, or `HANDOFF_REQUIRED`.
+9. Claim delivery `COMPLETE` only when fresh technical/security evidence, required interface/runtime/browser evidence, applicable design review/visual verification, resolved design drift, resolved documentation drift, and applicable G4 all support delivery. Then derive `RUN_RIGOR=FULL` or `DEGRADED` independently from capability evidence; never use delivery completion to erase a degraded G2/reviewer/fresh-context guarantee. Otherwise use `PARTIALLY_VERIFIED`, `BLOCKED`, `STOP_AND_RESCOPE`, or `HANDOFF_REQUIRED`.
 10. Apply `finishing-development-work` only for exact already-authorized Git/remote/local handoff actions. Pass current Project + Design Intelligence, design identity/drift, IC/runtime/browser/docs state, metrics, and preserved dirty state.
 
 On user stop, launch no new work; preserve safe partial state and exact restart instruction.

@@ -75,6 +75,9 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 - Internal controller autonomy: `{{MANAGED_LOCAL_EXTENDED}}`
 - Effective permissions: {{EFFECTIVE_PERMISSION_SUMMARY}}
 - Current stage gate: `{{GATE}}`
+- Delivery status: `{{COMPLETE_PARTIALLY_VERIFIED_BLOCKED_HANDOFF_REQUIRED_OR_OTHER}}`
+- Run rigor: `{{FULL_DEGRADED}}`
+- Rigor degradations: `{{RIGOR_DEGRADATIONS_OR_NONE}}`
 - Decision-map state: `{{NOT_REQUIRED_REQUIRED_READY_OR_BLOCKED}}`
 - Delegated decisions: {{DELEGATED_DECISIONS_OR_NONE}}
 - Assumption count: {{ASSUMPTION_COUNT}}
@@ -91,6 +94,8 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 - User-intent counts: {{U_OPEN_IN_SPEC_IN_TASK_IMPLEMENTED_VERIFIED_PLACEHOLDER_DEFERRED_DROPPED}}
 - G1 clarification completeness: `{{PASS_BLOCKED_PENDING_NOT_APPLICABLE}}`
 - G2 brief-to-spec coverage: `{{PASS_BLOCKED_PENDING_NOT_APPLICABLE}}`
+- G2 evidence class: `{{CLEAN_FRESH_NATIVE_CLEAN_FRESH_EXTERNAL_CLEAN_DEGRADED_INLINE_GAP_BLOCKED}}`
+- G2 gate identity/sequence: `{{PRE_PLAN_GATE_IDENTITY_AND_POSTHOC_AUDIT_NOTE_OR_NONE}}`
 - G2 report/evidence: {{G2_REPORT_OR_NONE}}
 - G3 requirement-task traceability: `{{PASS_BLOCKED_PENDING_NOT_APPLICABLE}}`
 - G3 report/evidence: {{G3_REPORT_OR_NONE}}

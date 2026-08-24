@@ -103,6 +103,25 @@ Do not ask this checker to improve architecture or review code. The controller a
 
 A required G2 gap blocks planning.
 
+### G2 evidence class and sequencing
+
+Keep the semantic coverage result separate from the independence guarantee. The
+controller records one canonical G2 evidence class:
+
+| Class | Meaning |
+| --- | --- |
+| `CLEAN_FRESH_NATIVE` | CLEAN brief-to-spec coverage from a host-native fresh checker context. |
+| `CLEAN_FRESH_EXTERNAL` | CLEAN brief-to-spec coverage from an explicitly separate external fresh-context checker. |
+| `CLEAN_DEGRADED_INLINE` | CLEAN coverage was obtained inline because the required fresh checker guarantee was unavailable; independence remains degraded. |
+| `GAP` | `MISSING`, `HALF_COVERED`, or `UNSOURCED` material coverage result. Planning remains blocked. |
+| `BLOCKED` | The required coverage check could not produce a meaningful result. Planning remains blocked. |
+
+`CLEAN_DEGRADED_INLINE` is not a fresh or independent PASS. Later implementation,
+review, technical verification, Browser E2E, G4, design reconciliation, docs
+reconciliation, or finish cannot promote its historical class. A later G2 audit
+may report current evidence, but it must preserve the original pre-PLAN gate
+identity and cannot retroactively establish pre-PLAN independence. A post-hoc G2 audit is audit evidence only.
+
 ## 5. G3 — requirement/task traceability
 
 Before the first product-code write dispatch:

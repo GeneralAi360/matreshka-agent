@@ -99,6 +99,7 @@ PLUGIN_REQUIRED_FILES = (
     "skills/orchestrating-subagent-work/evals/project-intelligence-evals.json",
     "codex-prompts/matreshka-design.md",
     "scripts/validate_dev_05.py",
+    "scripts/evaluate_g2_rigor.py",
     "scripts/doctor_dev_05.py",
 )
 
@@ -491,6 +492,7 @@ JSON_FILES = (
     "skills/verifying-development-work/evals/evals.json",
     "evals/package-validation.json",
     "evals/workflow-evals.json",
+    "evals/g2-rigor-evals.json",
 )
 
 MARKETPLACE_REQUIRED_FILES = (
@@ -781,6 +783,10 @@ def check_dashboard_contract(plugin_root: Path, failures: list[str]) -> None:
         "tests": "s.tests",
         "browser": "s.browser",
         "authority": "s.authority",
+        "deliveryStatus": "s.deliveryStatus",
+        "runRigor": "s.runRigor",
+        "g2EvidenceClass": "s.g2EvidenceClass",
+        "rigorDegradations": "rigorDegradations",
     }
     for state_key, html_marker in contract.items():
         if f'"{state_key}"' not in state_text or html_marker not in html_text:

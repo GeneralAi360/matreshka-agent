@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "suite": "g2-delivery-rigor-separation",
+  "purpose": "Targeted regression coverage for a clean but degraded inline G2 in a completed native run.",
+  "evals": [
+    {
+      "id": "g2-clean-inline-delivery-complete-rigor-degraded",
+      "category": "native-acceptance-regression",
+      "prompt": "A source-qualified Build End-to-End run performs clean brief-to-spec coverage inline because no native fresh checker is available. The controller stores CLEAN_DEGRADED_INLINE. Implementation, review, technical/security verification, Browser E2E, fresh external G4, design drift and documentation drift all pass.",
+      "expected_outcome": "The controller preserves CLEAN_DEGRADED_INLINE, reports DELIVERY_STATUS=COMPLETE when the applicable delivery gates are proven, derives RUN_RIGOR=DEGRADED with G2_INDEPENDENCE, and keeps the same distinction in finish/handoff and dashboard projections.",
+      "assertions": [
+        "G2 remains CLEAN_DEGRADED_INLINE",
+        "G4 PASS does not upgrade G2",
+        "DELIVERY_STATUS may be COMPLETE",
+        "RUN_RIGOR is DEGRADED, never FULL",
+        "RIGOR_DEGRADATIONS includes G2_INDEPENDENCE",
+        "dashboard and progress remain projections and cannot promote G2"
+      ]
+    },
+    {
+      "id": "g2-material-gap-blocks-plan",
+      "category": "negative-gate-regression",
+      "prompt": "A source-qualified Build End-to-End run produces MISSING, HALF_COVERED, or UNSOURCED material brief coverage during G2.",
+      "expected_outcome": "The controller stores G2=GAP and blocks PLAN. Later implementation, G4, documentation or finish claims cannot bypass the missing specification coverage.",
+      "assertions": [
+        "G2 is GAP",
+        "PLAN is blocked",
+        "No delivery COMPLETE is derived",
+        "No post-hoc G2 upgrade bypasses the pre-PLAN block"
+      ]
+    }
+  ]
+}

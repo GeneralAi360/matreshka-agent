@@ -127,6 +127,8 @@ Project only compact user-benefit fields:
 - security proof counts;
 - latest authoritative test counts;
 - technical verification and blind acceptance;
+- delivery status versus process rigor and explicit rigor degradations;
+- G2 evidence class without allowing a projection to upgrade the historical gate;
 - browser/E2E status when applicable;
 - Project Intelligence summary;
 - Design Intelligence summary;
@@ -156,6 +158,18 @@ intelligence.docsStatus
 intelligence.specialist
 intelligence.contextGuarantee
 ```
+
+Recommended completion object:
+
+```text
+deliveryStatus: COMPLETE | PARTIALLY_VERIFIED | BLOCKED | HANDOFF_REQUIRED | ...
+runRigor: FULL | DEGRADED
+rigorDegradations: [G2_INDEPENDENCE, ...]
+g2EvidenceClass: CLEAN_FRESH_NATIVE | CLEAN_FRESH_EXTERNAL | CLEAN_DEGRADED_INLINE | GAP | BLOCKED
+```
+
+The dashboard/progress may display these fields, but neither projection may
+promote `CLEAN_DEGRADED_INLINE`; remove a degradation; or derive `RUN_RIGOR=FULL`.
 
 Counts come from validated controller state. Runtime status is descriptive. Specialist labels add no authority/budget. Drift/conflict statuses stay visibly non-green.
 

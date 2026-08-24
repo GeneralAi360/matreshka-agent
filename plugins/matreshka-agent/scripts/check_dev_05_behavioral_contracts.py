@@ -14,6 +14,10 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 
 REQUIRED_CASES = {
+    "evals/g2-rigor-evals.json": {
+        "g2-clean-inline-delivery-complete-rigor-degraded",
+        "g2-material-gap-blocks-plan",
+    },
     "skills/specifying-software-work/evals/evals.json": {
         "design-identity-preserved",
         "ui-direction-unresolved-before-spec",
@@ -75,6 +79,7 @@ REQUIRED_CI_MARKERS = (
     "evaluate_native_repeatability.py",
     "check_autopilot_regressions.py",
     "doctor_dev_05.py",
+    "evaluate_g2_rigor.py",
     "python-version: '3.11'",
 )
 
@@ -140,6 +145,46 @@ STATIC_MARKERS = {
     ),
     "evals/context-budget.json": (
         "anti-slop.md",
+    ),
+    "skills/building-end-to-end/references/brief-traceability.md": (
+        "CLEAN_FRESH_NATIVE",
+        "CLEAN_FRESH_EXTERNAL",
+        "CLEAN_DEGRADED_INLINE",
+        "post-hoc G2 audit",
+    ),
+    "skills/orchestrating-subagent-work/SKILL.md": (
+        "DELIVERY_STATUS",
+        "RUN_RIGOR",
+        "RIGOR_DEGRADATIONS",
+        "later gates never rewrite the original G2 evidence class",
+    ),
+    "skills/orchestrating-subagent-work/references/controller-contract.md": (
+        "CLEAN_FRESH_NATIVE",
+        "CLEAN_DEGRADED_INLINE",
+        "Delivery and process-rigor semantics",
+        "COMPLETE must never imply `RUN_RIGOR=FULL`",
+    ),
+    "skills/orchestrating-subagent-work/assets/ledger-template.md": (
+        "Delivery status:",
+        "Run rigor:",
+        "Rigor degradations:",
+        "G2 evidence class:",
+    ),
+    "skills/finishing-development-work/assets/finish-handoff-template.md": (
+        "Delivery status:",
+        "Run rigor:",
+        "G2 historical sequence:",
+    ),
+    "skills/building-end-to-end/assets/progress-template.md": (
+        "Delivery status:",
+        "Run rigor:",
+        "G2 evidence class:",
+    ),
+    "skills/building-end-to-end/references/run-observability.md": (
+        "deliveryStatus",
+        "runRigor",
+        "g2EvidenceClass",
+        "neither projection may",
     ),
 }
 

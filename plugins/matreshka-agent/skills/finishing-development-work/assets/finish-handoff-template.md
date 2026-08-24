@@ -3,6 +3,9 @@
 ## Итоговый статус
 
 - Результат: `<FINISHED_LOCAL | FINISHED_COMMITTED | FINISHED_REMOTE | HANDOFF_REQUIRED | PARTIALLY_VERIFIED | BLOCKED>`
+- Delivery status: `<COMPLETE | PARTIALLY_VERIFIED | BLOCKED | HANDOFF_REQUIRED>`
+- Run rigor: `<FULL | DEGRADED>`
+- Rigor degradations: `<G2_INDEPENDENCE, REVIEW_INDEPENDENCE, ... или нет>`
 - Корень проекта: `<resolved root или NO_GIT_MODE>`
 - Базовое/текущее состояние: `<refs, commit или hashes>`
 - Проверенное состояние совпадает с текущим: `<да/нет + доказательство>`
@@ -51,6 +54,8 @@
 - Browser/E2E, если применимо: `<framework/mode, counts, evidence refs>`
 - Visual design verification, если применимо: `<design identity, viewports/states, verdict, evidence refs>`
 - G4 blind acceptance, если применимо: `<PASS/PARTIAL/FAIL/BLOCKED/HANDOFF_REQUIRED>`
+- G2 evidence class: `<CLEAN_FRESH_NATIVE | CLEAN_FRESH_EXTERNAL | CLEAN_DEGRADED_INLINE | GAP | BLOCKED>`
+- G2 historical sequence: `<pre-PLAN identity; post-hoc audit cannot upgrade it>`
 - Design drift gate: `<состояние>`
 - Documentation drift gate: `<DOCS_NOT_REQUIRED | DOCS_CURRENT | DOCS_UPDATE_REQUIRED | DOCS_BLOCKED | DOCS_CONFLICT>`
 - Ключевые свежие проверки: `<command/interaction / exit/signal / counts / note>`

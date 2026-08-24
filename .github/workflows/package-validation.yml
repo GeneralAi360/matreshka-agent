@@ -38,6 +38,10 @@ jobs:
           python3 -B plugins/matreshka-agent/scripts/check_dev_05_behavioral_contracts.py
           plugins/matreshka-agent
 
+      - name: Targeted G2 delivery-versus-rigor regression
+        run: >-
+          python3 -B plugins/matreshka-agent/scripts/evaluate_g2_rigor.py
+
       - name: Automatic Security-by-Design hardening families
         run: >-
           python3 -B plugins/matreshka-agent/scripts/check_security_hardening.py
