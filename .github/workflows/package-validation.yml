@@ -56,6 +56,10 @@ jobs:
           python3 -B plugins/matreshka-agent/scripts/check_context_budget.py
           plugins/matreshka-agent
 
+      - name: Context Optimizer peer bridge
+        run: >-
+          python3 -B plugins/matreshka-agent/scripts/check_context_optimizer_peer.py
+
       - name: Native repeatability matrix contract
         run: >-
           python3 -B plugins/matreshka-agent/scripts/evaluate_native_repeatability.py
