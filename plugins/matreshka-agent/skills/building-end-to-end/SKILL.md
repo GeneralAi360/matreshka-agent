@@ -72,6 +72,14 @@ Resolve launch scenario from repository evidence:
 
 Explicit scenario is a signal but repository evidence still checked. If conflict, report and resolve safely.
 
+Derive a non-authoritative `CONTEXT_OPTIMIZER_TRIGGER_HINT` for the controller:
+
+- `NEW_PROJECT` → `START_IF_BASELINE_MISSING`;
+- `EXISTING_PROJECT` → `ADOPT_IF_BASELINE_MISSING`;
+- `CONTINUE_PROJECT` → `RESUME_IF_STALE_OR_MISSING`.
+
+The hint never runs a process, installs a skill, or grants permission. The controller resolves the source-qualified peer skill and applies the trigger contract after read-only preflight.
+
 For `EXISTING_PROJECT`, perform bounded read-only orientation before specification. Do not redesign existing architecture **or existing visual language** merely because a greenfield alternative looks cleaner. If UI is material and root `DESIGN.md` is absent, Design Intelligence should reconstruct accepted current design truth first and create/prepare one canonical root contract rather than gratuitously rebranding the product.
 
 ### Determine whether design is material
@@ -156,6 +164,7 @@ Pass bounded structured handoff containing:
 - `SOURCE_DECISIONS`: later material user product/design decisions separately identified;
 - resolved launch scenario;
 - resolved public interaction mode;
+- `CONTEXT_OPTIMIZER_TRIGGER_HINT` derived from the resolved launch scenario;
 - confirmed product decisions;
 - delegated ordinary reversible decisions;
 - unresolved business/brand facts/placeholders;
@@ -171,6 +180,7 @@ Controller is responsible for:
 - mapping public `FULL_AUTO` to internal autonomy;
 - assigning `U-` requirement IDs;
 - Project Intelligence;
+- source-qualified Context Optimizer resolution and proportional `start`/`adopt`/`resume`/`check` invocation when applicable;
 - Design Intelligence and source-qualified `designing-product-experience` invocation when applicable;
 - creating/reconciling root `DESIGN.md` only with exact authority;
 - prototype/direction selection;

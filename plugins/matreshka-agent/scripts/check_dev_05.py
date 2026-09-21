@@ -796,10 +796,14 @@ def check_dashboard_contract(plugin_root: Path, failures: list[str]) -> None:
             )
 
     for marker in (
-        "Runtime context",
-        "Static instructions",
-        "bytes, не tokens",
-        "Dashboard не выдаёт разрешения на mutation",
+        "Состояние контекста",
+        "Текущий контекст",
+        "Статические инструкции",
+        "байты, не токены",
+        "Карта проекта",
+        "Причина проверки",
+        "Дашборд ничего не меняет сам",
+        'href="#context-optimization"',
     ):
         if marker not in html_text:
             failures.append(f"DASHBOARD context optimizer marker missing {marker!r}")
@@ -808,6 +812,8 @@ def check_dashboard_contract(plugin_root: Path, failures: list[str]) -> None:
         '"runtimeMeasurement"',
         '"staticContext"',
         '"unit": "bytes"',
+        '"projectMap"',
+        '"trigger"',
         '"approvalRequired"',
     ):
         if marker not in state_text:

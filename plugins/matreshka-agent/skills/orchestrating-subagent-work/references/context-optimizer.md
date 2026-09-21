@@ -1,55 +1,135 @@
-# Context Optimizer Bridge
+# Интеграция Context Optimizer
 
-Use this contract only when a source-qualified external **Matreshka Context Optimizer** result is available or when context pressure (`CONTEXT_TOO_BROAD`, repeated reads, oversized tool output) justifies running that separate skill.
+Используй этот контракт для вызова отдельного peer skill `$context-optimizer` и для проекции его компактного состояния в Matreshka Agent.
 
-Canonical external source: `GeneralAi360/Matreshk-context-optimizer` (repository may later be renamed to `Matreshka-context-optimizer`). Matreshka Agent consumes only the compact bridge object; it does **not** vendor or silently install the optimizer, CodeBurn, Caveman, or Graphify.
+## Источник
 
-## Projection only
+Канонический peer skill: `GeneralAi360/Matreshk-context-optimizer` (репозиторий может быть переименован позже). Matreshka не копирует runtime-код optimizer внутрь controller context и не устанавливает его молча.
 
-`contextOptimizer` is observability/advisory state. It cannot grant write/network/dependency/Git/browser authority, cannot change a task context guarantee, cannot mark verification PASS, and cannot authorize an optimizer `CHG-xxx`. Dashboard/ledger display remains projection only.
+## Обнаружение peer skill
+
+Предпочтительный порядок:
+
+1. `MATRESHKA_CONTEXT_OPTIMIZER_HOME`;
+2. project-local `.agents/skills/context-optimizer`;
+3. project-local `.claude/skills/context-optimizer`;
+4. project-local `.gemini/skills/context-optimizer`;
+5. package-local `skills/context-optimizer`;
+6. пользовательские skill directories;
+7. sibling development checkout.
+
+Нативный resolver:
+
+~~~bash
+python3 -B <plugin-root>/scripts/context_optimizer_peer.py --project <project-root>
+~~~
+
+Он не использует сеть, не устанавливает dependencies и не меняет Git.
+
+Если peer skill отсутствует: `contextOptimizer.status=UNAVAILABLE`, dashboard сообщает по-русски, а Matreshka продолжает работу без выдуманных данных.
+
+## Команды
+
+Matreshka вызывает тот же интерфейс, что и пользователь:
+
+~~~text
+start     — baseline нового проекта
+adopt     — первичный аудит готового проекта
+resume    — перепроверка после паузы
+check     — событийная проверка перегрузки
+status    — текущее состояние
+optimize  — план оптимизации без mutation
+~~~
+
+Через resolver:
+
+~~~bash
+python3 -B <plugin-root>/scripts/context_optimizer_peer.py \
+  --project <project-root> \
+  --execute \
+  --trigger-mode <mode> \
+  --trigger-reason "<причина>" \
+  --automatic \
+  <command>
+~~~
+
+`--execute` допустим только когда local-process authority уже существует. Если её нет, resolver возвращает `READY_TO_RUN` с точной командой; это не разрешение выполнить её.
+
+## Автоматический алгоритм
+
+### Новый проект
+
+После определения project root и первичной структуры, но до массового implementation fan-out:
+
+~~~text
+NEW_PROJECT + baseline отсутствует → start
+~~~
+
+### Готовый проект
+
+После bounded read-only orientation и до архитектурных/массовых изменений:
+
+~~~text
+EXISTING_PROJECT + baseline отсутствует → adopt
+~~~
+
+### Продолжение
+
+При восстановлении run:
+
+~~~text
+resume + (baseline отсутствует OR audit старше 24 ч) → resume
+~~~
+
+### Событие перегрузки
+
+`check` запускается только при evidence:
+
+- `CONTEXT_TOO_BROAD`;
+- 3+ повторных чтения одного файла;
+- 2+ compaction;
+- tool results >= 64 КБ и >= 35% отслеживаемого ingress;
+- рост static instructions >= 16 КБ;
+- изменился набор skills;
+- изменилась MCP/tool конфигурация;
+- структура проекта изменилась минимум на 100 файлов.
+
+Без нового evidence полный аудит не запускается. Не вызывать optimizer на каждом сообщении или каждом tool call.
 
 ## Compact state
 
 ~~~text
-contextOptimizer.status                 READY | DEGRADED | UNAVAILABLE
-contextOptimizer.health                 OK | WARNING | CRITICAL | UNKNOWN
-contextOptimizer.healthBasis            MEASURED | PARTIAL | STATIC_ONLY | UNKNOWN
-contextOptimizer.runtimeMeasurement.status
-contextOptimizer.runtimeMeasurement.value
-contextOptimizer.runtimeMeasurement.unit       tokens | unknown
-contextOptimizer.runtimeMeasurement.type
-contextOptimizer.runtimeMeasurement.source
-contextOptimizer.runtimeMeasurement.semantics CURRENT_CONTEXT | OBSERVED_SUBSET | UNKNOWN
-contextOptimizer.staticContext.value           exact bytes
-contextOptimizer.staticContext.unit            bytes
-contextOptimizer.staticContext.fileCount
+contextOptimizer.status
+contextOptimizer.health
+contextOptimizer.healthBasis
+contextOptimizer.runtimeMeasurement.*
+contextOptimizer.staticContext.*
 contextOptimizer.staticRisk
+contextOptimizer.projectMap.state
+contextOptimizer.projectMap.pressure
+contextOptimizer.projectMap.files
+contextOptimizer.projectMap.areas
 contextOptimizer.topFindings[]
 contextOptimizer.recommendations[]
-contextOptimizer.graphify.state
 contextOptimizer.ledger.pendingVerification
 contextOptimizer.ledger.rollbackRecommended
+contextOptimizer.trigger.mode
+contextOptimizer.trigger.reason
+contextOptimizer.trigger.automatic
 contextOptimizer.approvalRequired
 ~~~
 
-## Non-negotiable measurement rules
+## Инварианты
 
-1. Runtime tokens remain host/provider telemetry. `CURRENT_CONTEXT` may be displayed only when source semantics prove current context.
-2. Static instruction/package bytes are exact engineering measurements, **not token counts**.
-3. Estimated savings, Graphify size thresholds, or CodeBurn finding `tokensSaved` never become runtime token usage.
-4. `UNKNOWN` remains `UNKNOWN`; Matreshka must not infer a number from characters, bytes, time, turns, model family, or context-window size.
-5. Existing Matreshka `usage` counters remain authoritative for run token reporting. `contextOptimizer.runtimeMeasurement` is a separate context diagnostic and must not be added to `usage.totalTokens`.
+1. Runtime tokens и static bytes — разные измерения.
+2. `CURRENT_CONTEXT` показывается только при доказанной семантике.
+3. `UNKNOWN` не превращается в число из bytes, времени, turn count или context-window size.
+4. `contextOptimizer.runtimeMeasurement` не прибавляется к Matreshka `usage.totalTokens`.
+5. Bridge/dashboard — projection only; они не дают права на mutation.
+6. Raw telemetry и большие отчёты остаются вне always-on controller context.
+7. `approvalRequired=true` означает, что изменение ещё не разрешено.
+8. Pending verification не считается успешной оптимизацией.
 
-## Controller behavior
+## Dashboard
 
-- Record source identity/version/path when bridge data is ingested.
-- Keep only compact top findings/recommendations in run-state; raw optimizer reports stay outside the always-on controller context.
-- If `ledger.pendingVerification > 0`, surface it as optimizer work awaiting re-measure/quality verification; do not call it verified.
-- `rollbackRecommended > 0` is a recommendation, not permission to execute rollback.
-- `approvalRequired=true` means a proposed optimizer mutation still needs the same explicit authority/approval contract as any other mutation.
-- Graphify `RECOMMENDED`/`STALE` never authorizes dependency install/build/update.
-- On resume, stale bridge state is advisory until refreshed against current project/optimizer state.
-
-## When to consult
-
-Consult the external optimizer when evidence indicates context waste and doing so is proportionate: `CONTEXT_TOO_BROAD`, recurring broad file reads, tool-result dominance, repeated compaction, many global skills/MCPs, or a large unfamiliar repository. Do not invoke it mechanically on every task.
+Показывать отдельный раздел/навигационную вкладку **«Контекст»** с понятными русскими формулировками: состояние, измеренный runtime context, статические инструкции, карта проекта, главные проблемы, причина последней проверки, ожидающая проверка, откат и необходимость подтверждения.
