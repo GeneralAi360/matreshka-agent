@@ -17,6 +17,7 @@ Act as the controller. Retain ownership of scope, permissions, source-intent tra
 - Read [project-profile.md](references/project-profile.md) during preflight. It routes to [project-intelligence.md](references/project-intelligence.md) for topology, area context, interfaces, runtime, documentation drift, and specialist routing.
 - When UI/UX is material, read [the controller Design Intelligence bridge](references/design-intelligence.md) and use the source-qualified [`designing-product-experience`](../designing-product-experience/SKILL.md), its [Design Intelligence contract](../designing-product-experience/references/design-intelligence.md), and [Apple-inspired design core](../designing-product-experience/references/design-core.md).
 - Read [run-observability.md](../building-end-to-end/references/run-observability.md) only when creating/updating/resuming/explaining the optional local dashboard projection.
+- Read [context-optimizer.md](references/context-optimizer.md) only when a source-qualified optimizer bridge exists or evidenced context pressure makes an optimizer audit proportionate.
 - Read [platform-adapters.md](references/platform-adapters.md) only for the active host.
 - Read [worktree-isolation.md](references/worktree-isolation.md) before creating/cleaning task worktrees.
 - Read [learning-proposals.md](references/learning-proposals.md) only when directed learning is selected.
@@ -113,7 +114,7 @@ Update the ledger before every transition/dispatch with confirmed spec/plan, U/S
 
 Use `NO_GIT_MODE` when needed. Preserve hashes/baseline without copying secrets/private data.
 
-Progress and dashboard are human projections. When authorized, dashboard state should show Project Intelligence and a compact Design Intelligence block (`DESIGN.md`, identity, direction, prototype state, design review, visual check, design drift) plus truthful timing/token data. Dashboard never advances ledger, grants permission, or proves completion.
+Progress and dashboard are human projections. When authorized, dashboard state should show Project Intelligence, compact Design Intelligence, and—only when source-qualified data exists—a compact Context Optimizer block with runtime context and static bytes kept separate, plus truthful timing/token data. Dashboard never advances ledger, grants permission, authorizes optimizer mutation, or proves completion.
 
 A task brief remains narrow:
 
@@ -129,7 +130,7 @@ A task brief remains narrow:
 - task/integration/security/design evidence gates;
 - design/documentation impact candidates and stop conditions.
 
-Return `CONTEXT_TOO_BROAD` instead of sending whole source brief/plan/profile/topology/DESIGN history/prototype set/screenshots/branch diff.
+Return `CONTEXT_TOO_BROAD` instead of sending whole source brief/plan/profile/topology/DESIGN history/prototype set/screenshots/branch diff. When repeated broad reads/tool-output pressure is evidenced, the controller may consult the external Context Optimizer under its separate contract; doing so grants no new permission.
 
 ## Dispatch within selected profile
 

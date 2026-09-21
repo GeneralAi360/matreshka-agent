@@ -219,6 +219,19 @@ Runtime token counts remain host telemetry only:
 
 Never estimate runtime tokens from characters, byte budgets, time, message count or model family. Static context-budget tooling measures package bytes only and must not be displayed as runtime token usage.
 
+## Context Optimizer projection
+
+When a source-qualified external Context Optimizer bridge is available, project only its compact `contextOptimizer` object. Read the controller contract at `../orchestrating-subagent-work/references/context-optimizer.md` before ingesting or explaining it.
+
+Keep these dimensions separate:
+
+- `usage.*` — Matreshka run token telemetry from host counters;
+- `contextOptimizer.runtimeMeasurement` — current-context diagnostic only when its semantics explicitly say `CURRENT_CONTEXT`;
+- `contextOptimizer.staticContext.value` — exact instruction bytes, never runtime tokens;
+- `contextOptimizer.health`/findings/recommendations — advisory diagnostic state;
+- `contextOptimizer.ledger.*` — optimizer apply/verification state, never controller authority.
+
+Do not add optimizer runtime context to `usage.totalTokens`; the two can overlap and describe different scopes. Do not turn `approvalRequired`, Graphify recommendations, pending verification, or rollback recommendations into permission or completion state. Keep raw optimizer reports out of dashboard state; project only the bounded compact bridge.
 ## A4 — context-cost guardrail
 
 Package instruction growth is a separate engineering metric from runtime usage.

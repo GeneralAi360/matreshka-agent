@@ -777,6 +777,7 @@ def check_dashboard_contract(plugin_root: Path, failures: list[str]) -> None:
     )
     contract = {
         "intelligence": "s.intelligence",
+        "contextOptimizer": "s.contextOptimizer",
         "design": "s.design",
         "timing": "s.timing",
         "usage": "s.usage",
@@ -793,6 +794,24 @@ def check_dashboard_contract(plugin_root: Path, failures: list[str]) -> None:
             failures.append(
                 f"DASHBOARD contract mismatch for {state_key}: state/html not both wired"
             )
+
+    for marker in (
+        "Runtime context",
+        "Static instructions",
+        "bytes, не tokens",
+        "Dashboard не выдаёт разрешения на mutation",
+    ):
+        if marker not in html_text:
+            failures.append(f"DASHBOARD context optimizer marker missing {marker!r}")
+
+    for marker in (
+        '"runtimeMeasurement"',
+        '"staticContext"',
+        '"unit": "bytes"',
+        '"approvalRequired"',
+    ):
+        if marker not in state_text:
+            failures.append(f"DASHBOARD context optimizer state missing {marker}")
 
     for authority_key in (
         "designDocWrite",
