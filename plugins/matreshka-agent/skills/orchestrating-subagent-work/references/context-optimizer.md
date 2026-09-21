@@ -57,44 +57,39 @@ python3 -B <plugin-root>/scripts/context_optimizer_peer.py \
 
 ## Автоматический алгоритм
 
-### Новый проект
+Matreshka не дублирует числовые пороги optimizer. На безопасных переходах controller собирает только наблюдаемые сигналы и передаёт их peer skill через внутреннюю команду `auto`.
 
-После определения project root и первичной структуры, но до массового implementation fan-out:
+Пример:
 
-~~~text
-NEW_PROJECT + baseline отсутствует → start
+~~~bash
+python3 -B <plugin-root>/scripts/context_optimizer_peer.py \
+  --project <project-root> \
+  --execute \
+  --provider <provider-or-none> \
+  --signal '{"scenario":"NEW_PROJECT","baseline_exists":false}' \
+  auto
 ~~~
 
-### Готовый проект
+Допустимые поля сигнала:
 
-После bounded read-only orientation и до архитектурных/массовых изменений:
+- `scenario`: `NEW_PROJECT | EXISTING_PROJECT | CONTINUE_PROJECT`;
+- `baseline_exists`: есть ли source-qualified snapshot;
+- `resumed`, `hours_since_last_audit`;
+- `context_too_broad`;
+- `repeated_file_reads`, `compactions`;
+- `tool_result_ratio`, `tool_result_bytes`;
+- `instruction_growth_bytes`;
+- `skills_changed`, `mcp_changed`;
+- `project_files_delta`;
+- `manual`.
 
-~~~text
-EXISTING_PROJECT + baseline отсутствует → adopt
-~~~
+Сам peer skill возвращает `start`, `adopt`, `resume`, `check` либо `SKIPPED/NO_TRIGGER`. Пороговые значения принадлежат optimizer и не должны копироваться в Matreshka controller.
 
-### Продолжение
+`baseline_exists=true` допустимо только когда controller сохранил source-qualified `snapshotId` предыдущего bridge. Старый dashboard без source identity не считается baseline.
 
-При восстановлении run:
+После `start` / `adopt` / `resume` controller при наличии обычной state-write authority сохраняет только `snapshotId`, `capturedAt` и компактный bridge в ledger/dashboard. Raw telemetry туда не переносится.
 
-~~~text
-resume + (baseline отсутствует OR audit старше 24 ч) → resume
-~~~
-
-### Событие перегрузки
-
-`check` запускается только при evidence:
-
-- `CONTEXT_TOO_BROAD`;
-- 3+ повторных чтения одного файла;
-- 2+ compaction;
-- tool results >= 64 КБ и >= 35% отслеживаемого ingress;
-- рост static instructions >= 16 КБ;
-- изменился набор skills;
-- изменилась MCP/tool конфигурация;
-- структура проекта изменилась минимум на 100 файлов.
-
-Без нового evidence полный аудит не запускается. Не вызывать optimizer на каждом сообщении или каждом tool call.
+Если local-process authority отсутствует, resolver возвращает `READY_TO_RUN`; это handoff, а не разрешение на запуск.
 
 ## Compact state
 

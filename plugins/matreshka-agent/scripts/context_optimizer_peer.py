@@ -16,7 +16,7 @@ from typing import Any
 
 SKILL_NAME = "context-optimizer"
 ENV_HOME = "MATRESHKA_CONTEXT_OPTIMIZER_HOME"
-COMMANDS = {"start", "adopt", "resume", "check", "status", "optimize"}
+COMMANDS = {"start", "adopt", "resume", "check", "status", "optimize", "auto"}
 
 
 def _candidate_roots(project: Path) -> list[tuple[str, Path]]:
@@ -38,9 +38,13 @@ def _candidate_roots(project: Path) -> list[tuple[str, Path]]:
     ):
         candidates.append((source, base))
 
-    # Development checkout convenience. It is read-only discovery, not install.
     for name in ("Matreshk-context-optimizer", "Matreshka-context-optimizer"):
-        candidates.append(("SIBLING_REPOSITORY", project.parent / name / "skills" / SKILL_NAME))
+        candidates.append(
+            (
+                "SIBLING_REPOSITORY",
+                project.parent / name / "skills" / SKILL_NAME,
+            )
+        )
 
     return candidates
 
@@ -53,7 +57,10 @@ def _normalize_candidate(path: Path) -> Path | None:
         return path
 
     nested = path / "skills" / SKILL_NAME
-    if (nested / "SKILL.md").is_file() and (nested / "scripts" / "context_optimizer.py").is_file():
+    if (
+        (nested / "SKILL.md").is_file()
+        and (nested / "scripts" / "context_optimizer.py").is_file()
+    ):
         return nested
     return None
 
@@ -75,6 +82,7 @@ def resolve(project: Path) -> dict[str, Any]:
             "skill_root": key,
             "runner": str(normalized / "scripts" / "context_optimizer.py"),
         }
+
     return {
         "status": "UNAVAILABLE",
         "skill": SKILL_NAME,
@@ -97,10 +105,19 @@ def invoke(
     trigger_mode: str,
     trigger_reason: str | None,
     automatic: bool,
+    signal: str | None = None,
 ) -> dict[str, Any]:
     state = resolve(project)
     if state["status"] != "READY":
         return state
+
+    if command == "auto" and not signal:
+        return {
+            **state,
+            "status": "ERROR",
+            "command": command,
+            "message_ru": "Для автоматического решения не передан сигнал состояния проекта.",
+        }
 
     argv = [
         sys.executable,
@@ -109,13 +126,17 @@ def invoke(
         str(project.resolve()),
         "--provider",
         provider,
-        "--trigger-mode",
-        trigger_mode,
     ]
-    if trigger_reason:
-        argv.extend(["--trigger-reason", trigger_reason])
-    if automatic:
-        argv.append("--automatic")
+
+    if command == "auto":
+        argv.extend(["--signal", signal or "{}"])
+    else:
+        argv.extend(["--trigger-mode", trigger_mode])
+        if trigger_reason:
+            argv.extend(["--trigger-reason", trigger_reason])
+        if automatic:
+            argv.append("--automatic")
+
     argv.append(command)
 
     if not execute:
@@ -158,29 +179,52 @@ def invoke(
             "command": command,
             "message_ru": "Оптимизатор вернул некорректный JSON.",
         }
+
     return {
         **state,
         "status": "COMPLETED",
         "command": command,
         "result": payload,
-        "message_ru": str(payload.get("message_ru") or "Проверка контекста выполнена."),
+        "message_ru": str(
+            payload.get("message_ru")
+            or "Проверка контекста выполнена."
+        ),
     }
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Matreshka → Context Optimizer peer bridge")
+    parser = argparse.ArgumentParser(
+        description="Matreshka → Context Optimizer peer bridge"
+    )
     parser.add_argument("--project", default=".")
-    parser.add_argument("--provider", default="auto", choices=["auto", "codex", "claude", "antigravity", "none"])
+    parser.add_argument(
+        "--provider",
+        default="auto",
+        choices=["auto", "codex", "claude", "antigravity", "none"],
+    )
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--trigger-mode", default="MANUAL")
     parser.add_argument("--trigger-reason")
     parser.add_argument("--automatic", action="store_true")
+    parser.add_argument(
+        "--signal",
+        help="JSON signal for the peer skill's internal auto trigger evaluator.",
+    )
     parser.add_argument("command", nargs="?", choices=sorted(COMMANDS))
     args = parser.parse_args()
 
     project = Path(args.project).expanduser().resolve()
     if not project.exists() or not project.is_dir():
-        print(json.dumps({"status": "ERROR", "message_ru": f"Проект не найден: {project}"}, ensure_ascii=False, indent=2))
+        print(
+            json.dumps(
+                {
+                    "status": "ERROR",
+                    "message_ru": f"Проект не найден: {project}",
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return 2
 
     if args.command is None:
@@ -194,6 +238,7 @@ def main() -> int:
             trigger_mode=args.trigger_mode,
             trigger_reason=args.trigger_reason,
             automatic=args.automatic,
+            signal=args.signal,
         )
 
     print(json.dumps(result, ensure_ascii=False, indent=2))

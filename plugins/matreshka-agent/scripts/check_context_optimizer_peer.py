@@ -27,9 +27,14 @@ def main() -> int:
         skill = project / ".agents" / "skills" / "context-optimizer"
         scripts = skill / "scripts"
         scripts.mkdir(parents=True)
-        (skill / "SKILL.md").write_text("---\nname: context-optimizer\n---\n", encoding="utf-8")
+        (skill / "SKILL.md").write_text(
+            "---\nname: context-optimizer\n---\n",
+            encoding="utf-8",
+        )
         (scripts / "context_optimizer.py").write_text(
-            "import json\nprint(json.dumps({'message_ru':'Проверка контекста выполнена.','bridge':{'status':'READY'}}, ensure_ascii=False))\n",
+            "import json,sys\n"
+            "print(json.dumps({'message_ru':'Проверка контекста выполнена.',"
+            "'argv':sys.argv[1:],'bridge':{'status':'READY'}}, ensure_ascii=False))\n",
             encoding="utf-8",
         )
 
@@ -39,27 +44,46 @@ def main() -> int:
 
         planned = peer.invoke(
             project,
-            "start",
+            "auto",
             execute=False,
             provider="none",
-            trigger_mode="NEW_PROJECT_BASELINE",
-            trigger_reason="Новый проект",
-            automatic=True,
+            trigger_mode="MANUAL",
+            trigger_reason=None,
+            automatic=False,
+            signal='{"scenario":"NEW_PROJECT","baseline_exists":false}',
         )
         assert planned["status"] == "READY_TO_RUN"
+        assert "--signal" in planned["argv"]
+        assert "auto" == planned["argv"][-1]
         assert "--execute" not in planned["argv"]
+
+        missing = peer.invoke(
+            project,
+            "auto",
+            execute=False,
+            provider="none",
+            trigger_mode="MANUAL",
+            trigger_reason=None,
+            automatic=False,
+            signal=None,
+        )
+        assert missing["status"] == "ERROR"
 
         executed = peer.invoke(
             project,
-            "start",
+            "auto",
             execute=True,
             provider="none",
-            trigger_mode="NEW_PROJECT_BASELINE",
-            trigger_reason="Новый проект",
-            automatic=True,
+            trigger_mode="MANUAL",
+            trigger_reason=None,
+            automatic=False,
+            signal='{"scenario":"EXISTING_PROJECT","baseline_exists":false}',
         )
         assert executed["status"] == "COMPLETED"
         assert executed["message_ru"] == "Проверка контекста выполнена."
+        argv = executed["result"]["argv"]
+        assert "--signal" in argv
+        assert argv[-1] == "auto"
 
     print("PASS: Context Optimizer peer bridge")
     return 0

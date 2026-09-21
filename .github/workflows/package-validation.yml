@@ -60,6 +60,35 @@ jobs:
         run: >-
           python3 -B plugins/matreshka-agent/scripts/check_context_optimizer_peer.py
 
+      - name: Checkout Context Optimizer peer
+        uses: actions/checkout@v4
+        with:
+          repository: GeneralAi360/Matreshk-context-optimizer
+          ref: main
+          path: .peer/context-optimizer
+
+      - name: Context Optimizer real peer auto integration
+        env:
+          MATRESHKA_CONTEXT_OPTIMIZER_HOME: ${{ github.workspace }}/.peer/context-optimizer
+        run: |
+          python3 -B plugins/matreshka-agent/scripts/context_optimizer_peer.py \
+            --project plugins/matreshka-agent \
+            --provider none \
+            --execute \
+            --signal '{"scenario":"EXISTING_PROJECT","baseline_exists":false}' \
+            auto > /tmp/context-peer.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('/tmp/context-peer.json',encoding='utf-8'))
+          assert p['status']=='COMPLETED', p
+          r=p['result']
+          assert r['command']=='adopt', r
+          assert r['bridge']['snapshotId'].startswith('CTXSNAP-'), r
+          assert r['baseline_candidate']['persist_by_controller'] is True, r
+          assert r['decision']['mode']=='EXISTING_PROJECT_ADOPTION', r
+          print('PASS: real Context Optimizer peer auto integration')
+          PY
+
       - name: Native repeatability matrix contract
         run: >-
           python3 -B plugins/matreshka-agent/scripts/evaluate_native_repeatability.py
