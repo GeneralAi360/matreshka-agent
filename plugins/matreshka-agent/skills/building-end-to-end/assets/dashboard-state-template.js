@@ -68,6 +68,36 @@ window.MATRESHKA_RUN_STATE = {
     "turnsUsed": 0,
     "source": null
   },
+  "contextOptimizer": {
+    "status": "UNAVAILABLE",
+    "health": "UNKNOWN",
+    "healthBasis": "UNKNOWN",
+    "runtimeMeasurement": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": "unknown",
+      "type": "UNKNOWN",
+      "source": null,
+      "semantics": "UNKNOWN"
+    },
+    "staticContext": {
+      "value": 0,
+      "unit": "bytes",
+      "fileCount": 0
+    },
+    "staticRisk": "UNKNOWN",
+    "topFindings": [],
+    "recommendations": [],
+    "graphify": {"state": "UNKNOWN", "reason": null},
+    "ledger": {
+      "changeCount": 0,
+      "pendingVerification": 0,
+      "rollbackRecommended": 0,
+      "latestDecision": null
+    },
+    "approvalRequired": false,
+    "source": null
+  },
   "intelligence": {
     "topologyStatus": "NOT_APPLICABLE",
     "areaCount": 0,
