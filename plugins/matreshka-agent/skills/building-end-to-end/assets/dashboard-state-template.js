@@ -69,6 +69,8 @@ window.MATRESHKA_RUN_STATE = {
     "source": null
   },
   "contextOptimizer": {
+    "snapshotId": null,
+    "capturedAt": null,
     "status": "UNAVAILABLE",
     "health": "UNKNOWN",
     "healthBasis": "UNKNOWN",
@@ -98,7 +100,8 @@ window.MATRESHKA_RUN_STATE = {
     "trigger": {
       "mode": "MANUAL",
       "reason": null,
-      "automatic": false
+      "automatic": false,
+      "nextCheck": null
     },
     "ledger": {
       "changeCount": 0,

@@ -228,16 +228,17 @@ Never estimate runtime tokens from characters, byte budgets, time, message count
 - `usage.*` — токены текущего Matreshka run из host/provider counters;
 - `contextOptimizer.runtimeMeasurement` — диагностика текущего контекста только при семантике `CURRENT_CONTEXT`;
 - `contextOptimizer.staticContext.value` — точные bytes инструкций, не runtime tokens;
+- `contextOptimizer.snapshotId/capturedAt` — идентичность source-qualified baseline/projection;
 - `contextOptimizer.projectMap.*` — нативная карта и навигационная нагрузка;
 - `contextOptimizer.health`/findings/recommendations — advisory state;
 - `contextOptimizer.ledger.*` — состояние apply/verification, не controller authority;
-- `contextOptimizer.trigger.*` — почему была выполнена последняя проверка.
+- `contextOptimizer.trigger.*` — почему была выполнена последняя проверка и когда рекомендована следующая.
 
 Не прибавляй optimizer runtime context к `usage.totalTokens`. Не превращай `approvalRequired`, pending verification или rollback recommendation в permission/completion state. Raw optimizer reports не помещай в dashboard state.
 
 Пользовательские подписи блока — на русском. Рекомендуемые карточки: «Состояние контекста», «Текущий контекст», «Статические инструкции», «Карта проекта», «Ожидает проверки», «Причина проверки», «Изменения».
 
-Автоматические проверки должны быть event-driven: новый проект без baseline, первое подключение готового проекта, resume с устаревшим baseline или подтверждённый pressure event. Не запускать полный аудит на каждом сообщении.
+Автоматические проверки должны быть event-driven. Controller передаёт наблюдаемые сигналы в peer-команду `auto`; числовые пороги принадлежат Context Optimizer и не дублируются в Matreshka. Не запускать полный аудит на каждом сообщении.
 
 ## A4 — context-cost guardrail
 

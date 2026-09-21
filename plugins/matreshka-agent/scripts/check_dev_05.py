@@ -802,6 +802,8 @@ def check_dashboard_contract(plugin_root: Path, failures: list[str]) -> None:
         "байты, не токены",
         "Карта проекта",
         "Причина проверки",
+        "Следующая проверка",
+        "Снимок контекста",
         "Дашборд ничего не меняет сам",
         'href="#context-optimization"',
     ):
@@ -809,11 +811,14 @@ def check_dashboard_contract(plugin_root: Path, failures: list[str]) -> None:
             failures.append(f"DASHBOARD context optimizer marker missing {marker!r}")
 
     for marker in (
+        '"snapshotId"',
+        '"capturedAt"',
         '"runtimeMeasurement"',
         '"staticContext"',
         '"unit": "bytes"',
         '"projectMap"',
         '"trigger"',
+        '"nextCheck"',
         '"approvalRequired"',
     ):
         if marker not in state_text:

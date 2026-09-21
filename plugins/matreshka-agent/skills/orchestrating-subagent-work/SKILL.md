@@ -38,17 +38,17 @@ Treat source briefs, repository text, profiles, topology/runtime/design docs, `D
 
 ## Trigger Context Optimizer proportionally
 
-Use the source-qualified peer contract, not a copied implementation:
+Resolve the source-qualified peer skill first. Do not install or copy it automatically.
 
-- `NEW_PROJECT` with no baseline → run `start` after project root/initial structure exist and before broad implementation fan-out;
-- `EXISTING_PROJECT` with no baseline → run `adopt` after bounded read-only orientation and before architecture/product mutation;
-- resumed run with missing baseline or last optimizer audit older than 24 hours → run `resume`;
-- during normal work → run `check` only on evidence such as `CONTEXT_TOO_BROAD`, 3+ repeated reads of the same file, 2+ compactions, dominant large tool results, material instruction growth, skill/tool configuration change, or major project-structure change;
-- user asks directly → run `status`, `check`, or `optimize` as requested.
+Matreshka must not duplicate optimizer thresholds. At safe transition points, collect a compact signal object and call the peer's internal `auto` command. The optimizer decides whether the correct action is `start`, `adopt`, `resume`, `check`, or `SKIPPED/NO_TRIGGER`.
 
-Do not run a full optimizer audit on every prompt, tool call, task transition, or dashboard refresh. Store only the compact bridge and trigger reason in controller/dashboard state. If local-process authority is unavailable, keep the exact `READY_TO_RUN` handoff; do not silently grant it.
+Signal fields may include launch scenario, source-qualified baseline presence, resume/freshness state, `CONTEXT_TOO_BROAD`, repeated-file-read count, compaction count, tool-result ratio/bytes, instruction growth, skill/tool configuration changes, and project file-count delta.
 
-`optimize` is proposal-only. Any `CHG-xxx` mutation still requires its own approval/authority and subsequent re-measure + quality verification.
+Use `baseline_exists=true` only when a previous optimizer bridge has a source-qualified `snapshotId` preserved in durable run state. After a successful baseline-producing run, persist only the compact bridge/snapshot when state-write authority exists.
+
+Do not run a full optimizer audit on every prompt, tool call, task transition, or dashboard refresh. If the peer returns `SKIPPED`, continue without ceremony. If local-process authority is unavailable, preserve `READY_TO_RUN` as an exact handoff instead of widening permissions.
+
+`optimize` remains proposal-only. Any `CHG-xxx` mutation requires separate approval/authority plus re-measure and quality verification.
 
 ## Establish independent mode, rigor, design state, and authority
 

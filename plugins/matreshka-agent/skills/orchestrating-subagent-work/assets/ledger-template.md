@@ -60,6 +60,7 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 
 ## Context Optimizer bridge
 
+- Snapshot ID / captured at: `{{CTX_SNAPSHOT_ID_OR_NONE}}` / `{{CTX_CAPTURED_AT_OR_NONE}}`
 - Bridge status: `{{CONTEXT_OPTIMIZER_READY_DEGRADED_UNAVAILABLE}}`
 - Context health / basis: `{{CONTEXT_HEALTH}}` / `{{CONTEXT_HEALTH_BASIS}}`
 - Runtime context measurement: `{{CTX_RUNTIME_VALUE_OR_NONE}} {{CTX_RUNTIME_UNIT}}` · `{{CTX_RUNTIME_TYPE}}` · `{{CTX_RUNTIME_SOURCE_OR_NONE}}` · semantics `{{CTX_RUNTIME_SEMANTICS}}`
@@ -68,6 +69,7 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 - Project map state/pressure: `{{CTX_PROJECT_MAP_STATE}}` / `{{CTX_PROJECT_MAP_PRESSURE}}`
 - Project map files/areas: `{{CTX_PROJECT_FILE_COUNT}}` / `{{CTX_PROJECT_AREA_COUNT}}`
 - Last optimizer trigger: `{{CTX_TRIGGER_MODE}}` · automatic `{{YES_NO}}` · {{CTX_TRIGGER_REASON_OR_NONE}}
+- Next recommended context check: {{CTX_NEXT_CHECK_OR_NONE}}
 - Optimizer changes awaiting verification: `{{CTX_PENDING_VERIFICATION_COUNT}}`
 - Optimizer rollback recommendations: `{{CTX_ROLLBACK_RECOMMENDED_COUNT}}`
 - Optimizer approval still required: `{{YES_NO}}`
