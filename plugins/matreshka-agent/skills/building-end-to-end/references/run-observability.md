@@ -219,19 +219,26 @@ Runtime token counts remain host telemetry only:
 
 Never estimate runtime tokens from characters, byte budgets, time, message count or model family. Static context-budget tooling measures package bytes only and must not be displayed as runtime token usage.
 
-## Context Optimizer projection
+## Проекция оптимизации контекста
 
-When a source-qualified external Context Optimizer bridge is available, project only its compact `contextOptimizer` object. Read the controller contract at `../orchestrating-subagent-work/references/context-optimizer.md` before ingesting or explaining it.
+Когда source-qualified peer Context Optimizer доступен, проецируй только компактный `contextOptimizer` object. Перед вызовом/объяснением прочитай `../orchestrating-subagent-work/references/context-optimizer.md`.
 
-Keep these dimensions separate:
+Разделяй измерения:
 
-- `usage.*` — Matreshka run token telemetry from host counters;
-- `contextOptimizer.runtimeMeasurement` — current-context diagnostic only when its semantics explicitly say `CURRENT_CONTEXT`;
-- `contextOptimizer.staticContext.value` — exact instruction bytes, never runtime tokens;
-- `contextOptimizer.health`/findings/recommendations — advisory diagnostic state;
-- `contextOptimizer.ledger.*` — optimizer apply/verification state, never controller authority.
+- `usage.*` — токены текущего Matreshka run из host/provider counters;
+- `contextOptimizer.runtimeMeasurement` — диагностика текущего контекста только при семантике `CURRENT_CONTEXT`;
+- `contextOptimizer.staticContext.value` — точные bytes инструкций, не runtime tokens;
+- `contextOptimizer.projectMap.*` — нативная карта и навигационная нагрузка;
+- `contextOptimizer.health`/findings/recommendations — advisory state;
+- `contextOptimizer.ledger.*` — состояние apply/verification, не controller authority;
+- `contextOptimizer.trigger.*` — почему была выполнена последняя проверка.
 
-Do not add optimizer runtime context to `usage.totalTokens`; the two can overlap and describe different scopes. Do not turn `approvalRequired`, Graphify recommendations, pending verification, or rollback recommendations into permission or completion state. Keep raw optimizer reports out of dashboard state; project only the bounded compact bridge.
+Не прибавляй optimizer runtime context к `usage.totalTokens`. Не превращай `approvalRequired`, pending verification или rollback recommendation в permission/completion state. Raw optimizer reports не помещай в dashboard state.
+
+Пользовательские подписи блока — на русском. Рекомендуемые карточки: «Состояние контекста», «Текущий контекст», «Статические инструкции», «Карта проекта», «Ожидает проверки», «Причина проверки», «Изменения».
+
+Автоматические проверки должны быть event-driven: новый проект без baseline, первое подключение готового проекта, resume с устаревшим baseline или подтверждённый pressure event. Не запускать полный аудит на каждом сообщении.
+
 ## A4 — context-cost guardrail
 
 Package instruction growth is a separate engineering metric from runtime usage.
