@@ -67,26 +67,87 @@ jobs:
           ref: main
           path: .peer/context-optimizer
 
-      - name: Context Optimizer real peer auto integration
+      - name: Context Optimizer real peer scenario matrix
         env:
           MATRESHKA_CONTEXT_OPTIMIZER_HOME: ${{ github.workspace }}/.peer/context-optimizer
         run: |
-          python3 -B plugins/matreshka-agent/scripts/context_optimizer_peer.py \
-            --project plugins/matreshka-agent \
-            --provider none \
-            --execute \
-            --signal '{"scenario":"EXISTING_PROJECT","baseline_exists":false}' \
-            auto > /tmp/context-peer.json
           python3 - <<'PY'
-          import json
-          p=json.load(open('/tmp/context-peer.json',encoding='utf-8'))
-          assert p['status']=='COMPLETED', p
-          r=p['result']
-          assert r['command']=='adopt', r
-          assert r['bridge']['snapshotId'].startswith('CTXSNAP-'), r
-          assert r['baseline_candidate']['persist_by_controller'] is True, r
-          assert r['decision']['mode']=='EXISTING_PROJECT_ADOPTION', r
-          print('PASS: real Context Optimizer peer auto integration')
+          import json, subprocess, sys
+
+          peer = "plugins/matreshka-agent/scripts/context_optimizer_peer.py"
+          project = "plugins/matreshka-agent"
+
+          def auto(signal):
+              proc = subprocess.run(
+                  [
+                      sys.executable, "-B", peer,
+                      "--project", project,
+                      "--provider", "none",
+                      "--execute",
+                      "--signal", json.dumps(signal, separators=(",", ":")),
+                      "auto",
+                  ],
+                  check=True,
+                  capture_output=True,
+                  text=True,
+                  encoding="utf-8",
+              )
+              outer = json.loads(proc.stdout)
+              assert outer["status"] == "COMPLETED", outer
+              return outer["result"]
+
+          new_project = auto({"scenario":"NEW_PROJECT","baseline_exists":False})
+          assert new_project["command"] == "start", new_project
+          assert new_project["decision"]["mode"] == "NEW_PROJECT_BASELINE", new_project
+          assert new_project["baseline_candidate"]["persist_by_controller"] is True, new_project
+          assert new_project["bridge"]["snapshotId"].startswith("CTXSNAP-"), new_project
+
+          existing = auto({"scenario":"EXISTING_PROJECT","baseline_exists":False})
+          assert existing["command"] == "adopt", existing
+          assert existing["decision"]["mode"] == "EXISTING_PROJECT_ADOPTION", existing
+
+          resumed = auto({
+              "scenario":"CONTINUE_PROJECT",
+              "baseline_exists":True,
+              "resumed":True,
+              "hours_since_last_audit":30,
+          })
+          assert resumed["command"] == "resume", resumed
+          assert resumed["decision"]["mode"] == "RESUME_RECONCILIATION", resumed
+
+          quiet = auto({"scenario":"CONTINUE_PROJECT","baseline_exists":True})
+          assert quiet["status"] == "SKIPPED", quiet
+          assert quiet["decision"]["mode"] == "NO_TRIGGER", quiet
+
+          pressure = auto({
+              "scenario":"CONTINUE_PROJECT",
+              "baseline_exists":True,
+              "repeated_file_reads":4,
+          })
+          assert pressure["command"] == "check", pressure
+          assert pressure["decision"]["mode"] == "PRESSURE_EVENT", pressure
+          assert pressure["bridge"]["trigger"]["nextCheck"], pressure
+
+          proc = subprocess.run(
+              [
+                  sys.executable, "-B", peer,
+                  "--project", project,
+                  "--provider", "none",
+                  "--execute",
+                  "optimize",
+              ],
+              check=True,
+              capture_output=True,
+              text=True,
+              encoding="utf-8",
+          )
+          optimize_outer = json.loads(proc.stdout)
+          assert optimize_outer["status"] == "COMPLETED", optimize_outer
+          optimize = optimize_outer["result"]
+          assert optimize["command"] == "optimize", optimize
+          assert optimize["mutation"] == "NOT_APPLIED", optimize
+
+          print("PASS: Context Optimizer real peer scenario matrix")
           PY
 
       - name: Native repeatability matrix contract
