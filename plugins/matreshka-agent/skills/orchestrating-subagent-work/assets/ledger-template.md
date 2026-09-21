@@ -65,13 +65,15 @@ Never estimate unavailable timing or token totals. `PARTIAL` token usage is an e
 - Runtime context measurement: `{{CTX_RUNTIME_VALUE_OR_NONE}} {{CTX_RUNTIME_UNIT}}` · `{{CTX_RUNTIME_TYPE}}` · `{{CTX_RUNTIME_SOURCE_OR_NONE}}` · semantics `{{CTX_RUNTIME_SEMANTICS}}`
 - Static instruction context: `{{CTX_STATIC_BYTES}} bytes` across `{{CTX_STATIC_FILE_COUNT}}` files
 - Static risk: `{{CTX_STATIC_RISK}}`
-- Graphify state: `{{CTX_GRAPHIFY_STATE}}`
+- Project map state/pressure: `{{CTX_PROJECT_MAP_STATE}}` / `{{CTX_PROJECT_MAP_PRESSURE}}`
+- Project map files/areas: `{{CTX_PROJECT_FILE_COUNT}}` / `{{CTX_PROJECT_AREA_COUNT}}`
+- Last optimizer trigger: `{{CTX_TRIGGER_MODE}}` · automatic `{{YES_NO}}` · {{CTX_TRIGGER_REASON_OR_NONE}}
 - Optimizer changes awaiting verification: `{{CTX_PENDING_VERIFICATION_COUNT}}`
 - Optimizer rollback recommendations: `{{CTX_ROLLBACK_RECOMMENDED_COUNT}}`
 - Optimizer approval still required: `{{YES_NO}}`
 - Bridge source identity/path/version: {{CTX_BRIDGE_SOURCE}}
 
-Runtime context and static bytes are separate metrics. Never convert static bytes into token usage, add optimizer context to run `usage` totals, or treat optimizer recommendations as authority. `APPLIED` optimizer changes remain unverified until re-measure + quality evidence supports a ledger decision.
+Runtime context and static bytes are separate metrics. Never convert static bytes into token usage, add optimizer context to run `usage` totals, or treat optimizer recommendations/trigger state as authority. `APPLIED` optimizer changes remain unverified until re-measure + quality evidence supports a ledger decision.
 ## Skill source map
 
 | Needed role | Matreshka skill | Host-visible invocation | Source evidence | Result |
