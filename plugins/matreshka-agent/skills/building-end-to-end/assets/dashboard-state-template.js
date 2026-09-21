@@ -88,7 +88,18 @@ window.MATRESHKA_RUN_STATE = {
     "staticRisk": "UNKNOWN",
     "topFindings": [],
     "recommendations": [],
-    "graphify": {"state": "UNKNOWN", "reason": null},
+    "projectMap": {
+      "state": "UNKNOWN",
+      "pressure": "UNKNOWN",
+      "files": 0,
+      "areas": 0,
+      "reason": null
+    },
+    "trigger": {
+      "mode": "MANUAL",
+      "reason": null,
+      "automatic": false
+    },
     "ledger": {
       "changeCount": 0,
       "pendingVerification": 0,
