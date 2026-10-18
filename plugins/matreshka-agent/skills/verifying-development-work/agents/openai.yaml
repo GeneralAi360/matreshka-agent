@@ -1,6 +1,6 @@
 interface:
   display_name: "Verify Development Work · Matreshka Agent"
   short_description: "Matreshka Agent: verify claims with fresh evidence"
-  default_prompt: "Use $verifying-development-work to verify these development claims with fresh, scoped evidence."
+  default_prompt: "Use $matreshka-agent:verifying-development-work to verify these development claims with fresh, scoped evidence."
 policy:
   allow_implicit_invocation: true

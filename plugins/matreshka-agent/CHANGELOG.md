@@ -8,6 +8,10 @@ All notable changes to Matreshka Agent are recorded here.
 
 ### Added
 
+- Reproducible full-plugin and self-contained `matreshka-agent-<skill>` distribution archives generated from one canonical source; nested workflow documents remain resource-only WORKFLOW.md files.
+- Offline installed-payload preflight with source ref/SHA/dirty snapshot and exact hashes; folder-only install/report lifecycle smoke and damaged/incomplete package regressions on Ubuntu/Windows CI.
+- Source-qualified default prompts and complete-package guards for all eleven canonical skills; incomplete generic copies return HANDOFF_REQUIRED before project actions.
+
 - Mandatory whole-project offline report shared by all eleven direct/controller skill entries, with stable project/step/phase/task/attempt identities and external development-documentation roots.
 - Evidence-aware expected/actual outcome projection, independent approval state, current-work scope, explicit unknown/conflict/quality limits and non-inflating step/check metrics.
 - Python stdlib CAS/OS-lock store, immutable state+HTML revisions, atomic commit witnesses, full-view integrity checks and explicit last-good recovery with damaged-byte preservation.

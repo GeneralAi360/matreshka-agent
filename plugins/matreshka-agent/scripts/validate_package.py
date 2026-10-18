@@ -943,7 +943,7 @@ def validate_openai_yaml(
                 "`interface.short_description` must contain 25 to 64 characters",
             )
         prompt = interface.get("default_prompt")
-        token = f"${skill_name}"
+        token = f"${PLUGIN_ID}:{skill_name}"
         if not isinstance(prompt, str) or token not in prompt:
             add(
                 findings,
@@ -951,6 +951,8 @@ def validate_openai_yaml(
                 label,
                 f"`interface.default_prompt` must contain `{token}`",
             )
+        if isinstance(prompt, str) and re.search(r"\$" + re.escape(skill_name) + r"(?![a-z0-9-])", prompt):
+            add(findings, "SKILL_AGENT_YAML", label, "default prompt must not select an unqualified same-named skill")
     policy = payload.get("policy")
     if not isinstance(policy, dict):
         add(findings, "SKILL_AGENT_YAML", label, "`policy` section is required")

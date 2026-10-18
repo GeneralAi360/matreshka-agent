@@ -260,3 +260,22 @@ Static budget bytes **не** являются runtime token usage и никог�
 `project_reporting.py` предоставляет `template`, `init`, `status`, `inventory`, `update`, `inspect`, `recover`. Stdlib-хранилище использует OS lock, обязательную CAS-ревизию, неизменяемые снимки и атомарное свидетельство фиксации. Повреждённый HTML/HEAD восстанавливается из последней корректной зафиксированной ревизии; осиротевший незакоммиченный снимок не принимается. Самодостаточный HTML не требует сервера, JavaScript или сети.
 
 Проверки: `python -B -m unittest discover -s plugins/matreshka-agent/tests -v` из корня репозитория. CI запускает те же сценарии на Ubuntu и Windows. Это проверки реализации/контрактов, а не заявление о развёртывании новой версии в пользовательском хосте. `inspect_plugin_origin.py --source-root <package> --installed-root <installed-package>` сравнивает фактические файлы, ref/SHA и manifest version без записи в cache; одинаковый номер версии не означает одинаковые исходники.
+
+
+## Установка и проверка готового пакета
+
+Канонические папки `skills/<name>` зависят от общих файлов плагина. Отдельно копировать такую папку нельзя. Для полного плагина используйте `$matreshka-agent:<skill>`. Для установки одного навыка собираются самостоятельные адаптеры с именами `matreshka-agent-<skill>`: каждый содержит инструкции и зависимости из одного снимка исходников. Это не меняет отдельно установленные старые одноимённые навыки.
+
+Из корня репозитория:
+
+```text
+python -B plugins/matreshka-agent/scripts/package_distribution.py build --output ../matreshka-agent-build
+python -B plugins/matreshka-agent/scripts/package_distribution.py verify --archive ../matreshka-agent-build/matreshka-agent.zip
+python -B plugins/matreshka-agent/scripts/package_distribution.py verify --archive ../matreshka-agent-build/matreshka-agent-planning-software-work.zip
+```
+
+Сборка создаёт полный plugin ZIP и 11 skill ZIP. Для каждого нового снимка выбирайте новую выходную папку: предыдущая сборка сохраняется. Не считайте проверку только исходников проверкой установленного пакета. `verify` распаковывает архив, копирует только устанавливаемую папку, удаляет распаковку и запускает отчётность из установленной копии с пустым PYTHONPATH. Проверяются постоянный адрес, обновление, история и отдельная папка документации. Браузерный просмотр и native-вызов навыка этим тестом не подтверждаются.
+
+`distribution.json` хранит manifest version, source ref/SHA, признак незакоммиченного снимка и точные отпечатки. Равный номер версии не означает равные файлы. Перед работой адаптер проверяет свой пакет; отсутствующие, изменённые или лишние файлы и неверный источник дают `HANDOFF_REQUIRED`, без подстановки старого навыка из cache. Полная схема: [контракт распространения](plugins/matreshka-agent/references/distribution-contract.md).
+
+Регрессии готовых архивов: `python -B -m unittest discover -s plugins/matreshka-agent/tests -p test_distribution.py -v`. В CI они вынесены в отдельную матрицу Ubuntu/Windows. Matreshka Project Start, find-skills, установленные плагины, main и release не изменяются сборщиком.

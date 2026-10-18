@@ -5,6 +5,10 @@ description: Verify development claims against current repository state and acce
 
 # Verify claims with fresh evidence
 
+## Package identity
+
+Use this entry only from the complete Matreshka Agent package. Before reading the project-report contract or acting on the project, confirm that `../../.codex-plugin/plugin.json`, `../../references/project-reporting.md` and `../../scripts/package_distribution.py` exist relative to this file. Run `python3 -B <plugin-root>/scripts/package_distribution.py source --root <plugin-root> --entry verifying-development-work` using that exact package root. Missing resources or a different source-qualified identity require `HANDOFF_REQUIRED`; do not substitute an older generic skill or search caches as a fallback. A skill-folder-only installation must use the generated `matreshka-agent-verifying-development-work` adapter. See the [distribution contract](../../references/distribution-contract.md).
+
 ## Project report lifecycle
 
 Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.

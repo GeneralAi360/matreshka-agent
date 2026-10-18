@@ -675,8 +675,8 @@ def check_codex_routing(plugin_root: Path, failures: list[str]) -> None:
     build_yaml = read(
         plugin_root / "skills/building-end-to-end/agents/openai.yaml", failures
     )
-    if "$building-end-to-end" not in build_yaml:
-        failures.append("Codex Build skill card must preserve canonical skill token")
+    if "$matreshka-agent:building-end-to-end" not in build_yaml:
+        failures.append("Codex Build skill card must preserve source-qualified skill token")
     if "$matreshka-agent:building-end-to-end" not in build_yaml:
         failures.append("Codex Build skill card must show namespaced invocation")
     for word in (
@@ -692,8 +692,8 @@ def check_codex_routing(plugin_root: Path, failures: list[str]) -> None:
     design_yaml = read(
         plugin_root / "skills/designing-product-experience/agents/openai.yaml", failures
     )
-    if "$designing-product-experience" not in design_yaml:
-        failures.append("Codex design skill card must preserve canonical design token")
+    if "$matreshka-agent:designing-product-experience" not in design_yaml:
+        failures.append("Codex design skill card must preserve source-qualified design token")
 
 
 def check_project_intelligence_evals(plugin_root: Path, failures: list[str]) -> None:
