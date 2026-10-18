@@ -328,6 +328,7 @@ def unpack_archive(archive, destination):
                     'invalid or excessive archive size')
             seen, tops = set(), set()
             for info in infos:
+                require(info.orig_filename == info.filename, 'normalized or truncated archive member')
                 path = PurePosixPath(info.filename)
                 require(info.filename and not path.is_absolute() and '..' not in path.parts
                         and '\\' not in info.filename and ':' not in info.filename and len(path.parts) >= 2,

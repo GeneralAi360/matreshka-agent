@@ -177,11 +177,16 @@ class DistributionTests(unittest.TestCase):
             verify_archive(self.base / 'missing.zip')
 
     def test_unsafe_archives_are_rejected_without_escape(self):
-        for member in ('../escape.txt', '/absolute.txt', 'C:/escape.txt', 'root/../escape.txt', 'root\\escape.txt'):
+        for member in ('../escape.txt', '/absolute.txt', 'C:/escape.txt', 'root/../escape.txt',
+                       'root\\escape.txt', 'root/escape.txt\x00hidden'):
             with self.subTest(member=member):
                 archive = self.base / 'unsafe.zip'
                 with zipfile.ZipFile(archive, 'w') as z:
-                    z.writestr(member, 'must not be written')
+                    # Preserve the raw malformed header on every platform:
+                    # ZipInfo's constructor normalizes backslashes on Windows.
+                    info = zipfile.ZipInfo('placeholder')
+                    info.filename = member
+                    z.writestr(info, 'must not be written')
                 with self.assertRaises(PackageError):
                     unpack_archive(archive, self.base / 'unsafe-output')
         self.assertFalse((self.base / 'escape.txt').exists())
