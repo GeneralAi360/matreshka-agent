@@ -303,11 +303,13 @@ def embed_snapshot(html: str, state: dict[str, Any]) -> str:
     return html[:start] + replacement + html[end + len(SNAPSHOT_END) :]
 
 
-def sync(run_dir: Path) -> tuple[list[str], dict[str, Any]]:
+def sync(run_dir: Path, project_binding: dict[str, Any] | None = None) -> tuple[list[str], dict[str, Any]]:
     state_path = run_dir / STATE_FILE
     html_path = run_dir / HTML_FILE
     prefix, original = load_state(state_path)
     normalized, warnings = normalize_and_validate(original)
+    if project_binding is not None:
+        normalized["projectBinding"] = project_binding
     try:
         html = html_path.read_text(encoding="utf-8")
     except OSError as exc:
@@ -318,6 +320,52 @@ def sync(run_dir: Path) -> tuple[list[str], dict[str, Any]]:
     # failure therefore leaves the previous pair untouched.
     atomic_write(state_path, render_state(prefix, normalized))
     atomic_write(html_path, next_html)
+    return warnings, normalized
+
+
+def sync_bound(run_dir: Path, project_dir: Path, expected_revision: int,
+               step_id: str, phase_id: str | None, task_id: str | None,
+               attempt: int, run_status: str):
+    """Bind existing run detail explicitly; never infer project completion/proof."""
+    import copy
+    from project_report_model import require, validate, validate_transition
+    from project_report_store import guard, load
+    from project_reporting import record_run
+
+    project_dir = guard(project_dir)
+    previous = load(project_dir)
+    require(previous['revision'] == expected_revision, 'stale project revision; reload and reconcile')
+    run_dir = guard(run_dir)
+    _, state = load_state(run_dir / STATE_FILE)
+    document = copy.deepcopy(previous['document'])
+    report = None
+    for root_name in ('documentation', 'product'):
+        root = Path(document['project'][root_name + '_root'])
+        if run_dir.is_relative_to(root):
+            report = {'root': root_name, 'path': (run_dir / HTML_FILE).relative_to(root).as_posix()}
+            break
+    require(report is not None, 'run detail must be inside the bound product or documentation root')
+    run = {'id': state.get('runId', run_dir.name), 'step_id': step_id, 'attempt': attempt,
+           'status': run_status, 'source_ids': [], 'report': report}
+    if phase_id:
+        run['phase_id'] = phase_id
+    if task_id:
+        run['task_id'] = task_id
+    existing = next((r for r in document['runs'] if r['id'] == run['id']), None)
+    if existing:
+        document['runs'][document['runs'].index(existing)] = run
+    else:
+        document['runs'].append(run)
+    validate(document)
+    validate_transition(previous['document'], document, 'REFRESHED', [])
+    binding = {'projectId': document['project']['id'], 'stepId': step_id,
+               'phaseId': phase_id, 'taskId': task_id, 'attempt': attempt,
+               'reportUrl': (project_dir / 'report.html').as_uri()}
+    warnings, normalized = sync(run_dir, binding)
+    try:
+        record_run(project_dir, expected_revision, run, 'Обновлена детализация запуска ' + run['id'])
+    except Exception as exc:
+        raise StateError('run detail synchronized; project binding NOT updated: ' + str(exc)) from exc
     return warnings, normalized
 
 
@@ -406,20 +454,40 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Synchronize Matreshka local dashboard state safely.")
     parser.add_argument("run_dir", nargs="?", help=".matreshka/runs/<run-id> directory")
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--project-dir")
+    parser.add_argument("--expected-project-revision", type=int)
+    parser.add_argument("--step-id")
+    parser.add_argument("--phase-id")
+    parser.add_argument("--task-id")
+    parser.add_argument("--attempt", type=int)
+    parser.add_argument("--run-status", choices=["RUNNING", "COMPLETE", "FAILED", "STOPPED", "BLOCKED"])
     return parser.parse_args()
 
 
 def main() -> int:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
     args = parse_args()
     if args.self_test:
         return self_test()
     if not args.run_dir:
         print("run_dir is required unless --self-test is used", file=sys.stderr)
         return 2
-    run_dir = Path(args.run_dir).expanduser().resolve()
+    run_dir = Path(args.run_dir).expanduser().absolute()
     try:
-        warnings, state = sync(run_dir)
-    except StateError as exc:
+        binding = [args.expected_project_revision, args.step_id, args.phase_id, args.task_id, args.attempt, args.run_status]
+        if args.project_dir:
+            if any(x is None for x in (args.expected_project_revision, args.step_id, args.attempt, args.run_status)):
+                raise StateError('project binding requires revision, step, attempt and explicit run status')
+            warnings, state = sync_bound(run_dir, Path(args.project_dir).absolute(),
+                                        args.expected_project_revision, args.step_id, args.phase_id,
+                                        args.task_id, args.attempt, args.run_status)
+        elif any(x is not None for x in binding):
+            raise StateError('binding arguments require --project-dir')
+        else:
+            warnings, state = sync(run_dir)
+    except (StateError, ValueError, OSError, KeyError, TypeError) as exc:
         print(f"Matreshka run-state sync: BLOCKED — {exc}", file=sys.stderr)
         return 1
     status = state.get("stateIntegrity", {}).get("status", "PASS")

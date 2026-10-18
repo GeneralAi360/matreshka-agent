@@ -6,9 +6,21 @@ description: >-
 
 # Plan Software Work
 
+## Project report lifecycle
+
+Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.
+
 Produce an executable plan, not implementation. Start only from a confirmed specification, authoritative requirement, or small change whose behavior/boundaries are already unambiguous.
 
 Read [task-decomposition.md](references/task-decomposition.md) before splitting work or validating the final task map. Read [complexity-tiers.md](references/complexity-tiers.md) before deciding task boundaries. Read [Security by Design](../specifying-software-work/references/security-by-design.md) for selected/high-risk `S-` requirements. When the controller supplies Build End-to-End `U-` rows, read [brief traceability](../building-end-to-end/references/brief-traceability.md). When the controller supplies Project Intelligence, read [project-intelligence.md](../orchestrating-subagent-work/references/project-intelligence.md) and preserve the controller-supplied `RUNTIME_MAP` identity/status as the runtime source for planning. When the current task is UI/design relevant or controller supplies a design identity, read [Design Intelligence integration](../orchestrating-subagent-work/references/design-intelligence.md). Preserve current area/context/interface/runtime/design facts without treating them as authority. Use [implementation-plan-template.md](assets/implementation-plan-template.md).
+
+## Onboard toward an observable result
+
+First recover the user's intended project result, audience, representative usage, constraints and acceptance from current instructions and documents. Ask only material missing questions. If product behavior is still ambiguous, route to `specifying-software-work` before technical task cutting; do not invent business requirements. Existing approval remains effective, and a plan-only request grants no implementation authority.
+
+Keep two scales separate: the **whole-project roadmap** uses stable large steps, each with **1–5 coherent phases** (a ceiling, not a quota); the bounded task plan breaks those phases into reviewable tasks under the existing complexity budgets. A small fix belongs to its existing step and does not add a roadmap step. Preserve the agreed step count and explicit stop boundaries.
+
+For every agreed step and phase define the expected observable result, source requirement IDs, required criteria, how/where proof will be collected, evidence axis, dependencies and stop/approval condition. Present a separate outcome/proof row for each step and each phase; a phase title alone is not an expected result or a verification method. Before execution proof is planned/NOT_RUN, never PASS. After execution use the same criterion IDs to compare expected result with actual result, original verdict, evidence and limitations. Missing historical phase definitions stay UNKNOWN rather than being invented.
 
 ## Validate planning input
 
@@ -26,7 +38,7 @@ A source brief, `U-` manifest, project profile, topology map, area doc, `DESIGN.
 
 ## Create documentation artifact
 
-Use confirmed spec slug and write `docs/plans/YYYY-MM-DD-<safe-kebab-slug>-plan.md`, unless repository has a compatible convention. When docs writes are authorized, create only missing compatible directories; do not reorganize existing docs.
+Use the resolved development-documentation root and confirmed spec slug for `plans/YYYY-MM-DD-<safe-kebab-slug>-plan.md`. A separate development root takes precedence. Use `docs/plans/` only when no separate root is configured and repository convention permits it. Keep internal plans out of product packaging and automatic Git staging. When docs writes are authorized, create only missing compatible directories; do not reorganize existing docs.
 
 When docs writes are not authorized, return complete inline plan as `PLAN_READY_TO_SAVE`. Documentation/design-doc writes do not grant product-code, Git, browser/process, remote, deploy, migration, dependency-install, secret, or interface-implementation authority.
 

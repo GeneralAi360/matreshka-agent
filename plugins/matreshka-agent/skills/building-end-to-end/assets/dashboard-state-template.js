@@ -1,5 +1,6 @@
 // Статическая проекция Matreshka. Не является разрешением, доказательством или источником истины.
 window.MATRESHKA_RUN_STATE = {
+  "projectBinding": null,
   "runId": "{{RUN_ID}}",
   "title": "{{GOAL}}",
   "locale": "ru",

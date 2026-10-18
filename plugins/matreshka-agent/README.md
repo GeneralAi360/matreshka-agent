@@ -2,7 +2,7 @@
 
 Matreshka Agent — переносимый permission-aware набор из **одиннадцати bundled skills** для coding agents. Он объединяет source-intent traceability, Project Intelligence, Design Intelligence, Security by Design, планирование, test-first implementation, независимые review/verification, Browser E2E, Visual Design Check, G4 blind acceptance и безопасный finish/handoff.
 
-> **Статус:** `0.5 development track` на `dev/0.5-brief-traceability-observability`. Versioned manifests пока намеренно `0.4.0`; это development snapshot, а не release `0.5.0`.
+> **Статус:** `0.5 development track` на `dev/0.5-project-reporting`. Versioned manifests пока намеренно `0.4.0`; это development snapshot, а не release `0.5.0`.
 
 ## Запуск проекта целиком
 
@@ -224,3 +224,16 @@ Static validation не равна native behavior proof. До release нужны
 2. disposable native full-stack acceptance для Project + Design Intelligence, Security hardening, IC/contexts, Browser E2E, Design Review, Visual Design Check, G4, Design/Docs Drift, dashboard/recovery;
 3. 5× repeatability evidence по blocking scenarios для каждого реально заявляемого host;
 4. затем version bump и publisher/security metadata.
+
+
+## Постоянный отчёт проекта и планирование по результатам
+
+Для проектной работы все 11 навыков применяют единый [контракт отчётности](references/project-reporting.md). Общий адрес — `<documentation-root>/.matreshka/project/report.html`; запуски/исправления остаются детализацией того же шага. В строгом read-only режиме навык возвращает сводку без файлов. Отдельный корень документации разработки имеет приоритет; внутренние планы, отчёты и тестовые данные не публикуются автоматически.
+
+Отчёт показывает цель, текущий согласованный план, раскрываемые шаги/фазы, ожидаемые и фактические результаты, источники, ограничения, последнюю проверку, следующее разрешённое действие, историю и ссылки на запуски. Техническое «проверено» требует актуальных доказательств и отпечатка проверяемого продукта; одобрение учитывается отдельно. Повторные тесты не увеличивают число уникальных проверок или шагов. Процент означает только проверенные шаги / шаги согласованного плана × 100, а не трудозатраты.
+
+Планирование помогает уточнить желаемый результат пользователя, затем строит крупные шаги с 1–5 связными фазами на шаг. Каждому шагу/фазе нужны ожидаемый результат и способ его проверки; после работы по тем же ID сопоставляются фактический результат, доказательства и ограничения. Исправление шага не создаёт новый шаг.
+
+`project_reporting.py` предоставляет `template`, `init`, `status`, `inventory`, `update`, `inspect`, `recover`. Stdlib-хранилище использует OS lock, обязательную CAS-ревизию, неизменяемые снимки и атомарное свидетельство фиксации. Повреждённый HTML/HEAD восстанавливается из последней корректной зафиксированной ревизии; осиротевший незакоммиченный снимок не принимается. Самодостаточный HTML не требует сервера, JavaScript или сети.
+
+Проверки: `python -B -m unittest discover -s plugins/matreshka-agent/tests -v` из корня репозитория. CI запускает те же сценарии на Ubuntu и Windows. Это проверки реализации/контрактов, а не заявление о развёртывании новой версии в пользовательском хосте. `inspect_plugin_origin.py --source-root <package> --installed-root <installed-package>` сравнивает фактические файлы, ref/SHA и manifest version без записи в cache; одинаковый номер версии не означает одинаковые исходники.

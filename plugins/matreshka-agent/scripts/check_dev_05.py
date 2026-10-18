@@ -438,7 +438,7 @@ PLUGIN_MARKERS = {
         "Токены",
     ),
     "skills/building-end-to-end/assets/dashboard-template.html": (
-        "Общий прогресс",
+        "Прогресс этого запуска",
         "Общее время",
         "Токены",
         "Карта проекта",

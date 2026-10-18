@@ -13,6 +13,23 @@
 
 {{ONE_OVERALL_OUTCOME}}
 
+## Whole-project outcome map
+
+- Development-documentation root: `{{RESOLVED_DEV_DOCS_ROOT}}`
+- Persistent report: `{{DEV_DOCS_ROOT}}/.matreshka/project/report.html`
+- Whole-project plan revision/approval/source: {{PLAN_REVISION_APPROVAL_AND_SOURCES}}
+- Current large step / explicit stop boundary: {{STEP_AND_STOP}}
+- User result / audience / representative usage: {{CONFIRMED_OUTCOME_AND_USAGE}}
+
+Use stable large steps. Each agreed step has 1–5 coherent phases; do not fill five by quota. A bounded change maps to an existing step. Missing historical phase/outcome information is UNKNOWN, not manufactured. Task complexity counts below are not roadmap step counts.
+
+| Step / phase ID | Source requirement | Expected observable result | Required criterion / proof method and axis | Dependency / stop / approval | Actual result / evidence / original verdict |
+| --- | --- | --- | --- | --- | --- |
+| {{EXISTING_STEP_ID}} | {{SOURCE}} | {{STEP_RESULT}} | {{STEP_CRITERION_AND_PROOF}} | {{GATE}} | NOT_RUN until observed |
+| {{EXISTING_PHASE_ID}} | {{SOURCE}} | {{PHASE_RESULT}} | {{PHASE_CRITERION_AND_PROOF}} | {{GATE}} | NOT_RUN until observed |
+
+Collect actual results against these same IDs after work. Preserve partial/unavailable verification and compare expected → actual → evidence/limitations → next action. Approval is separate from technical proof. Retests/fixes remain attempts inside the same step; material roadmap changes require a sourced PLAN_CHANGED event and higher revision.
+
 ## Non-goals
 
 - {{EXCLUDED_OUTCOME}}
@@ -148,7 +165,24 @@ Inspect-only:
 - Forbidden neighboring responsibility: {{ROLE_FORBIDDEN_RESPONSIBILITY}}
 - UI implementation follows frozen design identity; implementer does not edit `DESIGN.md` to make code compliant.
 
-### Non-goals and forbidden actions
+### Whole-project outcome map
+
+- Development-documentation root: `{{RESOLVED_DEV_DOCS_ROOT}}`
+- Persistent report: `{{DEV_DOCS_ROOT}}/.matreshka/project/report.html`
+- Whole-project plan revision/approval/source: {{PLAN_REVISION_APPROVAL_AND_SOURCES}}
+- Current large step / explicit stop boundary: {{STEP_AND_STOP}}
+- User result / audience / representative usage: {{CONFIRMED_OUTCOME_AND_USAGE}}
+
+Use stable large steps. Each agreed step has 1–5 coherent phases; do not fill five by quota. A bounded change maps to an existing step. Missing historical phase/outcome information is UNKNOWN, not manufactured. Task complexity counts below are not roadmap step counts.
+
+| Step / phase ID | Source requirement | Expected observable result | Required criterion / proof method and axis | Dependency / stop / approval | Actual result / evidence / original verdict |
+| --- | --- | --- | --- | --- | --- |
+| {{EXISTING_STEP_ID}} | {{SOURCE}} | {{STEP_RESULT}} | {{STEP_CRITERION_AND_PROOF}} | {{GATE}} | NOT_RUN until observed |
+| {{EXISTING_PHASE_ID}} | {{SOURCE}} | {{PHASE_RESULT}} | {{PHASE_CRITERION_AND_PROOF}} | {{GATE}} | NOT_RUN until observed |
+
+Collect actual results against these same IDs after work. Preserve partial/unavailable verification and compare expected → actual → evidence/limitations → next action. Approval is separate from technical proof. Retests/fixes remain attempts inside the same step; material roadmap changes require a sourced PLAN_CHANGED event and higher revision.
+
+## Non-goals and forbidden actions
 
 - {{NON_GOAL}}
 - Do not redefine a frozen `IC-xx`; return material contract drift to controller.

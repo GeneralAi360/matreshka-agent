@@ -313,3 +313,18 @@ On resume/mismatch:
 9. record mismatch + exact next action.
 
 A stale or broken screen is an observability defect, never proof that product/design is complete or incomplete.
+
+## A5 — persistent project parent
+
+The optional **run-detail view** described above never replaces the mandatory whole-project lifecycle in [project-reporting.md](../../../references/project-reporting.md). Use the configured development-documentation root for new run detail; link existing reports in place. Its percentage is explicitly run-stage progress, not project completion.
+
+Bind a synchronized run explicitly when recording it in the existing report:
+
+```text
+python3 -B <plugin-root>/scripts/sync_run_state.py <run-dir> \
+  --project-dir <dev-docs>/.matreshka/project --expected-project-revision <revision> \
+  --step-id <step-id> --phase-id <phase-id> --attempt <positive-attempt> \
+  --run-status <RUNNING_COMPLETE_FAILED_STOPPED_BLOCKED>
+```
+
+`--task-id` is optional if a task exists; `--phase-id` is optional for an unknown imported phase. All provided scope IDs must match the bound hierarchy. The helper records the run only, preserving terminal verdicts and retaining step progress. A CAS/lock failure leaves the synced run detail available but returns failure for the project binding; reload/reconcile. No run-only command satisfies a missing project report. No implicit success/proof promotion is permitted.

@@ -6,6 +6,10 @@ description: >-
 
 # Orchestrate Subagent Work
 
+## Project report lifecycle
+
+Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.
+
 Act as the controller. Retain ownership of scope, permissions, source-intent traceability, Project Intelligence, Design Intelligence, task state, Git actions, dispatches, review adjudication, verification, blind acceptance, design/documentation drift, recovery, and completion claims.
 
 ## Load only the detail needed
@@ -16,7 +20,7 @@ Act as the controller. Retain ownership of scope, permissions, source-intent tra
 - For Build End-to-End, read the source-qualified [interaction-mode contract](../building-end-to-end/references/interaction-modes.md), [context/ADR/progress contract](../building-end-to-end/references/context-and-decisions.md), and [brief traceability contract](../building-end-to-end/references/brief-traceability.md).
 - Read [project-profile.md](references/project-profile.md) during preflight. It routes to [project-intelligence.md](references/project-intelligence.md) for topology, area context, interfaces, runtime, documentation drift, and specialist routing.
 - When UI/UX is material, read [the controller Design Intelligence bridge](references/design-intelligence.md) and use the source-qualified [`designing-product-experience`](../designing-product-experience/SKILL.md), its [Design Intelligence contract](../designing-product-experience/references/design-intelligence.md), and [Apple-inspired design core](../designing-product-experience/references/design-core.md).
-- Read [run-observability.md](../building-end-to-end/references/run-observability.md) only when creating/updating/resuming/explaining the optional local dashboard projection.
+- Read [run-observability.md](../building-end-to-end/references/run-observability.md) when maintaining run-level detail beneath the mandatory persistent project report.
 - Read [context-optimizer.md](references/context-optimizer.md) when entering a new/existing/resumed project or when evidenced context pressure makes an optimizer audit proportionate.
 - Read [platform-adapters.md](references/platform-adapters.md) only for the active host.
 - Read [worktree-isolation.md](references/worktree-isolation.md) before creating/cleaning task worktrees.
@@ -129,7 +133,7 @@ Update the ledger before every transition/dispatch with confirmed spec/plan, U/S
 
 Use `NO_GIT_MODE` when needed. Preserve hashes/baseline without copying secrets/private data.
 
-Progress and dashboard are human projections. When authorized, dashboard state should show Project Intelligence, compact Design Intelligence, and—only when source-qualified data exists—a compact Context Optimizer block with runtime context and static bytes kept separate, plus truthful timing/token data. Dashboard never advances ledger, grants permission, authorizes optimizer mutation, or proves completion.
+The persistent whole-project HTML is mandatory under the shared reporting contract; run dashboards and progress are human projections. Resolve product/documentation roots once, reconcile existing state at entry and update on material transitions. Within the effective envelope, dashboard state should show Project Intelligence, compact Design Intelligence, and—only when source-qualified data exists—a compact Context Optimizer block with runtime context and static bytes kept separate, plus truthful timing/token data. Dashboard never advances ledger, grants permission, authorizes optimizer mutation, or proves completion.
 
 A task brief remains narrow:
 

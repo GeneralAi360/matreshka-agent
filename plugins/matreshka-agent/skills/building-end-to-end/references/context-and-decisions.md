@@ -60,3 +60,8 @@ Progress is a human-readable projection only. The controller ledger, actual repo
 5. record the mismatch and exact next action.
 
 A `COMPLETE` word in progress is never completion evidence. Progress must not contain raw logs, command transcripts, hidden reasoning, secrets, private data, or claims that tests passed without a link to the controller-owned evidence record.
+
+
+## Whole-project state and development documentation
+
+Apply [project-reporting.md](../../../references/project-reporting.md). Resolve a separate development-documentation root before choosing internal context, plans, ADRs, progress or run-state paths; it takes precedence over product-local examples. The permanent homepage is `<documentation-root>/.matreshka/project/report.html`. Run dashboards and human progress are detail beneath this record. Preserve current/historical source identity and explicit stop boundaries. On resume inspect changed metadata/fingerprints and affected facts rather than reloading every document. Product-facing versioned contracts keep their own locations. Internal state must not be automatically packaged, staged or published.

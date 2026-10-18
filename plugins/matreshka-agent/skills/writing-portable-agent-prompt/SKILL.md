@@ -6,6 +6,10 @@ description: >-
 
 # Write a Portable Agent Prompt
 
+## Project report lifecycle
+
+Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.
+
 Create a bounded prompt that another coding agent can execute without access to this conversation. Do not execute the resulting prompt.
 
 Read [portable-contract.md](references/portable-contract.md) to build the canonical task contract. Read [platform-adapters.md](references/platform-adapters.md) only when a target host is named or a host-specific feature is required. Copy [portable-prompt-template.md](assets/portable-prompt-template.md) for the final output.

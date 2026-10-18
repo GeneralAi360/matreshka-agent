@@ -5,6 +5,10 @@ description: Implement a bounded software feature or bug fix through a focused t
 
 # Implement with focused tests
 
+## Project report lifecycle
+
+Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.
+
 ## Establish the task boundary
 
 1. Read current request, applicable repository instructions, approved task brief and permission envelope.

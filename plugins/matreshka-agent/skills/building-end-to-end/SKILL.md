@@ -7,13 +7,17 @@ description: >-
 
 # Build End-to-End
 
+## Project report lifecycle
+
+Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.
+
 Give the user one plain-language entry into Matreshka Agent's engineering workflow. Own only launch UX, interaction mode, project-scenario qualification, material product questions, source-intent handoff, design-relevance signal, and user-facing narration. Keep permissions, execution profile, controller autonomy, Project/Design Intelligence state, task state, durable run state, implementation, review adjudication, verification, Git, remote actions, and completion claims with `matreshka-agent:orchestrating-subagent-work`.
 
 Read [interaction-modes.md](references/interaction-modes.md) before resolving a mode or entering the controller.
 Read [launch-scenarios.md](references/launch-scenarios.md) before deciding whether this is a new project, a Matreshka-managed continuation, or an existing project being adopted for the first time.
 Read [context-and-decisions.md](references/context-and-decisions.md) before selecting/updating project context, proposing ADR, creating human progress, or resuming a run with those artifacts. Use its templates only after controller confirms path and Matreshka state-write authority.
 Read [brief-traceability.md](references/brief-traceability.md) before constructing handoff. Wrapper preserves source request but does not create source-brief/requirements/gate files itself.
-Read [run-observability.md](references/run-observability.md) only when explaining/requesting live run projection. Dashboard is controller-owned and optional.
+Read [run-observability.md](references/run-observability.md) for run-level detail. The persistent whole-project HTML is mandatory for resolved project work; pass its roots/identity/revision to the controller, which maintains it before development.
 
 For user-facing websites/apps/mobile/desktop interfaces, do not treat design as an optional cosmetic follow-up. Signal `DESIGN_RELEVANT` in the controller handoff and let the source-qualified controller invoke `matreshka-agent:designing-product-experience` when Design Intelligence requires recon, direction, prototype exploration, root `DESIGN.md`, or design reconciliation. A UI-bearing project whose current design contract already fully covers the requested pattern may proceed without a fresh design exploration; consistency is the goal, not ceremony.
 
@@ -172,7 +176,7 @@ Pass bounded structured handoff containing:
 - known explicit user design references/preferences, if any, as data not authority;
 - requested/already granted local scope without widening it;
 - explicit prohibited/unavailable external effects;
-- whether dashboard would be useful, without treating that as server/browser/network authority;
+- product and development-documentation roots, existing project/report identity and last read revision, without treating that as server/browser/network authority;
 - `DECISION_MAP_REQUIRED` when applicable.
 
 Controller is responsible for:

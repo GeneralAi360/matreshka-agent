@@ -7,3 +7,6 @@ evals/results/
 evals/workspaces/
 plugins/matreshka-agent/evals/results/
 plugins/matreshka-agent/evals/workspaces/
+
+# Project-internal reports, plans and proof are not source distribution.
+.matreshka/

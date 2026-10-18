@@ -164,3 +164,23 @@ jobs:
         run: >-
           python3 -B plugins/matreshka-agent/scripts/doctor_dev_05.py
           plugins/matreshka-agent --marketplace-root .
+
+  project-reporting:
+    name: Persistent report scenarios (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Project lifecycle, integrity, concurrency, recovery and source comparison
+        run: python -B -m unittest discover -s plugins/matreshka-agent/tests -v
+      - name: Preserve legacy run compatibility
+        run: python -B plugins/matreshka-agent/scripts/sync_run_state.py --self-test

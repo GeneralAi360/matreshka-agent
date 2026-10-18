@@ -6,11 +6,19 @@ description: >-
 
 # Specify Software Work
 
+## Project report lifecycle
+
+Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.
+
 Turn ambiguity into a confirmed, testable specification. Do not implement code or produce an implementation task sequence.
 
 Read [specification-quality.md](references/specification-quality.md) for risk/question/documentation/self-review rules. Read [security-by-design.md](references/security-by-design.md) for mandatory security baseline/high-risk threat model. Use [specification-template.md](assets/specification-template.md) when saving an artifact.
 
 When the source-qualified controller supplies Design Intelligence for UI-bearing work, treat the provided design identity and bounded design summary as a confirmed experience contract, not permission. Do not read unrelated design history/prototypes merely for inspiration and do not replace root `DESIGN.md` from this skill.
+
+## Establish the user's intended result
+
+For an undefined project, guide onboarding around who will use it, the problem, the observable final result, representative usage, constraints/non-goals and acceptance. Inspect current documents first; ask only material missing questions and preserve already granted authorization. Translate the confirmed intent into a clear technical contract without inventing business facts. Carry expected outcomes and proof methods forward to large roadmap steps and their 1–5 coherent phases; do not execute a specification-only request. Use the external development-documentation root for internal specs when configured, ahead of `docs/specs/` defaults.
 
 ## Establish the specification boundary
 

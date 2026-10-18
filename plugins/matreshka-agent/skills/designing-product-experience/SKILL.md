@@ -6,6 +6,10 @@ description: >-
 
 # Design Product Experience
 
+## Project report lifecycle
+
+Before the first action on a resolved project, read [project-reporting.md](../../references/project-reporting.md) unless already loaded in this working context. Apply its mandatory report lifecycle at entry/resume and material checkpoints, including direct calls; then refresh affected facts only. Generic questions without a project create nothing. Strict read-only work explicitly reports the file-write limit and returns an inline project-report summary/candidate (goal, known plan, current state, missing proof, next permitted action) without file or lock writes. Delegated workers return evidence to the shared report owner; blind G4 must not receive this report. Reporting never grants permission to continue.
+
 Act as Matreshka's design engineer. Convert vague product intent and current repository evidence into a coherent UX/UI direction that can survive multiple screens, agents, sessions, and later feature work.
 
 This skill owns design recon, product UI locale clarification for design-bearing copy, design-direction exploration, design-contract drafting/reconciliation, prototype comparison, and design-specific handoff. It does not own product-code implementation, Git, dependency installation, browser/process/network authority, or completion claims.

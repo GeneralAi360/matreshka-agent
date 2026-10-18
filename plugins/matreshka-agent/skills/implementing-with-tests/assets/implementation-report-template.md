@@ -94,3 +94,15 @@ These are candidates only. Controller owns Design Drift Gate and Documentation D
 - Permissions still required: `<actions or none>`
 - Concerns/evidence gaps: `<list or none>`
 - Exact next action: `<controller action>`
+
+
+## Outcome comparison for the project report
+
+- Project / step / phase / task / attempt: {{STABLE_SCOPE_IDS}}
+- Shared report owner / candidate-only or authorized standalone update: {{OWNER_AND_WRITE_SCOPE}}
+
+| Criterion ID / axis | Expected result | Actual observed result | Original verdict / quality | Evidence source + captured fingerprint | Limitations / next action |
+| --- | --- | --- | --- | --- | --- |
+| {{CRITERION}} | {{EXPECTED}} | {{ACTUAL_OR_NOT_RUN}} | {{VERDICT_AND_QUALITY}} | {{PROOF_OR_MISSING}} | {{LIMIT_OR_NEXT}} |
+
+Count unique checks by check ID + compared subject; do not add repeated runs. Preserve failure/partial results. Technical verification, user approval and next-step permission remain separate. A delegated reviewer/verifier returns this evidence to the owner; blind G4 never consumes project reports/plans.

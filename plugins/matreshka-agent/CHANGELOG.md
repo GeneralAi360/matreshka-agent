@@ -8,6 +8,12 @@ All notable changes to Matreshka Agent are recorded here.
 
 ### Added
 
+- Mandatory whole-project offline report shared by all eleven direct/controller skill entries, with stable project/step/phase/task/attempt identities and external development-documentation roots.
+- Evidence-aware expected/actual outcome projection, independent approval state, current-work scope, explicit unknown/conflict/quality limits and non-inflating step/check metrics.
+- Python stdlib CAS/OS-lock store, immutable state+HTML revisions, atomic commit witnesses, full-view integrity checks and explicit last-good recovery with damaged-byte preservation.
+- Outcome-based onboarding and planning: large steps, one to five coherent phases, required results/proof methods and later criterion-by-criterion comparison.
+- Read-only source/ref/SHA/installed-byte inspection; explicit run-to-project binding without status promotion; Ubuntu/Windows reporting scenario CI.
+
 - Source-brief preservation and stable `U-` user-intent rows separated from `S-` Security-by-Design controls.
 - G1 clarification completeness, G2 independent brief→spec coverage, G3 bidirectional requirement↔task/proof traceability, and G4 fresh blind acceptance.
 - Public modes `INTERVIEW`, `ASSISTED`, `FULL_AUTO` and scenarios `NEW_PROJECT`, `CONTINUE_PROJECT`, `EXISTING_PROJECT`; controller autonomy remains separate.
