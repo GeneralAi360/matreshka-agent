@@ -157,7 +157,7 @@ Optional Codex wrapper: `/prompts:matreshka-design` после копирова�
 
 ## Dashboard / run-state hardening
 
-Dashboard — projection и не может дать permission/COMPLETE. После сравнения с ошибками Autopilot v1.0.1+ добавлены отдельные механические guardrails:
+Dashboard — projection и не может дать permission/COMPLETE. Механические проверки Matreshka Agent защищают синхронизацию и достоверность состояния:
 
 - `dashboard.html` carries an embedded last-known-good snapshot and survives missing sibling state;
 - `scripts/sync_run_state.py` validates state, preserves the previous snapshot on failure and atomically refreshes the projection without server/PID/port/process logic;

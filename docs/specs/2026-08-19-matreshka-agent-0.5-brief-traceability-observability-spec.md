@@ -16,7 +16,7 @@ For Build End-to-End runs with authorized local Matreshka state writes, Matreshk
 
 The 0.4 pipeline can fully verify an incomplete specification if a requirement was lost while translating the user's original words into the specification. Progress is also available mainly as Markdown, which is durable but not a glanceable live view for a non-technical user.
 
-The new layer must solve both problems without copying Autopilot's broader Git behavior, committing the raw brief by default, allowing same-checkout parallel writers, or letting generated project memory become repository authority automatically.
+The new layer must solve both problems while preserving narrow Git authority, keeping raw briefs out of commits by default, preventing same-checkout parallel writers, and preventing generated project memory from becoming repository authority automatically.
 
 ## Architecture
 
@@ -180,7 +180,7 @@ Every selected `S-16` through `S-22` control requires a negative proof in the pl
 - No committing the raw source brief by default.
 - No automatic rewrite of `AGENTS.md`, `CLAUDE.md`, repository rules, hooks, or global memory.
 - No same-checkout parallel writers.
-- No replacement of Matreshka's existing reviewer/verifier/security model with Autopilot's review model.
+- Preserve Matreshka's existing reviewer/verifier/security model rather than substituting an external instruction model.
 - No requirement that a dashboard be displayable on every host.
 
 ## Compatibility

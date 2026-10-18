@@ -46,7 +46,7 @@ All notable changes to Matreshka Agent are recorded here.
 - Cross-skill Design Intelligence behavioral evals in specification, implementation, review and verification suites.
 - `scripts/validate_dev_05.py` / `doctor_dev_05.py` development adapters around the proven 0.4 validator/doctor core.
 - `scripts/check_dev_05_behavioral_contracts.py` to require downstream design eval coverage, reviewer-budget rules and CI linkage.
-- **Autopilot v1.0.1+ regression hardening**:
+- **Matreshka run-state regression hardening**:
   - A1 embedded last-known-good dashboard snapshot;
   - A2 `scripts/sync_run_state.py` atomic projection synchronization/self-test without server/PID/port logic;
   - A3 explicit `stageOrder`/`stateIntegrity` stage-transition invariants;
@@ -87,7 +87,7 @@ All notable changes to Matreshka Agent are recorded here.
 - Package-context growth is now measured separately from runtime token telemetry; static byte budgets must never be shown as runtime token counts.
 - Root/package README and Design Intelligence plan document the current development architecture and validation sequence.
 - Package description/docs describe **eleven** bundled skills.
-- Development CI now runs package validation → component integrity → cross-skill contracts → security hardening → run-state self-test → context budget → repeatability-plan validation → Autopilot-regression guard → doctor.
+- Development CI now runs package validation → component integrity → cross-skill contracts → security hardening → run-state self-test → context budget → repeatability-plan validation → run-state regression guard → doctor.
 
 ### Security
 

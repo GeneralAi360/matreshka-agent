@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Guard Matreshka against regression classes learned from Autopilot v1.0.1+.
+"""Guard Matreshka run-state integrity and evidence boundaries against regressions.
 
 This is a static/offline contract check. It does not claim native behavior.
 """
@@ -15,7 +15,7 @@ sys.dont_write_bytecode = True
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Check Autopilot-derived hardening invariants.")
+    parser = argparse.ArgumentParser(description="Check Matreshka run-state hardening invariants.")
     parser.add_argument(
         "plugin_path",
         nargs="?",
@@ -138,12 +138,12 @@ def main() -> int:
         require(workflow, marker, "CI hardening wiring", failures)
 
     if failures:
-        print(f"Autopilot-regression hardening: FAIL ({len(failures)} finding(s))")
+        print(f"Matreshka run-state regression hardening: FAIL ({len(failures)} finding(s))")
         for failure in failures:
             print(f"- {failure}")
         return 1
 
-    print("Autopilot-regression hardening: PASS")
+    print("Matreshka run-state regression hardening: PASS")
     print("- A1 embedded last-known-good dashboard snapshot")
     print("- A2 atomic state validation/synchronization")
     print("- A3 mechanically checked stage invariants")

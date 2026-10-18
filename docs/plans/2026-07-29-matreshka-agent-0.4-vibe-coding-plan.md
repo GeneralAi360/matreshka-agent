@@ -2,7 +2,7 @@
 
 - Status: `PLAN_READY`
 - Confirmed design: `docs/specs/2026-07-29-matreshka-agent-0.4-vibe-coding-spec.md`
-- Project root: `/workspace/scratch/d534f6c1b732/matreshka-agent`
+- Project root: the resolved Matreshka Agent repository root.
 - Published baseline: `origin/main` at `561bdc925df09dc18c5b1ca0af2d97c039474682`
 - Local equivalent baseline: `2193b601b377bb60c4ff4e5e80fb22c4d70c5ffe`
 - Baseline tree: `b5487db9b0cd8312e24738506dad8c10891d8815`
@@ -17,7 +17,7 @@ Implement Matreshka Agent `0.4.0` as an additive, plain-language `Build End-to-E
 
 ## Non-goals
 
-- Do not copy or depend on Matt Pocock's skills, Nick Vels' Autopilot, or another external runtime skill package.
+- Do not copy or depend on an external runtime instruction package.
 - Do not add a separate Wayfinder skill, issue tracker, root `PROGRESS.md`, hook, MCP server, app, global memory, background process, telemetry, or dependency.
 - Do not rename or change the invocation meaning of the existing nine Matreshka skills.
 - Do not duplicate controller logic inside `building-end-to-end`.
@@ -174,7 +174,7 @@ Inspect-only:
 
 - Do not add context/ADR/progress templates yet; `T2` owns them.
 - Do not change controller behavior, verification, finishing, version numbers, manifests, marketplaces, READMEs, or changelog.
-- Do not import external Autopilot/skills or add an external dependency.
+- Do not import external instruction packages or add an external dependency.
 - No child agents or adjacent fixes.
 - No Git, network, secret, deploy, migration application, or remote action. Controller-owned boundary: any later Git publication.
 
@@ -1001,7 +1001,7 @@ For each available host:
 
 ## Remote handoff
 
-- Local operator: controller in `/workspace/scratch/d534f6c1b732/matreshka-agent`.
+- Local operator: controller in the resolved Matreshka Agent repository root.
 - Remote operator/system: user or separately authorized publisher on GitHub and each native host/plugin marketplace.
 - Allowed preparation under this plan: implementation plan, local code/docs changes only after later authorization, offline validator/self-test/doctor evidence, native smoke-test instructions, and exact Git handoff.
 - Forbidden execution under this plan: Git branch/worktree creation, stage, commit, push, PR, force-push, marketplace publication, native installation, deploy, provider call, secret access, destructive cleanup, or remote mutation.

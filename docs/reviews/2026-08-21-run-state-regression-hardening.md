@@ -1,16 +1,13 @@
-# Matreshka Agent 0.5 — Autopilot v1.0.1+ Regression Hardening
+# Matreshka Agent 0.5 — Run-State Regression Hardening
 
 - Date: 2026-08-21
 - Branch: `dev/0.5-brief-traceability-observability`
-- Source audit: `nick-vels/skills` v1.0.1 plus post-v1.0.1 fixes on `main`
 - Scope: regression classes that could plausibly affect Matreshka 0.5
 - Release policy: no `0.5.0` claim from this audit alone
 
 ## Why this pass exists
 
-Autopilot's own v1.0.1 audit fixed major execution-quality gaps (real RED before code, root-cause repair, reviewer inputs, state survival through compaction). Subsequent real runs then exposed additional failures in dashboard/state plumbing and transition bookkeeping.
-
-Matreshka had already avoided most Autopilot-specific server/PID/path architecture, but this pass found five transferable risk classes worth closing before native full-stack acceptance.
+This pass documents five Matreshka risk classes: snapshot availability, reliable state synchronization, stage-transition consistency, instruction-size budgets and repeatable evidence. These checks complement the existing test-first, review, recovery and permission contracts before native full-stack acceptance.
 
 ## Result
 
@@ -82,7 +79,7 @@ NO Git
 NO product/test/DESIGN.md/ledger mutation
 ```
 
-This deliberately takes the useful lesson from Autopilot's `sync.py` without adopting its host/process lifecycle complexity.
+The synchronizer is limited to local state projection and does not own host processes.
 
 The script includes `--self-test` covering successful normalization, parseability, embedded snapshot update, conflicting active-stage rejection, and preservation of the previous dashboard on invalid state.
 
@@ -179,7 +176,7 @@ validate_dev_05.py --self-test
 
 `check_autopilot_regressions.py` specifically fails if A1–A5 files/markers lose their wiring to controller observability or CI.
 
-## What was deliberately NOT copied from Autopilot
+## Runtime and authority boundaries
 
 - no global or run-owned HTTP dashboard server requirement;
 - no PID-file lifecycle;

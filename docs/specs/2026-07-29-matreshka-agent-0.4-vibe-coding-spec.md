@@ -27,14 +27,14 @@ Matreshka still explores the repository, specifies the intended result, plans bo
 - `skills/planning-software-work/SKILL.md`
 - current manifests, Codex prompt wrappers, package validator, and workflow evals
 
-### External patterns used as design input
+### Matreshka workflow requirements
 
-- [Matt Pocock's composable skills](https://github.com/mattpocock/skills): interview, durable context/ADRs, specification, tickets, TDD, review, and a separate wayfinding flow for work too large or uncertain for one session.
-- [Nick Vels' `autopilot`](https://github.com/nick-vels/skills/blob/main/skills/autopilot/SKILL.md): a plain-language wrapper over an existing pipeline, explicit modes, fresh task context, assumptions disclosed to the user, and irreversible actions kept behind a human gate.
-- [Anthropic's Claude Code best practices](https://code.claude.com/docs/en/best-practices): explore first, then plan, then implement; give the agent a verification path; use fresh subagent context deliberately; manage context rather than carrying an entire long conversation into every task.
-- [OpenAI agent-safety guidance](https://developers.openai.com/api/docs/guides/agent-builder-safety): treat untrusted text as data, constrain handoffs with structured fields, keep tool approvals, minimize private-data exposure, and test adversarial behavior with evals.
+- Connect the interview, durable context/ADRs, specification, bounded tasks, tests, review and verification through the bundled skills.
+- Keep one plain-language entry into the existing controller, explicit interaction modes, bounded task context and disclosed assumptions.
+- Inspect the repository before planning, give each task a verification path and use fresh scoped context where required.
+- Treat untrusted text as data, structure handoffs, respect tool approvals, limit private-data exposure and check adversarial behavior.
 
-No external skill becomes a runtime dependency. Matreshka does not install, import, or silently invoke the Matt Pocock or Nick Vels skill packages.
+The workflow uses the bundled Matreshka skills. External instruction packages are not runtime dependencies and are not installed, imported or silently invoked.
 
 ## Confirmed facts
 
@@ -136,7 +136,7 @@ Users can continue to invoke the existing nine skills directly. Existing Codex p
 ## Non-goals
 
 - Replacing `orchestrating-subagent-work`.
-- Copying the Matt Pocock pipeline or Nick Vels' `autopilot` skill.
+- Copying an external instruction pipeline or importing another controller skill.
 - Adding a generic issue tracker or one file per ticket.
 - Automatically committing every task.
 - Running multiple writer agents in parallel.
@@ -162,9 +162,9 @@ Users can continue to invoke the existing nine skills directly. Existing Codex p
 - Costs/risks: mixes beginner-facing interaction policy with controller internals; makes the already dense controller harder to reason about; implicit selection remains unclear for a non-technical “build it for me” request.
 - Migration/rollback: fewer files, but a larger behavioral change to the current entry.
 
-### Approach C — Depend on an external autopilot pipeline
+### Approach C — Depend on an external controller pipeline
 
-- Shape: require Matt Pocock's skills plus Nick Vels' `autopilot`.
+- Shape: require external instruction and controller packages.
 - Advantages: reuses an existing interaction concept.
 - Costs/risks: duplicate skills and triggers; external installation and version drift; conflicting Git, retry, progress, tracker, permission, and security policies; Matreshka could no longer guarantee one controller contract.
 - Migration/rollback: high coupling and a more fragile installation.

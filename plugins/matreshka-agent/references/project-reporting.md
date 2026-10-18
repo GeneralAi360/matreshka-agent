@@ -57,7 +57,7 @@ fingerprints in evidence; a hash proves unchanged bytes, not semantic correctnes
 Use stable ASCII machine IDs (localized display titles separately): **project → step → phase → task → attempt/run**. A fix or retest is an
 attempt of the same task/phase/step. It creates no new agreed step. A small task uses
 its existing step, with UNKNOWN mapping if the real plan cannot yet be reconstructed.
-Never manufacture an eight-step roadmap from only knowledge that eight steps exist.
+Knowing a roadmap's step count does not establish its step names, phases or results.
 Unknown imported steps can have empty phase/criterion arrays, visibly unknown.
 
 ## Onboarding and an outcome-based plan
@@ -70,8 +70,8 @@ a plan-only request stays a plan. Existing authorization remains effective.
 
 The whole-project plan has large stable steps; each agreed step has **1–5 coherent
 phases**, a ceiling rather than a quota. Tasks are implementation details within phases;
-existing task complexity budgets do not require that many project steps. Preserve an
-already agreed eight-step plan as eight steps; a step-4 fix remains inside step 4.
+existing task complexity budgets do not require that many project steps. Preserve the
+actual agreed step count; a fix remains inside its existing step.
 
 Every agreed step and phase has an expected observable result, required acceptance
 criteria, a verification method, evidence axis (TECHNICAL, VISUAL or ACCEPTANCE),
@@ -100,8 +100,8 @@ retain NOT_RUN/UNAVAILABLE for that axis without declaring product development f
 Approval/waiver needs an explicit decision source and current provenance. A statement
 source records what the user said; it is not a technical test. Next action ALLOWED
 requires a current explicit decision basis. Reporting does not interpret that prose
-as a command or itself authorize work. Preserve explicit stops such as “do not start
-step 5” even if earlier tests pass. Show unknown authority, blockers and needed decisions.
+as a command or itself authorize work. Preserve the project's actual stop boundary
+even if earlier tests pass. Show unknown authority, blockers and needed decisions.
 
 Progress is separate from current activity. Only show a percentage for an actual
 current agreed plan without unresolved conflicts: verified supported steps / current

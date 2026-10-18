@@ -167,7 +167,7 @@ G4 слепо проверяет исходный запрос и не чита�
 
 Dashboard показывает progress, Project/Design Intelligence, tests/security, E2E/G4, permissions, время и truthful token telemetry. Если host не отдаёт точный token counter — `Недоступно`. Dashboard — projection, не authority/evidence.
 
-После аудита ошибок Autopilot v1.0.1+ в 0.5 добавлен отдельный hardening:
+В 0.5 добавлены отдельные проверки устойчивости Matreshka Agent:
 
 - **A1 Embedded Snapshot** — `dashboard.html` несёт последний корректный snapshot и остаётся читаемым, даже если sibling `dashboard-state.js` недоступен в preview/data/file режиме;
 - **A2 Atomic Run-State Sync** — `sync_run_state.py` валидирует state, атомарно пишет projection и обновляет только marked snapshot block; не запускает server/browser и не трогает PID/ports;
