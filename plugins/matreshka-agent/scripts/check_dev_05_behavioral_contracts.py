@@ -14,6 +14,17 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 
 REQUIRED_CASES = {
+    "skills/building-end-to-end/evals/evals.json": {
+        "russian-interview-goal-menu-bootstrap",
+        "static-site-no-runtime-bootstrap",
+        "session-start-reconcile-stale-dashboard",
+        "session-end-unfinished-confirmed-feedback",
+        "capability-audit-distinguishes-tools-and-skills",
+        "read-only-onboarding-no-false-artifacts",
+        "existing-bootstrap-preserves-rules-feedback",
+        "session-end-write-failure-honesty",
+        "menu-no-host-dropdown-claim",
+    },
     "evals/g2-rigor-evals.json": {
         "g2-clean-inline-delivery-complete-rigor-degraded",
         "g2-material-gap-blocks-plan",

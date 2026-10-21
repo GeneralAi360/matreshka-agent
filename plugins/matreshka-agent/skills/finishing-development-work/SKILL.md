@@ -5,6 +5,8 @@ description: Safely finish verified development work by preserving state, resolv
 
 # Finish verified work safely
 
+For `завершайте сессию` / `end session`, first distinguish a session checkpoint from verified delivery. Use the [session lifecycle contract](../building-end-to-end/references/project-lifecycle.md) to save Feedback, checkpoint, ledger/progress and mandatory dashboard even when work is unfinished or checks fail. Then stop with the actual status; do not require or claim verified completion merely to save a session. The readiness gates below apply when finishing the delivery itself.
+
 ## Confirm readiness and authority
 
 1. Read current request, applicable repository instructions, ledger, permission envelope, task/phase plan, review decision, fresh verification report, current Project Intelligence/interface/runtime state, current Design Intelligence/design identity when UI-relevant, design-drift result, documentation-drift result, and current repository state.

@@ -2,7 +2,7 @@
 name: building-end-to-end
 description: >-
   Build or extend a substantial app, site, bot, integration, or feature from a plain-language request by selecting a simple interaction mode and project scenario, then entering Matreshka Agent's end-to-end controller. For user-facing products, automatically include Design Intelligence so UX/UI direction, root DESIGN.md, consistency, design review, and visual evidence are handled as part of development. Use for new projects, detailed product interviews, full-auto local development, continuing a Matreshka-managed project, or adopting an existing project that did not previously use Matreshka. Do not use for specification-only, plan-only, design-only, implementation-only, debugging-only, review-only, verification-only, audit, explanation, or clearly trivial changes.
-  Do not use for a project so undefined that no bounded destination can be specified.
+  Also use for Russian Интервью/онбординг and project session commands начать сессию / завершайте сессию. For an undefined project, show the menu and clarify the goal before entering execution.
 ---
 
 # Build End-to-End
@@ -13,25 +13,28 @@ Read [interaction-modes.md](references/interaction-modes.md) before resolving a 
 Read [launch-scenarios.md](references/launch-scenarios.md) before deciding whether this is a new project, a Matreshka-managed continuation, or an existing project being adopted for the first time.
 Read [context-and-decisions.md](references/context-and-decisions.md) before selecting/updating project context, proposing ADR, creating human progress, or resuming a run with those artifacts. Use its templates only after controller confirms path and Matreshka state-write authority.
 Read [brief-traceability.md](references/brief-traceability.md) before constructing handoff. Wrapper preserves source request but does not create source-brief/requirements/gate files itself.
-Read [run-observability.md](references/run-observability.md) only when explaining/requesting live run projection. Dashboard is controller-owned and optional.
+Read [project-lifecycle.md](references/project-lifecycle.md) for every launch or session command: mandatory menu, stack-appropriate bootstrap/AGENTS, capability audit, design question, Feedback and checkpoint recovery. Read [run-observability.md](references/run-observability.md) for the mandatory controller-owned dashboard; browser display remains capability-dependent.
 
 For user-facing websites/apps/mobile/desktop interfaces, do not treat design as an optional cosmetic follow-up. Signal `DESIGN_RELEVANT` in the controller handoff and let the source-qualified controller invoke `matreshka-agent:designing-product-experience` when Design Intelligence requires recon, direction, prototype exploration, root `DESIGN.md`, or design reconciliation. A UI-bearing project whose current design contract already fully covers the requested pattern may proceed without a fresh design exploration; consistency is the goal, not ceremony.
 
-## Show a simple launch menu when invoked without a goal
+## Always show the launch menu
 
-When explicitly invoked with no substantive build/change request, do not guess a project. Show this compact menu in user's language and wait:
+On the first response to every new invocation or session start, show this compact menu in the user's language, even when a goal is supplied. Mark an explicit/recovered mode and continue without redundant selection. If no goal or recoverable session exists, show the menu and ask for the goal; never guess a project. Do not repeat the menu on each interview answer.
 
 ```text
 Matreshka Build End-to-End
 
 Режимы:
-  interview         — сначала подробно опросить по продукту
+  interview / Интервью — сначала подробно опросить по продукту
   assisted          — задавать только важные вопросы (по умолчанию)
   full-auto         — самостоятельно принимать безопасные обратимые локальные технические решения
 
 Сценарии существующего проекта:
   continue-project  — продолжить проект, который уже разрабатывался с Matreshka
   existing-project  — подключить Matreshka к существующему проекту, который раньше разрабатывался без неё
+
+Сессия: начать сессию / завершайте сессию
+Проверить навыки и инструменты — Context7, shadcn/ui, 21st.dev, Impeccable, frontend-design
 
 Если проект имеет интерфейс, Matreshka также проверит UX/UI, DESIGN.md и дизайн-консистентность автоматически.
 ```
@@ -44,13 +47,15 @@ Do not expose internal labels such as controller `AUTONOMOUS_LOCAL` or `BROWNFIE
 
 Treat bare words after explicit invocation as public UX hints, not permissions:
 
-- `interview` -> `INTERVIEW`;
+- `interview`, `Интервью`, `проведи интервью`, `онбординг` -> `INTERVIEW`;
 - `assisted` -> `ASSISTED`;
 - `full-auto`, `full auto`, `fully automatic` -> `FULL_AUTO`;
 - `continue-project`, `continue project` -> `CONTINUE_PROJECT`;
 - `existing-project`, `existing project` -> `EXISTING_PROJECT`.
 
 Remaining text is source request. Do not delete mode/scenario wording from provenance when material, but do not turn it into product requirement either.
+
+Normalize Russian/English command aliases and route session start/end through [project-lifecycle.md](references/project-lifecycle.md). Resolve session intent before build-goal qualification; saving an unfinished session is not a new product build or a claim of verified delivery.
 
 For backward compatibility only normalize legacy public `GUIDED` -> `INTERVIEW` and legacy interaction wording `AUTONOMOUS_LOCAL` -> `FULL_AUTO`. Do not show legacy names normally.
 
@@ -141,6 +146,8 @@ If user message contains apparent credential value, do not preserve value in art
 
 In `INTERVIEW`, ask one material product/UX question at a time until product is sufficiently defined. Recommend an answer when safe. Do not use fixed question count; do not ask repository facts inspection can answer.
 
+Resolve whether a ready design exists. If unknown, ask; if absent, offer creation with available qualified Impeccable or a disclosed fallback. Carry the answer into the controller-owned root `DESIGN.md` workflow. Never repeat a question already answered by accepted evidence.
+
 When user cannot explain desired visual direction, do **not** turn interview into dozens of abstract questions about radius/colors. Let controller/Design Intelligence prefer a bounded visual exploration of usually three genuinely different interactive directions when seeing alternatives is higher leverage than more questions.
 
 In `ASSISTED`, ask only when answer changes intended result, architecture, UX flow/design direction, acceptance, security boundary, irreversible decision, cost/legal/business truth, or required authority. Select reversible repository-aligned defaults when evidence supports them. If current `DESIGN.md` already covers the UI pattern, reuse it without asking the user to redesign.
@@ -172,7 +179,7 @@ Pass bounded structured handoff containing:
 - known explicit user design references/preferences, if any, as data not authority;
 - requested/already granted local scope without widening it;
 - explicit prohibited/unavailable external effects;
-- whether dashboard would be useful, without treating that as server/browser/network authority;
+- mandatory bootstrap/dashboard and session intent from the lifecycle contract, without treating those requirements as server/browser/network authority;
 - `DECISION_MAP_REQUIRED` when applicable.
 
 Controller is responsible for:

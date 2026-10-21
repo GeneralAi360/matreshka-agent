@@ -1,5 +1,21 @@
 [
   {
+    "query": "$matreshka-agent:building-end-to-end Интервью",
+    "should_trigger": true
+  },
+  {
+    "query": "Начать сессию в текущем проекте Matreshka; покажи, где остановились.",
+    "should_trigger": true
+  },
+  {
+    "query": "Завершайте сессию разработки: сохраните checkpoint и мои предпочтения для этого проекта.",
+    "should_trigger": true
+  },
+  {
+    "query": "Переведи фразу 'начать сессию' на английский.",
+    "should_trigger": false
+  },
+  {
     "query": "Собери этот SaaS под ключ: от требований до проверенного локального результата.",
     "should_trigger": true
   },

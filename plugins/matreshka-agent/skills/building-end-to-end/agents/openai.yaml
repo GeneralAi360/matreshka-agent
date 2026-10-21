@@ -1,6 +1,6 @@
 interface:
   display_name: "Build End-to-End · Matreshka Agent"
-  short_description: "Разработка нового или существующего проекта под ключ"
-  default_prompt: "Навык $building-end-to-end из Matreshka Agent вызывай как $matreshka-agent:building-end-to-end. Выбери режим: interview — сначала подробно опросить по продукту; assisted — задавать только важные вопросы (по умолчанию); full-auto — самостоятельно принимать безопасные обратимые локальные технические решения. Для существующих проектов: continue-project — продолжить проект, который уже вела Matreshka; existing-project — подключить Matreshka к существующему проекту, который раньше разрабатывался без неё. Затем опиши, что нужно создать или изменить."
+  short_description: "Интервью, разработка и продолжение проекта с dashboard"
+  default_prompt: "Используй $matreshka-agent:building-end-to-end ($building-end-to-end). Сразу покажи меню: interview / Интервью — подробный опрос; assisted — только важные вопросы, обычные обратимые решения самостоятельно; full-auto — безопасные локальные решения самостоятельно. Сценарии: continue-project — продолжить; existing-project — подключить существующий проект. Команды: начать сессию; завершайте сессию; проверить навыки и инструменты. Если режим уже указан, отметь его без повторного выбора. Для нового проекта подготовь подходящую структуру, AGENTS.md, Feedback и dashboard; для интерфейса выясни, есть ли дизайн, предложи создание и сохрани результат в DESIGN.md."
 policy:
   allow_implicit_invocation: true

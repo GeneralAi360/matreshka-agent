@@ -2,6 +2,8 @@
 
 Use this contract to provide a glanceable local view of a Build End-to-End run without creating a second source of truth.
 
+The dashboard artifact is mandatory for every Build End-to-End project run, not opt-in. Initialize it with the authorized controller ledger/run ID during onboarding, then refresh at meaningful transitions and session start/end. Do not wait for implementation. A menu-only invocation without a goal creates no dummy run. If exact writes are unavailable, show the projection inline and explicitly mark durable dashboard creation pending; do not claim it exists. Opening a browser or starting a server remains separate and optional. Always return the local dashboard link when created. See [project-lifecycle.md](project-lifecycle.md).
+
 ## Projection, never authority
 
 Authoritative order:

@@ -16,7 +16,7 @@ Act as the controller. Retain ownership of scope, permissions, source-intent tra
 - For Build End-to-End, read the source-qualified [interaction-mode contract](../building-end-to-end/references/interaction-modes.md), [context/ADR/progress contract](../building-end-to-end/references/context-and-decisions.md), and [brief traceability contract](../building-end-to-end/references/brief-traceability.md).
 - Read [project-profile.md](references/project-profile.md) during preflight. It routes to [project-intelligence.md](references/project-intelligence.md) for topology, area context, interfaces, runtime, documentation drift, and specialist routing.
 - When UI/UX is material, read [the controller Design Intelligence bridge](references/design-intelligence.md) and use the source-qualified [`designing-product-experience`](../designing-product-experience/SKILL.md), its [Design Intelligence contract](../designing-product-experience/references/design-intelligence.md), and [Apple-inspired design core](../designing-product-experience/references/design-core.md).
-- Read [run-observability.md](../building-end-to-end/references/run-observability.md) only when creating/updating/resuming/explaining the optional local dashboard projection.
+- For every Build End-to-End run or session command, read [project-lifecycle.md](../building-end-to-end/references/project-lifecycle.md) and [run-observability.md](../building-end-to-end/references/run-observability.md). Bootstrap/AGENTS, capability audit, Feedback, checkpoint and dashboard are required within authorized scope; display is capability-dependent.
 - Read [context-optimizer.md](references/context-optimizer.md) when entering a new/existing/resumed project or when evidenced context pressure makes an optimizer audit proportionate.
 - Read [platform-adapters.md](references/platform-adapters.md) only for the active host.
 - Read [worktree-isolation.md](references/worktree-isolation.md) before creating/cleaning task worktrees.
@@ -82,6 +82,8 @@ Recommend exactly one execution profile: maximum speed, balanced, or maximum qua
 Translate broad autonomy into a finite permission envelope. `FULL_AUTO` does not grant Git, network, dependency install, browser launch/download, local process/port, test-data mutation, `DESIGN.md` writes, prototype writes, secrets, provider, deploy, destructive, or remote authority.
 
 Initialize the versioned ledger after bounded permission confirmation and before specification/planning. Record source intent, topology/runtime, Design Intelligence state, mode/profile/autonomy, effective permissions, browser capability, and exact next action separately. Materialize run state only inside authorized paths.
+
+For Build End-to-End, initialize the mandatory dashboard/progress with that ledger, including during onboarding. After minimum goal/stack/path decisions, materialize the proportional project bootstrap before implementation using the lifecycle contract; preserve existing content. Existing local authorization suffices for covered artifacts: do not invent another approval gate. If read-only, report exact pending artifacts inline. Session end saves unfinished state without requiring delivery readiness; session start reconciles checkpoint/Feedback/current files before resuming.
 
 ## Preserve source intent before specification
 

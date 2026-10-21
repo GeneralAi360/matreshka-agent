@@ -39,7 +39,7 @@ Do not create an ADR for a routine file name, local helper, small refactor, obvi
 
 ## Maintain human-readable progress
 
-For every multi-task Build End-to-End run, after the run ID and Matreshka state-write authority exist, use:
+For every Build End-to-End run (including single-task), after the run ID and Matreshka state-write authority exist, use:
 
 ```text
 docs/runs/<run-id>/progress.md
