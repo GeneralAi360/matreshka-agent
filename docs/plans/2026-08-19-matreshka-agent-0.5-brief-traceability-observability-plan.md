@@ -1,7 +1,7 @@
 # Implementation Plan — Matreshka Agent 0.5 Brief Traceability & Observability
 
 - Status: `IMPLEMENTED_PENDING_NATIVE_RELEASE_VALIDATION`
-- Specification: `docs/specs/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-spec.md`
+- Specification: [историческая спецификация (удалена из текущей версии)](https://github.com/GeneralAi360/matreshka-agent/blob/c67f2ed64672239bfdc6af053f29ace4aea438fb/docs/specs/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-spec.md)
 - Baseline: `7249a56e9afb5f5b70e56ddd0dc272e6bdab9ea0`
 - Branch: `dev/0.5-brief-traceability-observability`
 - Delivery policy: development branch only until native/release gates pass; do not merge to `main` or claim `0.5.0` from this plan alone.

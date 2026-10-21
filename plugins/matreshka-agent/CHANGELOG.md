@@ -8,6 +8,15 @@ All notable changes to Matreshka Agent are recorded here.
 
 ### Added
 
+- Plain Russian launch guide in both READMEs, with mode selection, session commands, concrete examples and the purpose of generated files. Technical documentation remains in `docs/maintainer-guide.md` inside the package.
+- Ignore rules for local environment files and common private credential containers; `.env.example` remains allowed.
+
+### Documentation cleanup
+
+- Removed five retired Matreshka 0.4/0.5 specifications from the current tree. Historical plans link to their immutable Git versions. Active skill contracts, templates and behavioral/security checks remain in place; documentation inventory validation now follows the current guides.
+
+### Workflow additions
+
 - Mandatory Build End-to-End menu even with a supplied goal; Russian interview/onboarding aliases and supported Codex default-prompt hints without a native-dropdown guarantee.
 - Required project lifecycle contract: proportional frontend/backend/tests scaffold, preserved root AGENTS.md, skill/tool/config capability audit, existing-design decision and root DESIGN.md, project Feedback, session checkpoint, and mandatory dashboard from authorized onboarding state.
 - Russian/English session start/end routing that reconciles actual state and saves unfinished work without false completion or implicit Git/provider authority.

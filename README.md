@@ -1,263 +1,140 @@
 # Matreshka Agent
 
-Matreshka Agent — переносимый permission-aware workflow для разработки с coding agents. Он превращает обычный запрос пользователя в трассируемую разработку: исходный замысел → Project/Design Intelligence → specification → plan → RED→GREEN → independent review → technical/browser/visual verification → blind acceptance → drift gates → честный handoff.
+Matreshka Agent помогает создавать сайты и приложения вместе с ИИ: сначала разобраться в задаче, затем подготовить дизайн и план, написать код, проверить результат и сохранить точку продолжения.
 
-> **Текущий статус:** `0.5 development track` в ветке `dev/0.5-brief-traceability-observability`. Versioned plugin manifests намеренно остаются `0.4.0` до native/release gates. Это development snapshot, не опубликованный `0.5.0`.
+Это набор навыков для агента. Откройте папку своего проекта в Codex и используйте установленный плагин Matreshka Agent. **Все команды ниже вводятся в чат агента, а не в PowerShell или другой терминал.** Если навык не появляется в списке, сначала проверьте, что плагин установлен и включён в вашем приложении. Копия репозитория сама по себе не означает, что плагин подключён.
 
-Подробная документация пакета: [`plugins/matreshka-agent/README.md`](plugins/matreshka-agent/README.md).
+## Как начать
 
-## Одна точка входа
+Вставьте в чат:
 
 ```text
 $matreshka-agent:building-end-to-end
 ```
 
-Режимы: `interview`, `assisted` (default), `full-auto`.
-
-Меню обязательно появляется при каждом новом запуске и начале сессии, даже если задача уже описана. `Интервью` и `онбординг` распознаются как `interview`. Выбранный режим отмечается без повторного вопроса. `assisted` задаёт только существенные вопросы, а обычные обратимые технические решения принимает самостоятельно в рамках задачи. Подсказки также включены в `default_prompt`; нативное выпадающее меню зависит от хоста, текстовое меню доступно всегда.
-
-После определения стека и разрешённого объёма Matreshka готовит подходящую структуру frontend/backend/tests, `README.md`, `AGENTS.md` с реальными путями и условиями применения навыков, документацию проверок, `Feedback/` и checkpoint. Для React + Supabase backend находится в `supabase/`; отдельный Express не добавляется автоматически. Простому HTML/CSS/JS не навязываются Node, Python или Docker. `.env.example` создаётся только при необходимости конфигурации, без настоящих ключей.
-
-Dashboard обязателен: создаётся вместе с состоянием запуска уже во время онбординга, обновляется по этапам и при сохранении/возобновлении сессии. При запрете записи показывается состояние в ответе с явной отметкой, что файл ещё не сохранён; запуск сервера для просмотра не обязателен.
-
-Онбординг проверяет наличие Context7, shadcn/ui, 21st.dev, Impeccable и Anthropic frontend-design, отдельно отмечая навыки, инструменты и конфигурацию. Ничего не устанавливается только ради проверки. Для интерфейса выясняется наличие готового дизайна; при его отсутствии предлагается создание через доступный Impeccable либо объявленный fallback. Долговременный результат — корневой `DESIGN.md`.
-
-- **начать сессию** — прочитать инструкции, checkpoint, контекст и применимый Feedback, сверить состояние с файлами, обновить dashboard и показать точку продолжения.
-- **завершайте сессию** — сохранить решения, Feedback и checkpoint, обновить dashboard и остановиться без ложного завершения проекта, commit или push.
-- **проверить навыки и инструменты** — повторить проверку доступности без установки.
-
-Полный контракт и шаблоны: [project-lifecycle.md](plugins/matreshka-agent/skills/building-end-to-end/references/project-lifecycle.md). Эти правила не заменяют ограничения пользователя и права на запись.
-
-Сценарии: `NEW_PROJECT`, `CONTINUE_PROJECT`, `EXISTING_PROJECT`.
-
-`FULL_AUTO` не даёт дополнительных полномочий: Git, network, dependencies/browser, process/port, `DESIGN.md`/prototype writes, secrets, destructive setup, deploy и remote actions остаются отдельными permissions.
-
-## Workflow 0.5
+Появится меню с тремя режимами. Можно сразу добавить описание задачи:
 
 ```text
-SOURCE_BRIEF + U-/S-
-↓ G1
-PROJECT INTELLIGENCE
-↓
-DESIGN INTELLIGENCE (если UI/UX материален)
-↓
-SPECIFICATION + SECURITY HARDENING ROUTING
-↓ G2
-PLAN + G3
-  ├─ AREA_CONTEXT_SET
-  ├─ DESIGN_CONTEXT_SET
-  └─ frozen IC-xx
-↓
-RED → GREEN
-↓
-CODE / SECURITY / DESIGN REVIEW
-↓
-TECHNICAL / SECURITY VERIFY
-↓
-BROWSER E2E
-↓
-VISUAL DESIGN CHECK
-↓
-G4 BLIND ACCEPTANCE
-↓
-DESIGN DRIFT GATE
-↓
-DOCUMENTATION DRIFT GATE
-↓
-FINISH / HANDOFF
+$matreshka-agent:building-end-to-end Интервью
+Хочу сайт для проверки знаний студентов. Помоги определить требования.
 ```
 
-## Source Intent Traceability
+Агент задаёт вопросы по очереди. Не нужно заранее знать названия технологий или самостоятельно придумывать все папки.
 
-- исходный `SOURCE_BRIEF` сохраняется отдельно от последующей интерпретации;
-- `U-xx` — пользовательские outcomes;
-- `S-xx` — Security by Design controls;
-- G1 — полнота уточнений;
-- G2 — fresh brief→spec coverage;
-- G3 — requirement↔task↔evidence;
-- G4 — blind acceptance по фактическому продукту.
+## Какой режим выбрать
 
-Материальный `PARTIAL`, `MISSING` или acceptance-critical `UNCHECKABLE` блокирует `COMPLETE`.
+| Режим | Когда подходит | Что делает агент |
+| --- | --- | --- |
+| `interview` или `Интервью` | Есть идея, но требования ещё не ясны | Подробно выясняет задачу по одному вопросу, согласует требования и план перед разработкой |
+| `assisted` | Понятно, что нужно сделать, но хочется сопровождения | Уточняет важные решения, а обычные обратимые технические шаги выбирает сам. Это режим по умолчанию |
+| `full-auto` | Задача и ограничения уже описаны, хочется меньше вопросов | Самостоятельно выполняет разрешённые локальные шаги и обращается к вам, когда нельзя безопасно принять решение |
 
-## Security by Design + automatic hardening
-
-Security не ждёт, пока пользователь сам вспомнит назвать конкретную уязвимость. Во время specification Matreshka проверяет пять стабильных boundary families и для каждой фиксирует `REQUIRED`, `N/A(reason)` или `HANDOFF`. Каждая `REQUIRED` family превращается в обычные `S-xx` requirements с owner + negative proof, а затем проходит через implementation → independent review → fresh verification.
+Например:
 
 ```text
-S-AUTH-HARDENING
-→ password / login / recovery / privileged-admin auth
-→ abuse throttling по source + account, non-enumerating errors,
-  password policy, privileged MFA/step-up when applicable
-
-S-FILE-EXECUTION
-→ stored uploads
-→ trusted content/type checks, generated storage keys,
-  non-executable storage + safe serving boundary
-
-S-ATOMIC-EFFECT
-→ balances / credits / promo / inventory / withdrawals / one-time effects
-→ transaction/lock/CAS/unique/idempotency equivalent
-  + concurrent/replay negative proof
-
-S-BAAS-AUTHZ
-→ Supabase / Firebase / Appwrite / client-addressable BaaS
-→ provider-side deny-by-default policies, RLS/rules where applicable,
-  cross-user/cross-tenant read + write proof
-
-S-PAID-API-BUDGET
-→ LLM / image / SMS / voice / other metered APIs
-→ per-user/tenant quotas + global fail-closed ceiling/circuit breaker,
-  authoritative/concurrency-safe usage accounting
+$matreshka-agent:building-end-to-end assisted
+Добавь поиск в каталог. Сохрани существующий дизайн.
 ```
-
-Это routing labels, а не замена `S-01`, `S-02`, ... . Например `S-BAAS-AUTHZ: REQUIRED` может материализоваться как несколько отдельных `S-xx`: RLS на таблицах, storage policies и cross-tenant negative tests.
-
-Функционально зелёные тесты не могут автоматически закрыть security row. `VERIFIED` запрещён, пока выбранный `S-xx` не имеет свежего negative evidence.
-
-## Project Intelligence Layer
 
 ```text
-P1 PROJECT_TOPOLOGY
-P2 AREA_CONTEXT_SET
-P3 CROSS-AREA IC-xx CONTRACTS
-P4 RUNTIME_MAP
-P5 DOCUMENTATION_DRIFT_GATE
-P6 SPECIALIST_ROLE_ROUTING
+$matreshka-agent:building-end-to-end full-auto
+Сделай простой сайт на HTML/CSS/JS без сборки. Ничего не устанавливай.
 ```
 
-Matreshka не предполагает frontend/backend только потому, что проект — сайт. Она строит фактическую topology, даёт task только нужный area-context, фиксирует один `IC-xx` на producer/consumer seam и отделяет runtime observation от process authority.
+Любой режим сохраняет ваши ограничения. `full-auto` не означает автоматическое удаление данных, покупку сервисов, публикацию сайта или отправку изменений в GitHub.
 
-## Design Intelligence Layer
+## Если проект уже существует
 
-Для UI-проектов дизайн — часть ядра разработки, а не polish после кода.
+Обычно агент сам определяет состояние папки. Для явного выбора используйте:
 
-Материальный UI-проект использует один root `DESIGN.md`: personality, UX principles, app shell/layout, spacing/density, typography, colors/surfaces/depth/radii, components/states, responsive/touch, accessibility, motion, выбранное направление, invariants и история material design decisions.
-
-Если файла нет и exact design-doc write разрешён — Matreshka создаёт его. Без разрешения возвращает `DESIGN_READY_TO_SAVE`.
-
-Когда пользователь не понимает, чего хочет, Matreshka может построить обычно 3, максимум 5 реально разных изолированных prototype directions. Production-код не меняется до выбора или валидного delegated decision.
-
-### Apple-inspired design core
-
-Apple-концепция входит в ядро UX-мышления, но не является visual preset «сделай как Apple»:
-
-```text
-Purpose · Agency · Responsibility · Familiarity
-Flexibility · Simplicity · Craft · Delight
-```
-
-Плюс wayfinding, feedback, grouping/mapping, direct manipulation, spatial consistency, typography hierarchy, focus/contrast/touch targets/reduced motion/accessibility.
-
-UI-task получает frozen design identity/hash и только нужный `DESIGN_CONTEXT_SET`. Случайные новые radius/color/component/layout patterns → `DESIGN_DRIFT`, а не автоматическое изменение дизайн-контракта.
-
-Отдельный design skill:
-
-```text
-$matreshka-agent:designing-product-experience
-```
-
-## Browser E2E + Browser G4
-
-Три разные оси доказательств:
-
-```text
-Automated Browser E2E
-≠ Visual Design Check
-≠ Browser G4
-```
-
-Existing repository E2E используется первым. Personal Chrome profile/ambient session и неизвестный destructive test environment запрещены как автоматический test context.
-
-G4 слепо проверяет исходный запрос и не читает `DESIGN.md`, prototypes, design-review/visual reports, spec/plan/dashboard.
-
-## Русский dashboard и устойчивое run-state
-
-При разрешённом run-state:
-
-```text
-.matreshka/runs/<run-id>/dashboard.html
-.matreshka/runs/<run-id>/dashboard-state.js
-```
-
-Dashboard показывает progress, Project/Design Intelligence, tests/security, E2E/G4, permissions, время и truthful token telemetry. Если host не отдаёт точный token counter — `Недоступно`. Dashboard — projection, не authority/evidence.
-
-После аудита ошибок Autopilot v1.0.1+ в 0.5 добавлен отдельный hardening:
-
-- **A1 Embedded Snapshot** — `dashboard.html` несёт последний корректный snapshot и остаётся читаемым, даже если sibling `dashboard-state.js` недоступен в preview/data/file режиме;
-- **A2 Atomic Run-State Sync** — `sync_run_state.py` валидирует state, атомарно пишет projection и обновляет только marked snapshot block; не запускает server/browser и не трогает PID/ports;
-- **A3 Stage Invariants** — explicit `stageOrder` + механическая проверка конфликтующих active stages/transition timestamps; helper никогда не превращает переход по времени в semantic PASS;
-- **A4 Context Cost Gate** — exact UTF-8 byte budgets для hot-path instruction surfaces без выдуманной оценки runtime tokens;
-- **A5 Native Repeatability Matrix** — шесть blocking properties × 5 повторов на каждый release-claimed host. Один удачный native run больше не считается доказательством стабильности формулировки.
-
-## Одиннадцать bundled skills
-
-| Skill | Назначение |
+| Команда после имени навыка | Когда использовать |
 | --- | --- |
-| `building-end-to-end` | end-to-end entry |
-| `orchestrating-subagent-work` | controller, permissions, recovery, Project + Design Intelligence |
-| `designing-product-experience` | UX/UI recon, prototypes, Apple-inspired core, `DESIGN.md` |
-| `specifying-software-work` | security-by-design specification + frozen design reference |
-| `planning-software-work` | U/S, area/design contexts, IC contracts, plan |
-| `writing-portable-agent-prompt` | portable prompt |
-| `implementing-with-tests` | scoped RED→GREEN with area/IC/design boundaries |
-| `debugging-systematically` | root-cause debugging |
-| `reviewing-agent-work` | code/security/interface/design review |
-| `verifying-development-work` | technical/security/E2E/visual/G4 evidence |
-| `finishing-development-work` | Design/Docs Drift + authorized Git/remote/handoff |
+| `continue-project` | Продолжить проект, который уже разрабатывался с Matreshka |
+| `existing-project` | Подключить Matreshka к готовому проекту впервые |
 
-Specialist roles, включая `DESIGN_ENGINEER`/`DESIGN_REVIEWER`, не увеличивают budget автоматически. Balanced использует combined reviewer; maximum-quality имеет максимум два reviewer slots после implementer.
-
-## Проверка 0.5 development track
-
-Из корня репозитория запускайте тот же набор, что и CI:
-
-```bash
-python3 -B plugins/matreshka-agent/scripts/validate_dev_05.py \
-  plugins/matreshka-agent --marketplace-root . --self-test
-
-python3 -B plugins/matreshka-agent/scripts/check_dev_05.py \
-  plugins/matreshka-agent --marketplace-root .
-
-python3 -B plugins/matreshka-agent/scripts/check_dev_05_behavioral_contracts.py \
-  plugins/matreshka-agent
-
-python3 -B plugins/matreshka-agent/scripts/check_security_hardening.py \
-  plugins/matreshka-agent --marketplace-root .
-
-python3 -B plugins/matreshka-agent/scripts/sync_run_state.py --self-test
-
-python3 -B plugins/matreshka-agent/scripts/check_context_budget.py \
-  plugins/matreshka-agent
-
-python3 -B plugins/matreshka-agent/scripts/evaluate_native_repeatability.py \
-  --validate-plan
-
-python3 -B plugins/matreshka-agent/scripts/check_autopilot_regressions.py \
-  plugins/matreshka-agent --marketplace-root .
-
-python3 -B plugins/matreshka-agent/scripts/doctor_dev_05.py \
-  plugins/matreshka-agent --marketplace-root .
+```text
+$matreshka-agent:building-end-to-end existing-project
+Изучи этот проект и помоги добавить экспорт результатов.
 ```
 
-- `validate_dev_05.py` — strict package/negative self-tests for 11 skills;
-- `check_dev_05.py` — static cross-component wiring;
-- `check_dev_05_behavioral_contracts.py` — cross-skill behavioral coverage;
-- `check_security_hardening.py` — five automatic security families + spec/review/S- flow + security eval matrix;
-- `sync_run_state.py --self-test` — atomic snapshot/state invariant mechanics;
-- `check_context_budget.py` — exact byte-budget regression guard;
-- `evaluate_native_repeatability.py --validate-plan` — repeatability release matrix contract;
-- `check_autopilot_regressions.py` — A1–A5 wiring/CI regression guard;
-- `doctor_dev_05.py` — read-only development diagnostics.
+Существующие файлы и устройство проекта сохраняются. Агент сначала изучает их и добавляет недостающие инструкции в рамках вашей задачи.
 
-Static budget bytes **не** являются runtime token usage и никогда не должны попадать в dashboard как token count.
+## Начало и завершение сессии
 
-## До release 0.5.0
+В проекте Matreshka можно писать обычными словами:
 
-Нужно получить:
+| Что написать | Что произойдёт |
+| --- | --- |
+| `начать сессию` | Агент прочитает инструкции, сохранённую точку работы и ваши предпочтения, сверит их с файлами и покажет следующий шаг |
+| `завершайте сессию` | Сохранит сделанное, незавершённые задачи и результаты проверок, обновит панель прогресса и остановится |
+| `проверить навыки и инструменты` | Проверит доступность средств для документации и дизайна без их автоматической установки |
+| `Мне нравится компактный интерфейс; запомни для этого проекта` | Запишет явное предпочтение в Feedback и учтёт его при дальнейшей работе |
 
-1. final-development-HEAD deterministic validation/CI PASS;
-2. disposable native full-stack acceptance для Project Intelligence + Design Intelligence + Security hardening + Browser E2E + Visual Design Check + G4 + Design/Docs Drift + dashboard/recovery;
-3. repeatability evidence по `evals/native-repeatability.json` для каждого host, который будет заявлен в release;
-4. затем version bump manifests/marketplaces/validators/evals до `0.5.0` и финальная publisher/security metadata проверка.
+Если новый чат не распознал команду, укажите навык явно:
 
-До этого ветка остаётся `0.5 development preview`.
+```text
+$matreshka-agent:building-end-to-end начать сессию
+```
+
+Завершение сессии не означает, что весь проект готов. Упавшие или ещё не запущенные проверки останутся отмечены в сохранённом состоянии.
+
+## Что появится в проекте
+
+После уточнения задачи и стека агент создаёт подходящую структуру папок и документацию, когда запись файлов разрешена:
+
+| Файл или папка | Для чего |
+| --- | --- |
+| `README.md` | Как запускать и проверять ваш проект |
+| `AGENTS.md` | Правила работы агента, назначение папок, расположение навыков и условия их применения |
+| `docs/specs/`, `docs/plans/` | Требования и план разработки вашего проекта |
+| `docs/testing.md` | Что и как нужно проверить |
+| `docs/capabilities.md` | Какие навыки и инструменты действительно доступны |
+| `DESIGN.md` | Решения по дизайну, если у проекта есть интерфейс |
+| `Feedback/` | Ваши предпочтения и исправления для этого проекта |
+| `docs/session-checkpoint.md` | Где остановились и что делать дальше |
+| `.matreshka/runs/<run-id>/dashboard.html` | Панель прогресса: этап, задачи, проверки и препятствия |
+| `.env.example` при необходимости | Названия настроек с пустыми или безопасными примерами, без настоящих паролей и ключей |
+
+Панель прогресса создаётся уже во время онбординга, когда доступны запись и состояние запуска. Агент даёт ссылку на неё. Если файлы менять нельзя, он показывает состояние прямо в чате и отмечает, что пока не сохранено. Нативные кнопки и выпадающие подсказки зависят от приложения; текстовое меню предусмотрено всегда.
+
+Папки с кодом зависят от задачи. Например, для React + Supabase интерфейс находится в `src/`, а база данных и её проверки — в `supabase/`. Простому HTML/CSS/JS не нужны отдельный сервер, Node.js или Docker только ради структуры.
+
+## Как работает дизайн
+
+Агент выяснит, есть ли готовый макет или ссылка. Если дизайна нет, предложит создать его с помощью доступного Impeccable либо другого явно указанного способа. Принятые решения сохраняются в `DESIGN.md`, чтобы следующие экраны выглядели согласованно.
+
+При онбординге проверяются Context7, shadcn/ui, 21st.dev, Impeccable и Anthropic frontend-design. Наличие инструкции не означает наличие работающего инструмента или настроенного сервиса — эти состояния отмечаются отдельно. Устанавливать всё перечисленное для каждого проекта не требуется.
+
+## Если нужен только один этап
+
+Для разработки целиком используйте `building-end-to-end`. Для отдельной задачи вызовите подходящий навык: `$matreshka-agent:имя-навыка` и добавьте описание.
+
+| Имя навыка | Когда использовать |
+| --- | --- |
+| `building-end-to-end` | Пройти путь от идеи до проверенного результата |
+| `specifying-software-work` | Составить только техническое задание |
+| `designing-product-experience` | Подготовить или улучшить дизайн |
+| `planning-software-work` | Составить план по готовым требованиям |
+| `implementing-with-tests` | Реализовать конкретную согласованную задачу с проверками |
+| `debugging-systematically` | Найти причину ошибки и исправить её |
+| `reviewing-agent-work` | Проверить готовые изменения и найти недостатки |
+| `verifying-development-work` | Проверить, выполнены ли требования на самом деле |
+| `finishing-development-work` | Подготовить итог работы; выполнить разрешённые операции Git |
+| `writing-portable-agent-prompt` | Подготовить понятное задание для другого агента |
+| `orchestrating-subagent-work` | Напрямую организовать работу нескольких агентов, если это требуется |
+
+Пример для одного этапа:
+
+```text
+$matreshka-agent:specifying-software-work
+Составь техническое задание для личного кабинета. Код пока не пиши.
+```
+
+## Версия и подробности
+
+В `main` развивается версия 0.5; в файлах пакета пока указана 0.4.0. Это рабочая версия, а не объявленный выпуск 0.5.0. Автоматические проверки не заменяют проверку поведения в реальном приложении. Обновление файлов на GitHub не обновляет уже установленный плагин автоматически.
+
+- [Техническое руководство и команды проверки пакета](plugins/matreshka-agent/docs/maintainer-guide.md).
+- [Подробные правила онбординга и сессий](plugins/matreshka-agent/skills/building-end-to-end/references/project-lifecycle.md).
+- [История изменений](plugins/matreshka-agent/CHANGELOG.md).
+- [Официальная документация по навыкам Codex](https://developers.openai.com/codex/skills).

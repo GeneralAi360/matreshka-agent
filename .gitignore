@@ -2,6 +2,17 @@ __pycache__/
 *.py[cod]
 .DS_Store
 
+# Local credentials must not enter source control; keep safe configuration examples.
+.env
+.env.*
+!.env.example
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+credentials.json
+
 # Keep eval definitions, but not machine-specific run artifacts.
 evals/results/
 evals/workspaces/
