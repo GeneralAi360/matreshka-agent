@@ -1,7 +1,7 @@
 # Implementation Plan — Matreshka Agent 0.5 Project Intelligence Layer
 
 - Status: `IMPLEMENTED_PENDING_NATIVE_VALIDATION`
-- Specification: `docs/specs/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-spec.md`
+- Specification: [историческая спецификация (удалена из текущей версии)](https://github.com/GeneralAi360/matreshka-agent/blob/c67f2ed64672239bfdc6af053f29ace4aea438fb/docs/specs/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-spec.md)
 - Branch: `dev/0.5-brief-traceability-observability`
 - Delivery policy: development branch only; no merge to `main` or `0.5.0` release claim from this plan.
 

@@ -49,6 +49,7 @@ EXPECTED_CODEX_WRAPPERS = {
 
 PLUGIN_REQUIRED_FILES = (
     "README.md",
+    "docs/maintainer-guide.md",
     "CHANGELOG.md",
     ".codex-plugin/plugin.json",
     "skills/building-end-to-end/SKILL.md",
@@ -105,6 +106,14 @@ PLUGIN_REQUIRED_FILES = (
 
 PLUGIN_MARKERS = {
     "README.md": (
+        "Как начать",
+        "$matreshka-agent:building-end-to-end",
+        "assisted",
+        "начать сессию",
+        "завершайте сессию",
+        "docs/maintainer-guide.md",
+    ),
+    "docs/maintainer-guide.md": (
         "Design Intelligence Layer",
         "Одиннадцать bundled skills",
         "Apple-inspired design core",
@@ -498,28 +507,23 @@ JSON_FILES = (
 MARKETPLACE_REQUIRED_FILES = (
     "README.md",
     ".github/workflows/package-validation.yml",
-    "docs/specs/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-spec.md",
     "docs/plans/2026-08-19-matreshka-agent-0.5-brief-traceability-observability-plan.md",
-    "docs/specs/2026-08-20-matreshka-agent-0.5-browser-e2e-spec.md",
     "docs/plans/2026-08-20-matreshka-agent-0.5-browser-e2e-plan.md",
-    "docs/specs/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-spec.md",
     "docs/plans/2026-08-20-matreshka-agent-0.5-project-intelligence-layer-plan.md",
-    "docs/specs/2026-08-20-matreshka-agent-0.5-design-intelligence-spec.md",
     "docs/plans/2026-08-20-matreshka-agent-0.5-design-intelligence-plan.md",
 )
 
 MARKETPLACE_MARKERS = {
     "README.md": (
-        "0.5 development track",
-        "FULL_AUTO",
-        "Project Intelligence Layer",
-        "Design Intelligence Layer",
-        "Browser E2E + Browser G4",
-        "Одиннадцать bundled skills",
-        "Apple-inspired design core",
-        "validate_dev_05.py",
-        "check_dev_05.py",
-        "doctor_dev_05.py",
+        "Как начать",
+        "$matreshka-agent:building-end-to-end",
+        "interview",
+        "assisted",
+        "full-auto",
+        "начать сессию",
+        "завершайте сессию",
+        "В `main` развивается версия 0.5",
+        "plugins/matreshka-agent/docs/maintainer-guide.md",
     ),
     ".github/workflows/package-validation.yml": (
         "validate_dev_05.py",
@@ -545,14 +549,6 @@ MARKETPLACE_MARKERS = {
         "P6",
         "P7",
         "P8",
-    ),
-    "docs/specs/2026-08-20-matreshka-agent-0.5-design-intelligence-spec.md": (
-        "DESIGN INTELLIGENCE",
-        "D1",
-        "D8",
-        "DESIGN.md",
-        "Apple-inspired",
-        "designing-product-experience",
     ),
     "docs/plans/2026-08-20-matreshka-agent-0.5-design-intelligence-plan.md": (
         "IMPLEMENTED_PENDING_NATIVE_VALIDATION",

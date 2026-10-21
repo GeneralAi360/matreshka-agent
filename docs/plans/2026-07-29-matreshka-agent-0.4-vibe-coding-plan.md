@@ -1,7 +1,7 @@
 # Implementation Plan — Matreshka Agent 0.4 Vibe-Coding Entry
 
 - Status: `PLAN_READY`
-- Confirmed design: `docs/specs/2026-07-29-matreshka-agent-0.4-vibe-coding-spec.md`
+- Confirmed design: [историческая спецификация (удалена из текущей версии)](https://github.com/GeneralAi360/matreshka-agent/blob/c67f2ed64672239bfdc6af053f29ace4aea438fb/docs/specs/2026-07-29-matreshka-agent-0.4-vibe-coding-spec.md)
 - Project root: `/workspace/scratch/d534f6c1b732/matreshka-agent`
 - Published baseline: `origin/main` at `561bdc925df09dc18c5b1ca0af2d97c039474682`
 - Local equivalent baseline: `2193b601b377bb60c4ff4e5e80fb22c4d70c5ffe`
@@ -28,7 +28,7 @@ Implement Matreshka Agent `0.4.0` as an additive, plain-language `Build End-to-E
 ## Constraints and pre-existing state
 
 - Local `HEAD` and published `origin/main` have different commit histories but the same tree hash. Before any future Git-history operation, the controller must re-check both refs and use a non-force integration path based on the current published branch.
-- The only current untracked project path before this plan is `docs/specs/2026-07-29-matreshka-agent-0.4-vibe-coding-spec.md`; this plan adds `docs/plans/2026-07-29-matreshka-agent-0.4-vibe-coding-plan.md`. They are user-approved planning artifacts, not implementation output.
+- The only current untracked project path before this plan is [историческая спецификация (удалена из текущей версии)](https://github.com/GeneralAi360/matreshka-agent/blob/c67f2ed64672239bfdc6af053f29ace4aea438fb/docs/specs/2026-07-29-matreshka-agent-0.4-vibe-coding-spec.md); this plan adds `docs/plans/2026-07-29-matreshka-agent-0.4-vibe-coding-plan.md`. They are user-approved planning artifacts, not implementation output.
 - Current offline baseline passes:
   - `python3 plugins/matreshka-agent/scripts/validate_package.py plugins/matreshka-agent --marketplace-root . --self-test`
   - `python3 plugins/matreshka-agent/scripts/doctor.py plugins/matreshka-agent --marketplace-root .`
