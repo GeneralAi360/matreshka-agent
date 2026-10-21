@@ -5,6 +5,17 @@
   "single_file_max_bytes": 32000,
   "surfaces": [
     {
+      "id": "project-lifecycle-increment",
+      "max_bytes": 45000,
+      "files": [
+        "skills/building-end-to-end/references/project-lifecycle.md",
+        "skills/building-end-to-end/references/run-observability.md",
+        "skills/building-end-to-end/assets/project-agents-template.md",
+        "skills/building-end-to-end/assets/feedback-template.md",
+        "skills/building-end-to-end/assets/session-checkpoint-template.md"
+      ]
+    },
+    {
       "id": "build-entry-core",
       "max_bytes": 50000,
       "files": [

@@ -14,6 +14,8 @@ Read [design-core.md](references/design-core.md) for the mandatory design reason
 
 ## Start with design relevance and recon
 
+For Build End-to-End, follow the [onboarding design and capability contract](../building-end-to-end/references/project-lifecycle.md): resolve whether a ready design exists, offer qualified Impeccable when creating one, disclose fallbacks, and preserve a single root `DESIGN.md`. Read the actual external skill and satisfy its context prerequisites only when selected; never infer installation/publication authority. Matreshka retains design acceptance, identity and gates.
+
 Determine whether design is materially relevant to the requested outcome.
 
 Return `DESIGN_NOT_APPLICABLE` for work with no meaningful user-facing interface impact. Do not force design ceremony onto a parser, backend migration, CLI internals, or documentation-only task unless user experience is actually affected.

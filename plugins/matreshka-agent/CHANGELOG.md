@@ -8,6 +8,11 @@ All notable changes to Matreshka Agent are recorded here.
 
 ### Added
 
+- Mandatory Build End-to-End menu even with a supplied goal; Russian interview/onboarding aliases and supported Codex default-prompt hints without a native-dropdown guarantee.
+- Required project lifecycle contract: proportional frontend/backend/tests scaffold, preserved root AGENTS.md, skill/tool/config capability audit, existing-design decision and root DESIGN.md, project Feedback, session checkpoint, and mandatory dashboard from authorized onboarding state.
+- Russian/English session start/end routing that reconciles actual state and saves unfinished work without false completion or implicit Git/provider authority.
+- Nine lifecycle behavioral eval scenarios, four trigger examples, three bootstrap templates, and an explicit 45,000-byte lifecycle context increment (existing budgets unchanged). Native host acceptance remains pending.
+
 - Source-brief preservation and stable `U-` user-intent rows separated from `S-` Security-by-Design controls.
 - G1 clarification completeness, G2 independent brief→spec coverage, G3 bidirectional requirement↔task/proof traceability, and G4 fresh blind acceptance.
 - Public modes `INTERVIEW`, `ASSISTED`, `FULL_AUTO` and scenarios `NEW_PROJECT`, `CONTINUE_PROJECT`, `EXISTING_PROJECT`; controller autonomy remains separate.

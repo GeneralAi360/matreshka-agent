@@ -12,6 +12,12 @@ $matreshka-agent:building-end-to-end
 
 Режимы: `interview`, `assisted` (default), `full-auto`.
 
+Меню обязательно при новом запуске и начале сессии, включая запрос с готовой целью. `Интервью` / `онбординг` выбирают `interview`; выбранный режим не нужно подтверждать повторно. `assisted` уточняет существенные решения и самостоятельно выполняет обычные обратимые шаги в пределах задачи.
+
+[Project lifecycle](skills/building-end-to-end/references/project-lifecycle.md) определяет обязательную подготовку структуры по стеку, `AGENTS.md` с проверенными путями/условиями применения навыков, Feedback, checkpoint и dashboard уже с онбординга. Для UI обязателен вопрос о готовом дизайне (если ответ ещё неизвестен), предложение создания и результат в корневом `DESIGN.md`. Проверяются Context7, shadcn/ui, 21st.dev, Impeccable и Anthropic frontend-design без автоматической установки.
+
+Команды **начать сессию** и **завершайте сессию** восстанавливают или сохраняют точку работы, применимый Feedback и dashboard. Завершение сессии не означает завершение продукта. При запрете записи показываются точные несохранённые артефакты. Подсказки присутствуют в `default_prompt`, а нативные кнопки/автодополнение зависят от возможностей хоста.
+
 Сценарии: `NEW_PROJECT`, `CONTINUE_PROJECT`, `EXISTING_PROJECT`.
 
 `FULL_AUTO` не расширяет permissions: Git/network/dependencies/browser/process/port/design-doc/prototype/secrets/destructive/deploy/remote остаются отдельными полномочиями.

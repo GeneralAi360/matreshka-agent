@@ -12,6 +12,8 @@ Use this reference to resolve how often the user participates in product and sta
 
 Default to `ASSISTED`.
 
+The [project lifecycle](project-lifecycle.md) requires the launch menu even with a supplied goal, defines Russian aliases (`Интервью`/`онбординг` -> `INTERVIEW`) and session commands. Show the already selected mode without another selection gate. `assisted` asks material questions while choosing ordinary reversible technical details within scope; it does not skip engineering gates.
+
 These are the canonical public names. Do not show `AUTONOMOUS_LOCAL` as an interaction-mode label to ordinary users.
 
 ## Conversation language vs product UI language
