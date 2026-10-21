@@ -38,6 +38,10 @@ jobs:
           python3 -B plugins/matreshka-agent/scripts/check_dev_05_behavioral_contracts.py
           plugins/matreshka-agent
 
+      - name: Bootstrap structure and negative fixtures
+        run: >-
+          python3 -B plugins/matreshka-agent/scripts/test_project_bootstrap.py
+
       - name: Targeted G2 delivery-versus-rigor regression
         run: >-
           python3 -B plugins/matreshka-agent/scripts/evaluate_g2_rigor.py

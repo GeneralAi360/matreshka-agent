@@ -48,6 +48,13 @@ EXPECTED_CODEX_WRAPPERS = {
 }
 
 PLUGIN_REQUIRED_FILES = (
+    "scripts/check_project_bootstrap.py",
+    "scripts/test_project_bootstrap.py",
+    "skills/building-end-to-end/references/project-layouts.md",
+    "skills/building-end-to-end/references/testing-bootstrap.md",
+    "skills/building-end-to-end/assets/project-documentation-template.md",
+    "skills/building-end-to-end/assets/testing-plan-template.md",
+    "skills/building-end-to-end/assets/bootstrap-map-example.json",
     "README.md",
     "docs/maintainer-guide.md",
     "CHANGELOG.md",

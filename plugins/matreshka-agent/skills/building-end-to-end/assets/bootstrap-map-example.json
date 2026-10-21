@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "profile": "split",
+  "source": "docs/architecture.md",
+  "documents": {
+    "architecture": "docs/architecture.md",
+    "testing": "docs/testing.md",
+    "local_development": "docs/local-development.md"
+  },
+  "decisions": {
+    "frontend": "React (example)",
+    "backend": "Python API (example)",
+    "database": "PostgreSQL (example)",
+    "hosting": "UNRESOLVED"
+  },
+  "areas": {
+    "frontend": ["apps/frontend"],
+    "backend": ["apps/backend"]
+  },
+  "migration_roots": ["apps/backend/db/migrations"],
+  "files": ["AGENTS.md", "README.md", "docs/architecture.md", "docs/local-development.md", "docs/testing.md"],
+  "checks": [
+    {
+      "id": "frontend-journey",
+      "owner": "frontend",
+      "layer": "browser",
+      "scenario": "Replace with confirmed UI action/result",
+      "cwd": "apps/frontend",
+      "command": [],
+      "command_source": null,
+      "target": "Isolated test app, pending",
+      "prerequisites": "Browser runner and authorized app runtime",
+      "status": "PLANNED",
+      "reason": "Example; resolve runner/scenario before saving"
+    },
+    {
+      "id": "backend-rules",
+      "owner": "backend",
+      "layer": "unit",
+      "scenario": "Replace with confirmed server rule/invalid input",
+      "cwd": "apps/backend",
+      "command": [],
+      "command_source": null,
+      "target": "Local isolated unit tests",
+      "prerequisites": "Selected backend runner and test source",
+      "status": "PLANNED",
+      "reason": "Example only; no execution evidence"
+    },
+    {
+      "id": "backend-boundary",
+      "owner": "backend",
+      "layer": "integration",
+      "scenario": "Replace with confirmed API contract/denied request",
+      "cwd": "apps/backend",
+      "command": [],
+      "command_source": null,
+      "target": "Dedicated test API/database, pending",
+      "prerequisites": "Backend runner, test database, authorized fixtures",
+      "status": "PLANNED",
+      "reason": "Example; runtime/mutations not authorized here"
+    }
+  ]
+}

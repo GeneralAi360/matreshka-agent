@@ -7,6 +7,9 @@ Adapt this template to the actual project. Remove drafting notes and replace pla
 - Purpose and selected stack: <confirmed facts; link canonical context>.
 - Frontend: <actual path and responsibility, or not applicable>.
 - Backend/data: <actual path and responsibility; Supabase may be the backend>.
+- Architecture: <canonical document; frontend/backend/data engine/hosting decisions separately; one migration owner per schema>.
+- Local development and commands: <canonical document; each app's cwd, runtime and real command source>.
+- Bootstrap map: <docs/bootstrap.json or mapped equivalent; structural projection, never runtime proof>.
 - Tests: <actual unit/component/integration/E2E paths and applicability>.
 - Specification and plan: <canonical paths>.
 - Design: <root DESIGN.md for UI work, or not applicable>.
@@ -36,6 +39,7 @@ Full discovery evidence: docs/capabilities.md. Use `NOT_FOUND` for an absent sou
 - Read relevant confirmed feedback before design/implementation; reconcile changes with spec and DESIGN.md.
 - Follow docs/testing.md; list actual commands here only once they are verified for this project: <commands and prerequisites>.
 - Keep meaningful domain, boundary/security and critical journey tests. Record failed/unavailable checks honestly.
+- Backend tests cover server rules, API/access and persistence; frontend checks do not replace them. Browser E2E is separate from API tests and visual/manual observations. Resolve the chosen architecture and runner before creating configurations; do not default PostgreSQL to a provider or a backend to Node.
 - Keep secrets out of code, docs and client bundles; use safe .env.example names only when configuration is needed.
 - Preserve unrelated changes and process ownership. No install, remote operation, Git publication or destructive operation from a skill name alone.
 

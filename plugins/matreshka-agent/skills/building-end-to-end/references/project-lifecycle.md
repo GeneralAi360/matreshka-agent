@@ -25,7 +25,7 @@ Use host-provided selectable answers when available and suitable; otherwise prin
 ## Required bootstrap, before implementation
 
 1. Inspect the real project root, applicable instructions, existing folders, README, dependency manifests, specs and accepted decisions. Do not read `.env`, credentials or personal datasets to discover the stack.
-2. Resolve minimum goal, audience, project kind and chosen stack. Do not repeat answered interview questions. Preserve “unknown” facts until resolved; do not generate a speculative full-stack skeleton from “make a site”.
+2. Resolve minimum goal, audience and specification-driven architecture using [project-layouts.md](project-layouts.md). Decide frontend, backend, data engine and hosting independently. Do not repeat answered interview questions. Preserve “unknown” facts until resolved; do not generate a speculative full-stack skeleton from “make a site”.
 3. Record the bounded write scope from current instructions. An authorized request to create the project normally covers its ordinary local scaffolding; do not add a redundant approval round. Respect an explicit read-only/no-install constraint. If writes are unavailable, return the exact planned tree and pending artifacts inline, without claiming they exist.
 4. Once stack and paths are known and local scaffolding is authorized, materialize the following before product implementation. Initialize controller ledger/run ID and the dashboard as soon as run-state writes are authorized, including during the interview; do not wait for code or interview completion. Menu-only invocation without a goal creates no dummy run.
 5. Existing projects keep their architecture. Add missing lifecycle artifacts within scope, merge appropriate sections without replacing existing instructions, and record equivalent existing paths. Re-running onboarding must preserve user content and avoid duplicate contexts, Feedback stores or runs. Resolve links, symlinks and nested repository boundaries before writing.
@@ -36,6 +36,8 @@ Use host-provided selectable answers when available and suitable; otherwise prin
 | Root `AGENTS.md` | Adapt [project-agents-template.md](../assets/project-agents-template.md): directory responsibilities, conditional skill routing with actual source locations, testing and session entry points; preserve existing rules |
 | One canonical project context | Select via [context-and-decisions.md](context-and-decisions.md); confirmed product facts, not task logs |
 | `docs/specs/`, `docs/plans/`, `docs/testing.md` | Spec/plan locations and risk-based verification plan; actual commands/results distinguished from planned checks |
+| Architecture and local-development docs, docs index or existing equivalents | Adapt [project-documentation-template.md](../assets/project-documentation-template.md); real area paths, commands/cwd, data and hosting decisions, process ownership; conditional API/data-access docs |
+| `docs/bootstrap.json` after architecture shape is resolved | Structural projection from [project-layouts.md](project-layouts.md); actual files, test ownership, command sources and honest pending/executed status; not another task ledger |
 | `docs/capabilities.md` | Capability audit below, paths, conditions and missing capabilities; no secrets |
 | `Feedback/README.md`, `Feedback/preferences.md` | Project-only feedback rules and confirmed preferences; use [feedback-template.md](../assets/feedback-template.md) |
 | `docs/session-checkpoint.md` | Current continuation record from [session-checkpoint-template.md](../assets/session-checkpoint-template.md); link retained per-run history |
@@ -49,18 +51,13 @@ Do not write fake package manifests, test results or executable setup commands b
 
 ## Proportional structure and tests
 
-Create relevant directories, document their owners, and map to existing equivalents instead of forcing a universal monorepo. These are default examples, not new dependencies:
+Use [project-layouts.md](project-layouts.md) as the single profile/path contract and [testing-bootstrap.md](testing-bootstrap.md) for stage-by-stage checks. New split applications normally use `apps/frontend/` and `apps/backend/`; integrated fullstack maps actual client/server modules; managed services, backend-only and static sites have proportional profiles. Existing projects keep their paths.
 
-| Project kind | Product directories | Verification |
-| --- | --- | --- |
-| Plain HTML/CSS/JS without a build | `index.html`, `assets/css/`, `assets/js/`, `assets/images/` | Browser smoke for navigation/forms, responsive layout, keyboard/focus, links and console errors; no Node, Python, Docker or backend merely to scaffold |
-| React + Supabase | `src/components/`, `src/pages/`, `src/styles/`, `src/lib/`, `public/`; backend ownership in `supabase/migrations/`, `supabase/tests/` | Unit tests for meaningful domain rules, component behavior, integration and RLS negative checks, critical browser E2E, visual/accessibility checks |
-| Frontend + custom backend | Existing convention or `frontend/src/`, `backend/src/`, `backend/tests/`, `tests/integration/`, `tests/e2e/` | Domain/unit tests, API contracts, authentication/authorization negatives, integrations, critical user journeys and UI checks |
-| Backend-only | Existing convention or `src/`, `tests/unit/`, `tests/integration/`, `docs/api/` | Domain rules, API contracts, failure handling, persistence and security boundaries; no frontend or DESIGN.md without UI scope |
+PostgreSQL does not choose Supabase. A selected managed database does not remove an agreed own backend or automatically select Auth/Storage/RLS. Provider folders/functions appear only for confirmed capabilities. One schema has one migration owner. Creating migration folders never authorizes migration execution, provisioning or CLI installation.
 
-For React, create `tests/unit/`, `tests/integration/`, `tests/e2e/` when those categories apply; component tests may be colocated. Keep frontend/backend responsibility explicit: Supabase is the backend, not a reason to add Express. Add `supabase/functions/` only when server-side functions are actually required. Creating migration folders does not authorize executing migrations, provisioning a database, linking a provider project or installing the CLI. Choose test tools to match the selected stack and permissions; directory names do not authorize installing them. Avoid tests that only mirror trivial markup.
+Materialize selected runner configs, real command declarations and meaningful initial checks when tooling decisions allow; empty test folders are insufficient. Each application owns its unit/component/API/integration tests; root integration/E2E covers cross-app boundaries and user journeys. No Node, Python or Docker as dependencies of a plain static site just for scaffolding. No tests merely mirroring trivial markup.
 
-In `docs/testing.md`, record each relevant boundary, expected proof, tool/command, prerequisites, execution target (local/test/remote), owner and status (`PLANNED`, `PASSED`, `FAILED`, `UNCHECKABLE`, `NOT_APPLICABLE` with reason). Supabase checks must cover unauthenticated and wrong-user read/write denial, privileged operations, and relevant storage rules. Never label these passed because directories or SQL files exist.
+In `docs/testing.md`, record each relevant boundary, expected proof, command/cwd and source, prerequisites, target, owner and honest status. Include API/data authorization negatives where applicable; RLS and storage checks only for selected boundaries. API/Supertest tests do not establish browser E2E. The bootstrap checker cannot mark runtime tests passed; actual files and evidence determine progress.
 
 ## Capability audit and skill routing
 
