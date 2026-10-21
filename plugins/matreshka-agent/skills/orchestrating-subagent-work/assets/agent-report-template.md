@@ -43,6 +43,8 @@ A role report may observe design drift/change but cannot edit `DESIGN.md`, decla
 
 ## Evidence
 
+Identify the checked criterion, app owner/layer, cwd, command declaration source, safe target and baseline for each result. Separate API, real browser, mocked-API browser and visual/manual evidence. A bootstrap structure check is not runtime verification. No raw secrets or private test data in reports.
+
 | Command/check/interaction | Exit/signal | Counts | Relevant note |
 | --- | --- | --- | --- |
 | `{{COMMAND_OR_INTERACTION}}` | {{EXIT_OR_SIGNAL}} | {{COUNTS}} | {{NOTE}} |

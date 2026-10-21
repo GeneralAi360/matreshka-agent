@@ -15,6 +15,11 @@ sys.dont_write_bytecode = True
 
 REQUIRED_CASES = {
     "skills/building-end-to-end/evals/evals.json": {
+        "bootstrap-mixed-stack-independent-hosting",
+        "bootstrap-integrated-existing-server",
+        "bootstrap-provider-database-only",
+        "bootstrap-backend-only-no-browser",
+        "bootstrap-stage-handoff-and-docs",
         "russian-interview-goal-menu-bootstrap",
         "static-site-no-runtime-bootstrap",
         "session-start-reconcile-stale-dashboard",
@@ -53,6 +58,8 @@ REQUIRED_CASES = {
         "design-review-uncheckable-visual-feel",
     },
     "skills/verifying-development-work/evals/evals.json": {
+        "bootstrap-api-not-browser-proof",
+        "bootstrap-test-reset-unknown-target",
         "visual-design-fails-while-e2e-passes",
         "visual-design-uncheckable-without-renderer",
         "g4-contaminated-by-design-artifacts",
@@ -70,6 +77,9 @@ REQUIRED_CASES = {
         "security-paid-api-budget-spec",
         "security-paid-api-budget-verify",
     },
+    "skills/orchestrating-subagent-work/evals/evals.json": {
+        "bootstrap-task-layer-scope",
+    },
 }
 
 REQUIRED_PROFILE_MARKERS = (
@@ -81,6 +91,7 @@ REQUIRED_PROFILE_MARKERS = (
 )
 
 REQUIRED_CI_MARKERS = (
+    "test_project_bootstrap.py",
     "validate_dev_05.py",
     "check_dev_05.py",
     "check_dev_05_behavioral_contracts.py",

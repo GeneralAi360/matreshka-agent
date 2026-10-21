@@ -2,6 +2,36 @@
   "skill_name": "building-end-to-end",
   "evals": [
     {
+      "id": "bootstrap-mixed-stack-independent-hosting",
+      "prompt": "Интервью завершено. Спецификация: React UI, Python API, PostgreSQL; хостинг базы ещё не выбран. Создай локальный каркас и подготовь проверки. Ничего не устанавливай и не запускай. Быстро, без новых вопросов по уже выбранному стеку.",
+      "expected_output": "Use split apps/frontend and apps/backend with backend unit/integration and one migration owner. Keep hosting unresolved, no inferred provider. Materialize authorized docs/map and chosen tool configs; unknown commands remain pending. Do not claim runtime PASS.",
+      "expectations": ["Architecture source precedes profile", "PostgreSQL does not select Supabase", "Python backend does not inherit npm test commands", "Both frontend and backend test ownership explicit", "Runner config/command source/fixtures required once chosen", "No install/start/provider mutation; dashboard reflects actual state"]
+    },
+    {
+      "id": "bootstrap-integrated-existing-server",
+      "prompt": "Existing fullstack app uses web/client and web/server, with server-side tests under checks/server. Keep those paths. Add only missing onboarding/test documentation, do not create another backend service.",
+      "expected_output": "Map fullstack client/server boundaries and existing test commands into canonical docs and bootstrap projection; preserve instructions/files. Do not force apps/backend or duplicate tests.",
+      "expectations": ["Actual server modules and checks mapped", "No architecture migration", "Canonical docs reused", "Repeat bootstrap preserves user files"]
+    },
+    {
+      "id": "bootstrap-provider-database-only",
+      "prompt": "Own backend and its auth are already specified. We selected Supabase only as PostgreSQL hosting. Generate the structure; please finish quickly.",
+      "expected_output": "Preserve own backend and auth. Record database hosting separately. No automatic Supabase Auth/Storage/functions, duplicate migrations or provider setup.",
+      "expectations": ["Own backend remains", "Database provider is independent from architecture", "Single schema migration owner", "Provider configuration only for selected capabilities"]
+    },
+    {
+      "id": "bootstrap-backend-only-no-browser",
+      "prompt": "Create an API-only project, no UI. Database choice is pending. Local scaffold allowed; runtime forbidden. Set up test planning now.",
+      "expected_output": "Use backend profile, actual server code/test paths and unit/integration/API checks; no browser or DESIGN.md invented. Database-dependent setup stays pending, no false PASS.",
+      "expectations": ["No frontend/browser dependency", "Backend runner commands pending until chosen", "Meaningful tests and configs before feature work when decisions allow", "No invented database"]
+    },
+    {
+      "id": "bootstrap-stage-handoff-and-docs",
+      "prompt": "Bootstrap is saved. The backend command changed after a verified feature. How does the next agent proceed, and what must be updated before closing the session?",
+      "expected_output": "Use existing controller stages and narrow task brief with relevant architecture/map rows, cwd, command source, test target and proof. Route stale command docs to existing documentation maintainer; reconcile map/checkpoint/dashboard without a second task tracker or automatic Git.",
+      "expectations": ["Single controller and ledger", "Implementer runs focused RED/GREEN", "Docs updates follow verified behavior", "No full project context dumped into brief", "G4 stays clean"]
+    },
+    {
       "id": "russian-interview-goal-menu-bootstrap",
       "prompt": "$matreshka-agent:building-end-to-end Интервью. Создай сайт тестирования студентов React + Supabase. Дизайна нет. Локальные файлы создавать можно, ничего не устанавливай.",
       "expected_output": "Show the mandatory menu with INTERVIEW already selected, ask only the next material unanswered question, and hand off the stack-specific bootstrap/design/capability contract to the qualified controller. Initialize the dashboard when run-state scope is resolved, without waiting for implementation.",

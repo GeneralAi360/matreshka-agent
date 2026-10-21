@@ -99,6 +99,10 @@ Inspect-only:
 
 ## Task gate
 
+- Bootstrap/architecture reference when applicable: {{EXACT_RELEVANT_MAP_ROW_AND_ARCHITECTURE_SECTION_OR_NA}}.
+- Criterion → app owner/test layer → observable expected result: {{TASK_LOCAL_MAPPING}}.
+- Command cwd and declaration source: {{ACTUAL_CWD_AND_MANIFEST_OR_CONFIG}}.
+- Safe test target, setup/cleanup owner and missing prerequisites: {{TARGET_SCOPE_AND_PENDING_ITEMS}}.
 - Task suite: `{{TASK_COMMAND}}`
 - Nearest regression: `{{REGRESSION_COMMAND}}`
 - Targeted type/lint/diff check: `{{TARGETED_COMMAND}}`

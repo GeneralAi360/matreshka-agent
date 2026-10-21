@@ -5,6 +5,17 @@
   "single_file_max_bytes": 32000,
   "surfaces": [
     {
+      "id": "bootstrap-preparation-increment",
+      "max_bytes": 20000,
+      "files": [
+        "skills/building-end-to-end/references/project-layouts.md",
+        "skills/building-end-to-end/references/testing-bootstrap.md",
+        "skills/building-end-to-end/assets/project-documentation-template.md",
+        "skills/building-end-to-end/assets/testing-plan-template.md",
+        "skills/building-end-to-end/assets/bootstrap-map-example.json"
+      ]
+    },
+    {
       "id": "project-lifecycle-increment",
       "max_bytes": 45000,
       "files": [

@@ -8,6 +8,8 @@ All notable changes to Matreshka Agent are recorded here.
 
 ### Added
 
+- Specification-driven bootstrap profiles for split, integrated fullstack, managed, backend-only and static projects; data engine and hosting remain independent choices. Concrete per-app test preparation, command provenance and stage handoffs reuse the existing controller.
+- Architecture/local-development/testing templates and a structural bootstrap projection with an offline read-only checker, negative fixture tests and CI coverage. Structural success never implies runtime, browser E2E or G4 success.
 - Plain Russian launch guide in both READMEs, with mode selection, session commands, concrete examples and the purpose of generated files. Technical documentation remains in `docs/maintainer-guide.md` inside the package.
 - Ignore rules for local environment files and common private credential containers; `.env.example` remains allowed.
 

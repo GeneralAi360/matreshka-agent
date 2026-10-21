@@ -15,6 +15,7 @@ Read first: `{{TASK_BRIEF_PATH}}`. It is the complete task-local contract, `AREA
 Capability tier: {{APPROVED_TIER}}.
 Allowed product/test files and run-state output: only the allowlists in the brief.
 Focused commands: {{ONE_TO_THREE_COMMANDS}}.
+Check mapping: {{CRITERION_APP_LAYER_CWD_COMMAND_SOURCE_SAFE_TARGET_FROM_BRIEF}}. Use only the applicable architecture/bootstrap rows, not the whole project map. Missing runtime/setup remains explicit; do not replace backend checks with frontend commands or API tests with claimed browser E2E.
 
 Rules:
 - Do not create child agents.
